@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas Caligráfico & Vectorial - Francisco Coloane</title>
+<style>
+  :root {
+    --bg-main: #0b0f19;
+    --bg-card: #151d2c;
+    --border: #233147;
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.25);
+    --text: #f8fafc;
+    --text-dim: #94a3b8;
+    --paper-bg: #fdf6e2;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-main);
+    color: var(--text);
+    padding: 32px;
+    margin: 0;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  header {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  h1 { margin: 0 0 6px 0; color: var(--accent); font-size: 26px; }
+  p.desc { margin: 0; color: var(--text-dim); font-size: 14px; max-width: 800px; }
+  
+  .controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+    background: #111827;
+    padding: 14px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  
+  .filters, .view-toggles {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .btn:hover, .btn.active {
+    background: var(--accent);
+    color: #0b0f19;
+    border-color: var(--accent);
+    font-weight: bold;
+  }
+  
+  .view-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-right: 4px;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+  }
+  
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px var(--accent-glow);
+  }
+  
+  .char-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .char-preview {
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--accent);
+    font-family: "Georgia", serif;
+  }
+  
+  .img-box {
+    width: 100%;
+    height: 110px;
+    background: var(--paper-bg);
+    border-radius: 6px;
+    border: 1px solid #d4c5a9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 12px;
+    padding: 8px;
+    box-sizing: border-box;
+    transition: background 0.3s;
+  }
+  .img-box.vector-mode {
+    background: #ffffff;
+    border-color: #cbd5e1;
+  }
+  .img-box.dark-mode {
+    background: #0f172a;
+    border-color: #334155;
+  }
+  
+  .img-box img, .img-box object, .img-box svg {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .meta {
+    width: 100%;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .meta-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .meta-row b { color: var(--text); }
+  
+  .context {
+    font-style: italic;
+    color: #cbd5e1;
+    margin-top: 6px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+  
+  .badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 9px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .badge-mayuscula { background: rgba(56, 189, 248, 0.2); color: var(--accent); }
+  .badge-minuscula { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+  .badge-numero { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+  .badge-signo { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>✨ Atlas Caligráfico de Precisión & Vectores: Francisco Coloane</h1>
+      <p class="desc">Glifos calibrados con ajuste fino píxel a píxel, aislamiento de trazo y vectorización SVG directa a partir de los manuscritos originales de 1977.</p>
+    </div>
+  </header>
+  
+  <div class="controls-bar">
+    <div class="filters">
+      <span class="view-label">Filtro:</span>
+      <button class="btn active" onclick="filterCategory('all', this)">Todos (61)</button>
+      <button class="btn" onclick="filterCategory('mayuscula', this)">Mayúsculas</button>
+      <button class="btn" onclick="filterCategory('minuscula', this)">Minúsculas</button>
+      <button class="btn" onclick="filterCategory('numero', this)">Números</button>
+      <button class="btn" onclick="filterCategory('signo', this)">Puntuación</button>
+    </div>
+    
+    <div class="view-toggles">
+      <span class="view-label">Modo Visual:</span>
+      <button class="btn active" onclick="setViewMode('raw', this)">📷 Original Calibrado</button>
+      <button class="btn" onclick="setViewMode('iso', this)">🪄 Tinta Aislada</button>
+      <button class="btn" onclick="setViewMode('vector', this)">⚡ Vector SVG</button>
+    </div>
+  </div>
+  
+  <div class="grid" id="glyphGrid">
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">T</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_T_imp">
+        <img id="img_T_imp" src="crops_raw/T_imp_raw.png" 
+             data-raw="crops_raw/T_imp_raw.png" 
+             data-iso="crops_isolated/T_imp_iso.png" 
+             data-vector="svg_vectors/T_imp.svg" 
+             alt="Glifo T">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>150 × 150 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">E</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_E_imp">
+        <img id="img_E_imp" src="crops_raw/E_imp_raw.png" 
+             data-raw="crops_raw/E_imp_raw.png" 
+             data-iso="crops_isolated/E_imp_iso.png" 
+             data-vector="svg_vectors/E_imp.svg" 
+             alt="Glifo E">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>88 × 109 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">M</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_M_imp">
+        <img id="img_M_imp" src="crops_raw/M_imp_raw.png" 
+             data-raw="crops_raw/M_imp_raw.png" 
+             data-iso="crops_isolated/M_imp_iso.png" 
+             data-vector="svg_vectors/M_imp.svg" 
+             alt="Glifo M">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>160 × 99 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">P</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_P_imp">
+        <img id="img_P_imp" src="crops_raw/P_imp_raw.png" 
+             data-raw="crops_raw/P_imp_raw.png" 
+             data-iso="crops_isolated/P_imp_iso.png" 
+             data-vector="svg_vectors/P_imp.svg" 
+             alt="Glifo P">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 116 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">O</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_O_imp">
+        <img id="img_O_imp" src="crops_raw/O_imp_raw.png" 
+             data-raw="crops_raw/O_imp_raw.png" 
+             data-iso="crops_isolated/O_imp_iso.png" 
+             data-vector="svg_vectors/O_imp.svg" 
+             alt="Glifo O">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>110 × 108 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">R</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_R_imp">
+        <img id="img_R_imp" src="crops_raw/R_imp_raw.png" 
+             data-raw="crops_raw/R_imp_raw.png" 
+             data-iso="crops_isolated/R_imp_iso.png" 
+             data-vector="svg_vectors/R_imp.svg" 
+             alt="Glifo R">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>100 × 114 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">A</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_A_imp">
+        <img id="img_A_imp" src="crops_raw/A_imp_raw.png" 
+             data-raw="crops_raw/A_imp_raw.png" 
+             data-iso="crops_isolated/A_imp_iso.png" 
+             data-vector="svg_vectors/A_imp.svg" 
+             alt="Glifo A">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>100 × 150 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">L</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_L_imp">
+        <img id="img_L_imp" src="crops_raw/L_imp_raw.png" 
+             data-raw="crops_raw/L_imp_raw.png" 
+             data-iso="crops_isolated/L_imp_iso.png" 
+             data-vector="svg_vectors/L_imp.svg" 
+             alt="Glifo L">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>90 × 150 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">S</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_S_imp">
+        <img id="img_S_imp" src="crops_raw/S_imp_raw.png" 
+             data-raw="crops_raw/S_imp_raw.png" 
+             data-iso="crops_isolated/S_imp_iso.png" 
+             data-vector="svg_vectors/S_imp.svg" 
+             alt="Glifo S">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>109 × 150 px</b>
+        </div>
+        <div class="context" title="TEMPORALES (imprenta)">
+          TEMPORALES (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">Y</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_Y_imp">
+        <img id="img_Y_imp" src="crops_raw/Y_imp_raw.png" 
+             data-raw="crops_raw/Y_imp_raw.png" 
+             data-iso="crops_isolated/Y_imp_iso.png" 
+             data-vector="svg_vectors/Y_imp.svg" 
+             alt="Glifo Y">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>imprenta</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>110 × 150 px</b>
+        </div>
+        <div class="context" title="TEMPORALES Y (imprenta)">
+          TEMPORALES Y (imprenta)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">B</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_B_cur">
+        <img id="img_B_cur" src="crops_raw/B_cur_raw.png" 
+             data-raw="crops_raw/B_cur_raw.png" 
+             data-iso="crops_isolated/B_cur_iso.png" 
+             data-vector="svg_vectors/B_cur.svg" 
+             alt="Glifo B">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>128 × 159 px</b>
+        </div>
+        <div class="context" title="Babel (cursiva)">
+          Babel (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">C</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_C_cur">
+        <img id="img_C_cur" src="crops_raw/C_cur_raw.png" 
+             data-raw="crops_raw/C_cur_raw.png" 
+             data-iso="crops_isolated/C_cur_iso.png" 
+             data-vector="svg_vectors/C_cur.svg" 
+             alt="Glifo C">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>100 × 76 px</b>
+        </div>
+        <div class="context" title="Coloane (firma cursiva)">
+          Coloane (firma cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">E</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_E_cur">
+        <img id="img_E_cur" src="crops_raw/E_cur_raw.png" 
+             data-raw="crops_raw/E_cur_raw.png" 
+             data-iso="crops_isolated/E_cur_iso.png" 
+             data-vector="svg_vectors/E_cur.svg" 
+             alt="Glifo E">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>160 × 96 px</b>
+        </div>
+        <div class="context" title="Ezra (cursiva)">
+          Ezra (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">G</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_G_cur">
+        <img id="img_G_cur" src="crops_raw/G_cur_raw.png" 
+             data-raw="crops_raw/G_cur_raw.png" 
+             data-iso="crops_isolated/G_cur_iso.png" 
+             data-vector="svg_vectors/G_cur.svg" 
+             alt="Glifo G">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>180 × 130 px</b>
+        </div>
+        <div class="context" title="Génesis (cursiva)">
+          Génesis (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">I</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_I_cur_red">
+        <img id="img_I_cur_red" src="crops_raw/I_cur_red_raw.png" 
+             data-raw="crops_raw/I_cur_red_raw.png" 
+             data-iso="crops_isolated/I_cur_red_iso.png" 
+             data-vector="svg_vectors/I_cur_red.svg" 
+             alt="Glifo I">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>roja</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>242 × 138 px</b>
+        </div>
+        <div class="context" title="Isla (cursiva roja)">
+          Isla (cursiva roja)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">L</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_L_cur">
+        <img id="img_L_cur" src="crops_raw/L_cur_raw.png" 
+             data-raw="crops_raw/L_cur_raw.png" 
+             data-iso="crops_isolated/L_cur_iso.png" 
+             data-vector="svg_vectors/L_cur.svg" 
+             alt="Glifo L">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>180 × 160 px</b>
+        </div>
+        <div class="context" title="La literatura (cursiva)">
+          La literatura (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">P</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_P_cur">
+        <img id="img_P_cur" src="crops_raw/P_cur_raw.png" 
+             data-raw="crops_raw/P_cur_raw.png" 
+             data-iso="crops_isolated/P_cur_iso.png" 
+             data-vector="svg_vectors/P_cur.svg" 
+             alt="Glifo P">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>240 × 131 px</b>
+        </div>
+        <div class="context" title="Pound (cursiva)">
+          Pound (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">S</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_S_cur">
+        <img id="img_S_cur" src="crops_raw/S_cur_raw.png" 
+             data-raw="crops_raw/S_cur_raw.png" 
+             data-iso="crops_isolated/S_cur_iso.png" 
+             data-vector="svg_vectors/S_cur.svg" 
+             alt="Glifo S">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>155 × 183 px</b>
+        </div>
+        <div class="context" title="Significaciones (cursiva)">
+          Significaciones (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">S</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_S_cur_red">
+        <img id="img_S_cur_red" src="crops_raw/S_cur_red_raw.png" 
+             data-raw="crops_raw/S_cur_red_raw.png" 
+             data-iso="crops_isolated/S_cur_red_iso.png" 
+             data-vector="svg_vectors/S_cur_red.svg" 
+             alt="Glifo S">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>roja</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>191 × 152 px</b>
+        </div>
+        <div class="context" title="Sagrada (cursiva roja)">
+          Sagrada (cursiva roja)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">T</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_T_cur">
+        <img id="img_T_cur" src="crops_raw/T_cur_raw.png" 
+             data-raw="crops_raw/T_cur_raw.png" 
+             data-iso="crops_isolated/T_cur_iso.png" 
+             data-vector="svg_vectors/T_cur.svg" 
+             alt="Glifo T">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>109 × 162 px</b>
+        </div>
+        <div class="context" title="Travesías (cursiva)">
+          Travesías (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">U</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_U_cur">
+        <img id="img_U_cur" src="crops_raw/U_cur_raw.png" 
+             data-raw="crops_raw/U_cur_raw.png" 
+             data-iso="crops_isolated/U_cur_iso.png" 
+             data-vector="svg_vectors/U_cur.svg" 
+             alt="Glifo U">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>110 × 101 px</b>
+        </div>
+        <div class="context" title="Un lenguaje (cursiva)">
+          Un lenguaje (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">U</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_U_cur_red">
+        <img id="img_U_cur_red" src="crops_raw/U_cur_red_raw.png" 
+             data-raw="crops_raw/U_cur_red_raw.png" 
+             data-iso="crops_isolated/U_cur_red_iso.png" 
+             data-vector="svg_vectors/U_cur_red.svg" 
+             alt="Glifo U">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>roja</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>179 × 180 px</b>
+        </div>
+        <div class="context" title="Un arcoiris (cursiva roja)">
+          Un arcoiris (cursiva roja)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="mayuscula">
+      <div class="char-header">
+        <span class="char-preview">V</span>
+        <span class="badge badge-mayuscula">mayuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_V_cur">
+        <img id="img_V_cur" src="crops_raw/V_cur_raw.png" 
+             data-raw="crops_raw/V_cur_raw.png" 
+             data-iso="crops_isolated/V_cur_iso.png" 
+             data-vector="svg_vectors/V_cur.svg" 
+             alt="Glifo V">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>101 × 157 px</b>
+        </div>
+        <div class="context" title="Vientos (cursiva)">
+          Vientos (cursiva)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">a</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_a_min">
+        <img id="img_a_min" src="crops_raw/a_min_raw.png" 
+             data-raw="crops_raw/a_min_raw.png" 
+             data-iso="crops_isolated/a_min_iso.png" 
+             data-vector="svg_vectors/a_min.svg" 
+             alt="Glifo a">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>65 × 109 px</b>
+        </div>
+        <div class="context" title="La (letra a)">
+          La (letra a)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">b</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_b_min">
+        <img id="img_b_min" src="crops_raw/b_min_raw.png" 
+             data-raw="crops_raw/b_min_raw.png" 
+             data-iso="crops_isolated/b_min_iso.png" 
+             data-vector="svg_vectors/b_min.svg" 
+             alt="Glifo b">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 137 px</b>
+        </div>
+        <div class="context" title="Babel (letra b)">
+          Babel (letra b)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">c</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_c_min">
+        <img id="img_c_min" src="crops_raw/c_min_raw.png" 
+             data-raw="crops_raw/c_min_raw.png" 
+             data-iso="crops_isolated/c_min_iso.png" 
+             data-vector="svg_vectors/c_min.svg" 
+             alt="Glifo c">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 134 px</b>
+        </div>
+        <div class="context" title="cargados (letra c)">
+          cargados (letra c)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">d</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_d_min">
+        <img id="img_d_min" src="crops_raw/d_min_raw.png" 
+             data-raw="crops_raw/d_min_raw.png" 
+             data-iso="crops_isolated/d_min_iso.png" 
+             data-vector="svg_vectors/d_min.svg" 
+             alt="Glifo d">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>80 × 84 px</b>
+        </div>
+        <div class="context" title="del (letra d)">
+          del (letra d)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">e</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_e_min">
+        <img id="img_e_min" src="crops_raw/e_min_raw.png" 
+             data-raw="crops_raw/e_min_raw.png" 
+             data-iso="crops_isolated/e_min_iso.png" 
+             data-vector="svg_vectors/e_min.svg" 
+             alt="Glifo e">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>70 × 142 px</b>
+        </div>
+        <div class="context" title="Vientos (letra e)">
+          Vientos (letra e)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">f</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_f_min">
+        <img id="img_f_min" src="crops_raw/f_min_raw.png" 
+             data-raw="crops_raw/f_min_raw.png" 
+             data-iso="crops_isolated/f_min_iso.png" 
+             data-vector="svg_vectors/f_min.svg" 
+             alt="Glifo f">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 127 px</b>
+        </div>
+        <div class="context" title="definitivo (letra f)">
+          definitivo (letra f)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">g</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_g_min">
+        <img id="img_g_min" src="crops_raw/g_min_raw.png" 
+             data-raw="crops_raw/g_min_raw.png" 
+             data-iso="crops_isolated/g_min_iso.png" 
+             data-vector="svg_vectors/g_min.svg" 
+             alt="Glifo g">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>140 × 170 px</b>
+        </div>
+        <div class="context" title="grandes (letra g)">
+          grandes (letra g)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">h</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_h_min">
+        <img id="img_h_min" src="crops_raw/h_min_raw.png" 
+             data-raw="crops_raw/h_min_raw.png" 
+             data-iso="crops_isolated/h_min_iso.png" 
+             data-vector="svg_vectors/h_min.svg" 
+             alt="Glifo h">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>170 × 144 px</b>
+        </div>
+        <div class="context" title="hijas (letra h)">
+          hijas (letra h)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">i</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_i_min">
+        <img id="img_i_min" src="crops_raw/i_min_raw.png" 
+             data-raw="crops_raw/i_min_raw.png" 
+             data-iso="crops_isolated/i_min_iso.png" 
+             data-vector="svg_vectors/i_min.svg" 
+             alt="Glifo i">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>60 × 143 px</b>
+        </div>
+        <div class="context" title="Vientos (letra i)">
+          Vientos (letra i)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">j</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_j_min">
+        <img id="img_j_min" src="crops_raw/j_min_raw.png" 
+             data-raw="crops_raw/j_min_raw.png" 
+             data-iso="crops_isolated/j_min_iso.png" 
+             data-vector="svg_vectors/j_min.svg" 
+             alt="Glifo j">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>170 × 180 px</b>
+        </div>
+        <div class="context" title="pájaros (letra j)">
+          pájaros (letra j)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">l</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_l_min">
+        <img id="img_l_min" src="crops_raw/l_min_raw.png" 
+             data-raw="crops_raw/l_min_raw.png" 
+             data-iso="crops_isolated/l_min_iso.png" 
+             data-vector="svg_vectors/l_min.svg" 
+             alt="Glifo l">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>91 × 90 px</b>
+        </div>
+        <div class="context" title="del (letra l)">
+          del (letra l)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">m</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_m_min">
+        <img id="img_m_min" src="crops_raw/m_min_raw.png" 
+             data-raw="crops_raw/m_min_raw.png" 
+             data-iso="crops_isolated/m_min_iso.png" 
+             data-vector="svg_vectors/m_min.svg" 
+             alt="Glifo m">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>roja</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>210 × 154 px</b>
+        </div>
+        <div class="context" title="madre (letra m roja)">
+          madre (letra m roja)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">n</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_n_min">
+        <img id="img_n_min" src="crops_raw/n_min_raw.png" 
+             data-raw="crops_raw/n_min_raw.png" 
+             data-iso="crops_isolated/n_min_iso.png" 
+             data-vector="svg_vectors/n_min.svg" 
+             alt="Glifo n">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>90 × 61 px</b>
+        </div>
+        <div class="context" title="Vientos (letra n)">
+          Vientos (letra n)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">ñ</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_n_tilde_min">
+        <img id="img_n_tilde_min" src="crops_raw/n_tilde_min_raw.png" 
+             data-raw="crops_raw/n_tilde_min_raw.png" 
+             data-iso="crops_isolated/n_tilde_min_iso.png" 
+             data-vector="svg_vectors/n_tilde_min.svg" 
+             alt="Glifo ñ">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>170 × 148 px</b>
+        </div>
+        <div class="context" title="pequeños (letra ñ)">
+          pequeños (letra ñ)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">o</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_o_min">
+        <img id="img_o_min" src="crops_raw/o_min_raw.png" 
+             data-raw="crops_raw/o_min_raw.png" 
+             data-iso="crops_isolated/o_min_iso.png" 
+             data-vector="svg_vectors/o_min.svg" 
+             alt="Glifo o">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>60 × 58 px</b>
+        </div>
+        <div class="context" title="Vientos (letra o)">
+          Vientos (letra o)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">p</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_p_min">
+        <img id="img_p_min" src="crops_raw/p_min_raw.png" 
+             data-raw="crops_raw/p_min_raw.png" 
+             data-iso="crops_isolated/p_min_iso.png" 
+             data-vector="svg_vectors/p_min.svg" 
+             alt="Glifo p">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>122 × 180 px</b>
+        </div>
+        <div class="context" title="pequeños (letra p)">
+          pequeños (letra p)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">q</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_q_min">
+        <img id="img_q_min" src="crops_raw/q_min_raw.png" 
+             data-raw="crops_raw/q_min_raw.png" 
+             data-iso="crops_isolated/q_min_iso.png" 
+             data-vector="svg_vectors/q_min.svg" 
+             alt="Glifo q">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>130 × 142 px</b>
+        </div>
+        <div class="context" title="pequeños (letra q)">
+          pequeños (letra q)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">r</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_r_min">
+        <img id="img_r_min" src="crops_raw/r_min_raw.png" 
+             data-raw="crops_raw/r_min_raw.png" 
+             data-iso="crops_isolated/r_min_iso.png" 
+             data-vector="svg_vectors/r_min.svg" 
+             alt="Glifo r">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 74 px</b>
+        </div>
+        <div class="context" title="cargados (letra r)">
+          cargados (letra r)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">s</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_s_min">
+        <img id="img_s_min" src="crops_raw/s_min_raw.png" 
+             data-raw="crops_raw/s_min_raw.png" 
+             data-iso="crops_isolated/s_min_iso.png" 
+             data-vector="svg_vectors/s_min.svg" 
+             alt="Glifo s">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>70 × 150 px</b>
+        </div>
+        <div class="context" title="Vientos (letra s)">
+          Vientos (letra s)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">t</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_t_min">
+        <img id="img_t_min" src="crops_raw/t_min_raw.png" 
+             data-raw="crops_raw/t_min_raw.png" 
+             data-iso="crops_isolated/t_min_iso.png" 
+             data-vector="svg_vectors/t_min.svg" 
+             alt="Glifo t">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>80 × 98 px</b>
+        </div>
+        <div class="context" title="Vientos (letra t)">
+          Vientos (letra t)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">u</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_u_min">
+        <img id="img_u_min" src="crops_raw/u_min_raw.png" 
+             data-raw="crops_raw/u_min_raw.png" 
+             data-iso="crops_isolated/u_min_iso.png" 
+             data-vector="svg_vectors/u_min.svg" 
+             alt="Glifo u">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>90 × 66 px</b>
+        </div>
+        <div class="context" title="pequeños (letra u)">
+          pequeños (letra u)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">v</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_v_min">
+        <img id="img_v_min" src="crops_raw/v_min_raw.png" 
+             data-raw="crops_raw/v_min_raw.png" 
+             data-iso="crops_isolated/v_min_iso.png" 
+             data-vector="svg_vectors/v_min.svg" 
+             alt="Glifo v">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 107 px</b>
+        </div>
+        <div class="context" title="vergeles (letra v)">
+          vergeles (letra v)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">x</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_x_min">
+        <img id="img_x_min" src="crops_raw/x_min_raw.png" 
+             data-raw="crops_raw/x_min_raw.png" 
+             data-iso="crops_isolated/x_min_iso.png" 
+             data-vector="svg_vectors/x_min.svg" 
+             alt="Glifo x">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>100 × 140 px</b>
+        </div>
+        <div class="context" title="máximo (letra x)">
+          máximo (letra x)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">y</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_y_min">
+        <img id="img_y_min" src="crops_raw/y_min_raw.png" 
+             data-raw="crops_raw/y_min_raw.png" 
+             data-iso="crops_isolated/y_min_iso.png" 
+             data-vector="svg_vectors/y_min.svg" 
+             alt="Glifo y">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>117 × 135 px</b>
+        </div>
+        <div class="context" title="y (conjunción)">
+          y (conjunción)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">z</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_z_min">
+        <img id="img_z_min" src="crops_raw/z_min_raw.png" 
+             data-raw="crops_raw/z_min_raw.png" 
+             data-iso="crops_isolated/z_min_iso.png" 
+             data-vector="svg_vectors/z_min.svg" 
+             alt="Glifo z">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>100 × 112 px</b>
+        </div>
+        <div class="context" title="Ezra (letra z)">
+          Ezra (letra z)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">á</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_a_tilde_min">
+        <img id="img_a_tilde_min" src="crops_raw/a_tilde_min_raw.png" 
+             data-raw="crops_raw/a_tilde_min_raw.png" 
+             data-iso="crops_isolated/a_tilde_min_iso.png" 
+             data-vector="svg_vectors/a_tilde_min.svg" 
+             alt="Glifo á">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 180 px</b>
+        </div>
+        <div class="context" title="pájaros (á tilde)">
+          pájaros (á tilde)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">é</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_e_tilde_min">
+        <img id="img_e_tilde_min" src="crops_raw/e_tilde_min_raw.png" 
+             data-raw="crops_raw/e_tilde_min_raw.png" 
+             data-iso="crops_isolated/e_tilde_min_iso.png" 
+             data-vector="svg_vectors/e_tilde_min.svg" 
+             alt="Glifo é">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>80 × 127 px</b>
+        </div>
+        <div class="context" title="Génesis (é tilde)">
+          Génesis (é tilde)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">í</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_i_tilde_min">
+        <img id="img_i_tilde_min" src="crops_raw/i_tilde_min_raw.png" 
+             data-raw="crops_raw/i_tilde_min_raw.png" 
+             data-iso="crops_isolated/i_tilde_min_iso.png" 
+             data-vector="svg_vectors/i_tilde_min.svg" 
+             alt="Glifo í">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>160 × 89 px</b>
+        </div>
+        <div class="context" title="Travesías (í tilde)">
+          Travesías (í tilde)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="minuscula">
+      <div class="char-header">
+        <span class="char-preview">ó</span>
+        <span class="badge badge-minuscula">minuscula</span>
+      </div>
+      
+      <div class="img-box" id="box_o_tilde_min">
+        <img id="img_o_tilde_min" src="crops_raw/o_tilde_min_raw.png" 
+             data-raw="crops_raw/o_tilde_min_raw.png" 
+             data-iso="crops_isolated/o_tilde_min_iso.png" 
+             data-vector="svg_vectors/o_tilde_min.svg" 
+             alt="Glifo ó">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>cursiva</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>150 × 131 px</b>
+        </div>
+        <div class="context" title="nació (ó tilde)">
+          nació (ó tilde)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="numero">
+      <div class="char-header">
+        <span class="char-preview">1</span>
+        <span class="badge badge-numero">numero</span>
+      </div>
+      
+      <div class="img-box" id="box_num_1">
+        <img id="img_num_1" src="crops_raw/num_1_raw.png" 
+             data-raw="crops_raw/num_1_raw.png" 
+             data-iso="crops_isolated/num_1_iso.png" 
+             data-vector="svg_vectors/num_1.svg" 
+             alt="Glifo 1">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>manuscrito</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 170 px</b>
+        </div>
+        <div class="context" title="1977 (dígito 1)">
+          1977 (dígito 1)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="numero">
+      <div class="char-header">
+        <span class="char-preview">7</span>
+        <span class="badge badge-numero">numero</span>
+      </div>
+      
+      <div class="img-box" id="box_num_7">
+        <img id="img_num_7" src="crops_raw/num_7_raw.png" 
+             data-raw="crops_raw/num_7_raw.png" 
+             data-iso="crops_isolated/num_7_iso.png" 
+             data-vector="svg_vectors/num_7.svg" 
+             alt="Glifo 7">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>manuscrito</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>120 × 170 px</b>
+        </div>
+        <div class="context" title="1977 (dígito 7)">
+          1977 (dígito 7)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="numero">
+      <div class="char-header">
+        <span class="char-preview">9</span>
+        <span class="badge badge-numero">numero</span>
+      </div>
+      
+      <div class="img-box" id="box_num_9">
+        <img id="img_num_9" src="crops_raw/num_9_raw.png" 
+             data-raw="crops_raw/num_9_raw.png" 
+             data-iso="crops_isolated/num_9_iso.png" 
+             data-vector="svg_vectors/num_9.svg" 
+             alt="Glifo 9">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>manuscrito</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>100 × 170 px</b>
+        </div>
+        <div class="context" title="1977 (dígito 9)">
+          1977 (dígito 9)
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="signo">
+      <div class="char-header">
+        <span class="char-preview">«</span>
+        <span class="badge badge-signo">signo</span>
+      </div>
+      
+      <div class="img-box" id="box_signo_comilla_apertura">
+        <img id="img_signo_comilla_apertura" src="crops_raw/signo_comilla_apertura_raw.png" 
+             data-raw="crops_raw/signo_comilla_apertura_raw.png" 
+             data-iso="crops_isolated/signo_comilla_apertura_iso.png" 
+             data-vector="svg_vectors/signo_comilla_apertura.svg" 
+             alt="Glifo «">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>caligráfico</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>55 × 130 px</b>
+        </div>
+        <div class="context" title="« comillas apertura">
+          « comillas apertura
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="signo">
+      <div class="char-header">
+        <span class="char-preview">»</span>
+        <span class="badge badge-signo">signo</span>
+      </div>
+      
+      <div class="img-box" id="box_signo_comilla_cierre">
+        <img id="img_signo_comilla_cierre" src="crops_raw/signo_comilla_cierre_raw.png" 
+             data-raw="crops_raw/signo_comilla_cierre_raw.png" 
+             data-iso="crops_isolated/signo_comilla_cierre_iso.png" 
+             data-vector="svg_vectors/signo_comilla_cierre.svg" 
+             alt="Glifo »">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>caligráfico</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>110 × 140 px</b>
+        </div>
+        <div class="context" title="» comillas cierre">
+          » comillas cierre
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="signo">
+      <div class="char-header">
+        <span class="char-preview">:</span>
+        <span class="badge badge-signo">signo</span>
+      </div>
+      
+      <div class="img-box" id="box_signo_dos_puntos">
+        <img id="img_signo_dos_puntos" src="crops_raw/signo_dos_puntos_raw.png" 
+             data-raw="crops_raw/signo_dos_puntos_raw.png" 
+             data-iso="crops_isolated/signo_dos_puntos_iso.png" 
+             data-vector="svg_vectors/signo_dos_puntos.svg" 
+             alt="Glifo :">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>caligráfico</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>60 × 87 px</b>
+        </div>
+        <div class="context" title=": dos puntos">
+          : dos puntos
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="signo">
+      <div class="char-header">
+        <span class="char-preview">,</span>
+        <span class="badge badge-signo">signo</span>
+      </div>
+      
+      <div class="img-box" id="box_signo_coma">
+        <img id="img_signo_coma" src="crops_raw/signo_coma_raw.png" 
+             data-raw="crops_raw/signo_coma_raw.png" 
+             data-iso="crops_isolated/signo_coma_iso.png" 
+             data-vector="svg_vectors/signo_coma.svg" 
+             alt="Glifo ,">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>caligráfico</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>90 × 93 px</b>
+        </div>
+        <div class="context" title=", coma">
+          , coma
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="signo">
+      <div class="char-header">
+        <span class="char-preview">.</span>
+        <span class="badge badge-signo">signo</span>
+      </div>
+      
+      <div class="img-box" id="box_signo_punto">
+        <img id="img_signo_punto" src="crops_raw/signo_punto_raw.png" 
+             data-raw="crops_raw/signo_punto_raw.png" 
+             data-iso="crops_isolated/signo_punto_iso.png" 
+             data-vector="svg_vectors/signo_punto.svg" 
+             alt="Glifo .">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>caligráfico</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>azul</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>67 × 75 px</b>
+        </div>
+        <div class="context" title=". punto final">
+          . punto final
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="signo">
+      <div class="char-header">
+        <span class="char-preview">…</span>
+        <span class="badge badge-signo">signo</span>
+      </div>
+      
+      <div class="img-box" id="box_signo_puntos_suspensivos">
+        <img id="img_signo_puntos_suspensivos" src="crops_raw/signo_puntos_suspensivos_raw.png" 
+             data-raw="crops_raw/signo_puntos_suspensivos_raw.png" 
+             data-iso="crops_isolated/signo_puntos_suspensivos_iso.png" 
+             data-vector="svg_vectors/signo_puntos_suspensivos.svg" 
+             alt="Glifo …">
+      </div>
+      
+      <div class="meta">
+        <div class="meta-row">
+          <span>Estilo:</span>
+          <b>caligráfico</b>
+        </div>
+        <div class="meta-row">
+          <span>Tinta:</span>
+          <b>roja</b>
+        </div>
+        <div class="meta-row">
+          <span>Dimensiones:</span>
+          <b>193 × 51 px</b>
+        </div>
+        <div class="context" title="… puntos suspensivos">
+          … puntos suspensivos
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let currentMode = 'raw';
+
+function filterCategory(cat, btn) {
+  const cards = document.querySelectorAll('.card');
+  const btns = btn.parentElement.querySelectorAll('.btn');
+  btns.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  cards.forEach(c => {
+    if (cat === 'all' || c.getAttribute('data-category') === cat) {
+      c.style.display = 'flex';
+    } else {
+      c.style.display = 'none';
+    }
+  });
+}
+
+function setViewMode(mode, btn) {
+  currentMode = mode;
+  const btns = btn.parentElement.querySelectorAll('.btn');
+  btns.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  const imgBoxes = document.querySelectorAll('.img-box');
+  const imgs = document.querySelectorAll('.img-box img');
+  
+  imgs.forEach(img => {
+    const box = img.parentElement;
+    if (mode === 'raw') {
+      img.src = img.getAttribute('data-raw');
+      box.className = 'img-box';
+    } else if (mode === 'iso') {
+      img.src = img.getAttribute('data-iso');
+      box.className = 'img-box dark-mode';
+    } else if (mode === 'vector') {
+      img.src = img.getAttribute('data-vector');
+      box.className = 'img-box vector-mode';
+    }
+  });
+}
+</script>
+</body>
+</html>

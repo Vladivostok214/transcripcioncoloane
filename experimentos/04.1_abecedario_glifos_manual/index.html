@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anotador Manual de Glifos — Francisco Coloane (Exp 04.1)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0d12;
+            --bg-secondary: #121820;
+            --bg-card: #18202c;
+            --bg-glass: rgba(24, 32, 44, 0.92);
+            --border: #263342;
+            --border-highlight: #3b82f6;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-yellow: #fbbf24;
+            --accent-purple: #c084fc;
+            --accent-pink: #f472b6;
+            --accent-orange: #fb923c;
+            --danger: #f87171;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-glow: 0 0 24px rgba(56, 189, 248, 0.2);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Top Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand h1 {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .badge-exp {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .btn:hover:not(:disabled) {
+            background: #222d3d;
+            border-color: var(--border-highlight);
+            color: #fff;
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background: #2563eb;
+            border-color: #3b82f6;
+            color: #fff;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: #1d4ed8;
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+        }
+        .btn-success {
+            background: #059669;
+            border-color: #10b981;
+            color: #fff;
+        }
+        .btn-success:hover:not(:disabled) {
+            background: #047857;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+        .btn-coverage {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(168, 85, 247, 0.15));
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #e0f2fe;
+            font-weight: 600;
+        }
+        .btn-coverage:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(168, 85, 247, 0.3));
+            border-color: #38bdf8;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+            color: #fff;
+        }
+
+        .line-select {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+            max-width: 320px;
+        }
+        .line-select:focus {
+            border-color: var(--border-highlight);
+        }
+
+        .stats-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-green);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        /* Main Workspace */
+        .workspace {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 54px);
+            overflow: hidden;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #080b0f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gt-bar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            z-index: 10;
+        }
+        .gt-text-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+        }
+        .gt-label {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .gt-text {
+            color: #7ee787;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            background: rgba(46, 160, 67, 0.12);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(46, 160, 67, 0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .canvas-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .zoom-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            min-width: 44px;
+            text-align: center;
+        }
+
+        .viewport {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            cursor: crosshair;
+            background: radial-gradient(circle at center, #111822 0%, #080b0f 100%);
+        }
+        #cropCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Floating Assignment Card */
+        .assignment-card {
+            position: absolute;
+            background: rgba(24, 32, 44, 0.96);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            width: 320px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.8), var(--shadow-glow);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .assignment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+        .crop-preview-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #020406;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            height: 90px;
+            padding: 6px;
+            overflow: hidden;
+        }
+        #previewCanvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+            display: block;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-input {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+        .form-input:focus {
+            border-color: var(--border-highlight);
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+        }
+        .form-select {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .form-select:focus {
+            border-color: var(--border-highlight);
+        }
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .btn-row .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* Sidebar Inventory */
+        .sidebar {
+            width: 380px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+        }
+        .sidebar-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sidebar-header h2 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .glyph-count-badge {
+            background: #1e293b;
+            color: var(--accent-blue);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glyph-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .glyph-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.15s ease;
+        }
+        .glyph-card:hover {
+            border-color: #475569;
+            background: #1e293b;
+        }
+        .glyph-thumb {
+            width: 48px;
+            height: 48px;
+            background: #000;
+            border-radius: 4px;
+            border: 1px solid #334155;
+            object-fit: contain;
+            flex-shrink: 0;
+            display: block;
+        }
+        .glyph-info {
+            flex: 1;
+            overflow: hidden;
+        }
+        .glyph-char-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .glyph-char {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            background: #0f172a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+        }
+        .category-pill {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .cat-mayuscula { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+        .cat-minuscula { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+        .cat-numero { background: rgba(251, 191, 36, 0.15); color: var(--accent-yellow); }
+        .cat-signo { background: rgba(192, 132, 252, 0.15); color: var(--accent-purple); }
+        .cat-ligadura { background: rgba(244, 114, 182, 0.15); color: var(--accent-pink); }
+        .cat-simbolo { background: rgba(251, 146, 60, 0.15); color: var(--accent-orange); }
+
+        .glyph-notes {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .glyph-actions {
+            display: flex;
+            gap: 4px;
+        }
+        .btn-icon {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-icon:hover {
+            background: rgba(248, 113, 113, 0.2);
+            color: var(--danger);
+        }
+
+        .sidebar-footer {
+            padding: 14px 18px;
+            border-top: 1px solid var(--border);
+            background: #0f151d;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Coverage & Catalog Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .catalog-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9), var(--shadow-glow);
+            overflow: hidden;
+        }
+        .catalog-header {
+            padding: 16px 24px;
+            background: #0d121a;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .catalog-header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .catalog-header-title h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .catalog-summary-chips {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chip-min { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.3); }
+        .chip-may { background: rgba(56, 189, 248, 0.12); color: var(--accent-blue); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .chip-tot { background: rgba(192, 132, 252, 0.12); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+
+        .catalog-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        .catalog-grid-pane {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+            background: #080b0f;
+            overflow-y: auto;
+            padding: 20px;
+            gap: 20px;
+        }
+        .catalog-section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+            gap: 8px;
+        }
+        .letter-tile {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 8px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        .letter-tile:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+        }
+        .letter-tile.empty {
+            opacity: 0.35;
+            background: #0f151e;
+            border-style: dashed;
+        }
+        .letter-tile.empty:hover {
+            opacity: 0.7;
+        }
+        .letter-tile.has-1 {
+            border-color: rgba(251, 191, 36, 0.5);
+            background: rgba(251, 191, 36, 0.06);
+        }
+        .letter-tile.has-many {
+            border-color: rgba(52, 211, 153, 0.5);
+            background: rgba(52, 211, 153, 0.08);
+            box-shadow: 0 0 10px rgba(52, 211, 153, 0.1);
+        }
+        .letter-tile.selected {
+            border-color: var(--accent-blue) !important;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.5) !important;
+            background: rgba(56, 189, 248, 0.15) !important;
+        }
+        .tile-char {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .tile-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 4px;
+            padding: 1px 6px;
+            border-radius: 8px;
+        }
+        .letter-tile.empty .tile-count { background: #1e293b; color: #64748b; }
+        .letter-tile.has-1 .tile-count { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .letter-tile.has-many .tile-count { background: rgba(52, 211, 153, 0.2); color: var(--accent-green); }
+
+        /* Detail / Gallery Pane */
+        .catalog-detail-pane {
+            flex: 0.9;
+            background: var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .detail-pane-header {
+            padding: 16px 20px;
+            background: #0f151e;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .detail-selected-char {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .detail-char-big {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 26px;
+            font-weight: 700;
+            background: #05080c;
+            border: 1px solid var(--border-highlight);
+            color: var(--accent-blue);
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        .gallery-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .sample-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sample-card:hover {
+            border-color: #475569;
+        }
+        .sample-dual-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .sample-img-box {
+            background: #05080d;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 4px;
+        }
+        .sample-img-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .sample-img-label {
+            position: absolute;
+            bottom: 2px;
+            left: 4px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.6);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+        .sample-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #047857;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <h1>🖋️ Anotador Manual de Glifos</h1>
+            <span class="badge-exp">Exp 04.1</span>
+        </div>
+        <div class="nav-controls">
+            <button class="btn" id="btnPrevLine">◀ Anterior</button>
+            <select class="line-select" id="lineSelect"></select>
+            <button class="btn" id="btnNextLine">Siguiente ▶</button>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button class="btn btn-coverage" id="btnOpenCoverage">📊 Catálogo & Cobertura</button>
+            <div class="stats-badge" id="totalStatsBadge">Total Glifos: 0</div>
+        </div>
+    </header>
+
+    <!-- Workspace -->
+    <div class="workspace">
+        <div class="editor-container">
+            <div class="gt-bar">
+                <div class="gt-text-container">
+                    <span class="gt-label">Texto Referencia:</span>
+                    <span class="gt-text" id="gtTextDisplay">Cargando...</span>
+                </div>
+                <div class="canvas-toolbar">
+                    <button class="btn" id="btnZoomOut" title="Reducir Zoom">-</button>
+                    <span class="zoom-badge" id="zoomLevelDisplay">100%</span>
+                    <button class="btn" id="btnZoomIn" title="Aumentar Zoom">+</button>
+                    <button class="btn" id="btnResetZoom" title="Ajustar">Ajustar</button>
+                </div>
+            </div>
+
+            <div class="viewport" id="viewport">
+                <canvas id="cropCanvas"></canvas>
+            </div>
+
+            <!-- Floating Assignment Popover -->
+            <div class="assignment-card" id="assignmentCard">
+                <div class="assignment-header">
+                    <span>Clasificar Glifo Seleccionado</span>
+                    <button class="btn-icon" id="btnCloseModal" style="padding: 0 4px;">✕</button>
+                </div>
+                <div class="crop-preview-box">
+                    <canvas id="previewCanvas"></canvas>
+                </div>
+                <div class="form-group">
+                    <label>Letra / Carácter Exacto *</label>
+                    <input type="text" class="form-input" id="inputChar" maxlength="4" placeholder="ej. T, a, 7, «" autofocus autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label>Categoría Caligráfica *</label>
+                    <select class="form-select" id="selectCategory">
+                        <option value="mayuscula">🔠 Mayúscula</option>
+                        <option value="minuscula" selected>🔡 Minúscula</option>
+                        <option value="numero">🔢 Número</option>
+                        <option value="signo">✒️ Signo de Puntuación</option>
+                        <option value="ligadura">🔗 Ligadura / Par de letras</option>
+                        <option value="simbolo">🎨 Símbolo / Trazo Especial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nota / Contexto (Opcional)</label>
+                    <input type="text" class="form-input" id="inputNotes" placeholder="ej. T inicial, bucle cerrado, rojo" />
+                </div>
+                <div class="btn-row">
+                    <button class="btn" id="btnCancelAssignment">Cancelar (Esc)</button>
+                    <button class="btn btn-primary" id="btnConfirmAssignment">Asignar (Enter)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Inventory -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Glifos del Renglón</h2>
+                <span class="glyph-count-badge" id="lineGlyphCount">0 glifos</span>
+            </div>
+            <div class="glyph-list" id="glyphListContainer">
+                <div class="empty-state">
+                    <p>Arrastra con el mouse sobre el renglón para seleccionar y clasificar letras.</p>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <button class="btn btn-success" id="btnSaveLine" style="width: 100%; justify-content: center; padding: 10px;">
+                    💾 Guardar Renglón en Base de Datos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cobertura y Catálogo de Glifos -->
+    <div class="modal-overlay" id="coverageModal">
+        <div class="catalog-modal">
+            <div class="catalog-header">
+                <div class="catalog-header-title">
+                    <h2>📊 Catálogo de Glifos & Cobertura del Abecedario</h2>
+                </div>
+                <div class="catalog-summary-chips">
+                    <div class="chip chip-min" id="chipMinStats">Minúsculas: 0/27 (0%)</div>
+                    <div class="chip chip-may" id="chipMayStats">Mayúsculas: 0/27 (0%)</div>
+                    <div class="chip chip-tot" id="chipTotStats">Total: 0 glifos</div>
+                    <button class="btn-icon" id="btnCloseCoverageModal" style="font-size: 16px; margin-left: 8px;">✕</button>
+                </div>
+            </div>
+
+            <div class="catalog-body">
+                <!-- Grid de Abecedario -->
+                <div class="catalog-grid-pane">
+                    
+                    <!-- Minúsculas -->
+                    <div>
+                        <div class="catalog-section-title">
+                            <span>🔡 Minúsculas (a - z)</span>
+                            <span id="labelMinProgress">0 de 27</span>
+                        </div>
+                        <div class="letters-grid" id="gridMinusculas"></div>
+                    </div>
+
+                    <!-- Mayúsculas -->
+                    <div>
+                        <div class="catalog-section-title">
+                            <span>🔠 Mayúsculas (A - Z)</span>
+                            <span id="labelMayProgress">0 de 27</span>
+                        </div>
+                        <div class="letters-grid" id="gridMayusculas"></div>
+                    </div>
+
+                    <!-- Números y Signos -->
+                    <div>
+                        <div class="catalog-section-title">
+                            <span>🔢 Números y ✒️ Signos</span>
+                            <span id="labelOthersProgress">0 caracteres</span>
+                        </div>
+                        <div class="letters-grid" id="gridNumerosSignos"></div>
+                    </div>
+
+                    <!-- Ligaduras y Especiales -->
+                    <div id="sectionLigaduras" style="display: none;">
+                        <div class="catalog-section-title">
+                            <span>🔗 Ligaduras & Símbolos Especiales</span>
+                            <span id="labelLigadurasProgress">0</span>
+                        </div>
+                        <div class="letters-grid" id="gridLigaduras"></div>
+                    </div>
+
+                </div>
+
+                <!-- Inspector / Galería de Glifos para la letra seleccionada -->
+                <div class="catalog-detail-pane">
+                    <div class="detail-pane-header">
+                        <div class="detail-selected-char">
+                            <div class="detail-char-big" id="detailCharBig">-</div>
+                            <div>
+                                <h3 id="detailCharTitle" style="font-size: 15px; color: #fff;">Selecciona una letra</h3>
+                                <p id="detailCharSubtitle" style="font-size: 12px; color: var(--text-muted);">0 muestras guardadas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-container" id="galleryContainer">
+                        <div class="empty-state">
+                            <p>Haz clic en cualquier letra de la cuadrícula para ver todas sus muestras y recortes aislados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toastMessage">✓ Renglón guardado con éxito!</div>
+
+    <script>
+        let dataset = [];
+        let currentLineIndex = 0;
+        let lineImage = new Image();
+        let currentBoxes = [];
+        let allGlyphs = [];
+        let selectedCatalogChar = null;
+
+        const viewport = document.getElementById('viewport');
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const previewCtx = previewCanvas.getContext('2d');
+
+        let zoom = 1.0;
+        let panX = 30;
+        let panY = 30;
+        let isPanning = false;
+        let startPanX = 0, startPanY = 0;
+
+        let isDrawing = false;
+        let drawStartImgX = 0, drawStartImgY = 0;
+        let currentDrawRect = null;
+
+        const CAT_COLORS = {
+            mayuscula: '#38bdf8',
+            minuscula: '#34d399',
+            numero: '#fbbf24',
+            signo: '#c084fc',
+            ligadura: '#f472b6',
+            simbolo: '#fb923c'
+        };
+
+        const SPANISH_MIN = "abcdefghijklmnñopqrstuvwxyzáéíóú".split('');
+        const SPANISH_MAY = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ".split('');
+        const NUMS_SIGNS = "0123456789,.:;\"'-!?«»".split('');
+
+        function resizeCanvas() {
+            canvas.width = viewport.clientWidth;
+            canvas.height = viewport.clientHeight;
+            renderCanvas();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function screenToImage(screenX, screenY) {
+            const vpRect = viewport.getBoundingClientRect();
+            const mouseX = screenX - vpRect.left;
+            const mouseY = screenY - vpRect.top;
+            const imgX = (mouseX - panX) / zoom;
+            const imgY = (mouseY - panY) / zoom;
+            return { x: imgX, y: imgY };
+        }
+
+        async function init() {
+            try {
+                const res = await fetch('/api/init_data');
+                const data = await res.json();
+                dataset = data.dataset;
+                allGlyphs = data.db.glyphs || [];
+
+                resizeCanvas();
+                populateLineSelector();
+                updateGlobalStats();
+                loadLine(0);
+            } catch (err) {
+                console.error("Error loading init data:", err);
+                alert("Error al conectar con el servidor backend.");
+            }
+        }
+
+        function populateLineSelector() {
+            const select = document.getElementById('lineSelect');
+            select.innerHTML = '';
+            dataset.forEach((line, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                const count = allGlyphs.filter(g => g.line_id === line.id).length;
+                opt.textContent = `[${String(idx + 1).padStart(2, '0')}] Pág ${line.page} | ${line.id} (${count} glifos)`;
+                select.appendChild(opt);
+            });
+        }
+
+        function updateGlobalStats() {
+            const badge = document.getElementById('totalStatsBadge');
+            badge.textContent = `Total Glifos: ${allGlyphs.length}`;
+            populateLineSelector();
+            document.getElementById('lineSelect').value = currentLineIndex;
+            updateCoverageModalData();
+        }
+
+        function loadLine(index) {
+            if (index < 0 || index >= dataset.length) return;
+            currentLineIndex = index;
+            const line = dataset[index];
+
+            document.getElementById('lineSelect').value = index;
+            document.getElementById('btnPrevLine').disabled = (index === 0);
+            document.getElementById('btnNextLine').disabled = (index === dataset.length - 1);
+            document.getElementById('gtTextDisplay').textContent = line.ground_truth || '(Sin transcripción)';
+
+            currentBoxes = allGlyphs.filter(g => g.line_id === line.id).map(g => ({
+                id: g.id,
+                x: g.bbox[0],
+                y: g.bbox[1],
+                w: g.bbox[2],
+                h: g.bbox[3],
+                character: g.character,
+                category: g.category,
+                notes: g.notes || ''
+            }));
+
+            lineImage = new Image();
+            lineImage.onload = () => {
+                resetZoom();
+                renderCanvas();
+                renderSidebarList();
+            };
+            lineImage.src = `/api/image?line_id=${line.id}&t=${Date.now()}`;
+            closeModal();
+        }
+
+        function resetZoom() {
+            if (!lineImage.naturalWidth) return;
+            const vpW = viewport.clientWidth;
+            const vpH = viewport.clientHeight;
+            const fitW = (vpW - 60) / lineImage.naturalWidth;
+            const fitH = (vpH - 60) / lineImage.naturalHeight;
+            zoom = Math.min(fitW, fitH, 1.4);
+            if (zoom < 0.2) zoom = 0.2;
+            
+            panX = Math.max(30, (vpW - lineImage.naturalWidth * zoom) / 2);
+            panY = Math.max(30, (vpH - lineImage.naturalHeight * zoom) / 2);
+            updateZoomDisplay();
+            renderCanvas();
+        }
+
+        function updateZoomDisplay() {
+            document.getElementById('zoomLevelDisplay').textContent = `${Math.round(zoom * 100)}%`;
+        }
+
+        function renderCanvas() {
+            ctx.save();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.translate(panX, panY);
+            ctx.scale(zoom, zoom);
+
+            if (lineImage.complete && lineImage.naturalWidth > 0) {
+                ctx.drawImage(lineImage, 0, 0);
+            }
+
+            currentBoxes.forEach((box) => {
+                const color = CAT_COLORS[box.category] || '#38bdf8';
+                ctx.strokeStyle = color;
+                ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
+                ctx.fillStyle = color + '25';
+                
+                ctx.fillRect(box.x, box.y, box.w, box.h);
+                ctx.strokeRect(box.x, box.y, box.w, box.h);
+
+                ctx.fillStyle = color;
+                const fontSize = Math.max(12, Math.min(22, Math.round(box.h * 0.35)));
+                ctx.font = `bold ${fontSize}px 'JetBrains Mono', monospace`;
+                const labelText = box.character;
+                const textWidth = ctx.measureText(labelText).width;
+                
+                ctx.fillRect(box.x, box.y - fontSize - 6, textWidth + 8, fontSize + 6);
+                ctx.fillStyle = '#000000';
+                ctx.fillText(labelText, box.x + 4, box.y - 4);
+            });
+
+            if (isDrawing && currentDrawRect) {
+                ctx.strokeStyle = '#f43f5e';
+                ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
+                ctx.setLineDash([6 / zoom, 4 / zoom]);
+                ctx.fillStyle = 'rgba(244, 63, 94, 0.25)';
+                ctx.fillRect(currentDrawRect.x, currentDrawRect.y, currentDrawRect.w, currentDrawRect.h);
+                ctx.strokeRect(currentDrawRect.x, currentDrawRect.y, currentDrawRect.w, currentDrawRect.h);
+                ctx.setLineDash([]);
+            }
+
+            ctx.restore();
+        }
+
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const vpRect = viewport.getBoundingClientRect();
+            const mouseX = e.clientX - vpRect.left;
+            const mouseY = e.clientY - vpRect.top;
+
+            const zoomFactor = e.deltaY < 0 ? 1.15 : 0.85;
+            const newZoom = Math.max(0.15, Math.min(6.0, zoom * zoomFactor));
+
+            panX = mouseX - (mouseX - panX) * (newZoom / zoom);
+            panY = mouseY - (mouseY - panY) * (newZoom / zoom);
+            zoom = newZoom;
+
+            updateZoomDisplay();
+            renderCanvas();
+        });
+
+        viewport.addEventListener('mousedown', (e) => {
+            if (e.button === 1 || e.button === 2 || e.shiftKey || e.altKey) {
+                isPanning = true;
+                startPanX = e.clientX - panX;
+                startPanY = e.clientY - panY;
+                viewport.style.cursor = 'grab';
+                return;
+            }
+
+            if (e.button === 0) {
+                const imgCoords = screenToImage(e.clientX, e.clientY);
+                if (imgCoords.x >= 0 && imgCoords.x <= lineImage.naturalWidth &&
+                    imgCoords.y >= 0 && imgCoords.y <= lineImage.naturalHeight) {
+                    isDrawing = true;
+                    drawStartImgX = Math.round(imgCoords.x);
+                    drawStartImgY = Math.round(imgCoords.y);
+                    currentDrawRect = { x: drawStartImgX, y: drawStartImgY, w: 0, h: 0 };
+                }
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isPanning) {
+                panX = e.clientX - startPanX;
+                panY = e.clientY - startPanY;
+                renderCanvas();
+                return;
+            }
+
+            if (isDrawing) {
+                const imgCoords = screenToImage(e.clientX, e.clientY);
+                const currentImgX = Math.round(imgCoords.x);
+                const currentImgY = Math.round(imgCoords.y);
+
+                const x = Math.max(0, Math.min(drawStartImgX, currentImgX));
+                const y = Math.max(0, Math.min(drawStartImgY, currentImgY));
+                const w = Math.min(lineImage.naturalWidth - x, Math.abs(currentImgX - drawStartImgX));
+                const h = Math.min(lineImage.naturalHeight - y, Math.abs(currentImgY - drawStartImgY));
+
+                currentDrawRect = { x, y, w, h };
+                renderCanvas();
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isPanning) {
+                isPanning = false;
+                viewport.style.cursor = 'crosshair';
+            }
+
+            if (isDrawing) {
+                isDrawing = false;
+                if (currentDrawRect && currentDrawRect.w > 6 && currentDrawRect.h > 6) {
+                    openAssignmentModal(currentDrawRect, e.clientX, e.clientY);
+                }
+                currentDrawRect = null;
+                renderCanvas();
+            }
+        });
+
+        viewport.addEventListener('contextmenu', e => e.preventDefault());
+
+        function openAssignmentModal(rect, clientX, clientY) {
+            const card = document.getElementById('assignmentCard');
+            
+            previewCanvas.width = Math.max(1, rect.w);
+            previewCanvas.height = Math.max(1, rect.h);
+            previewCtx.clearRect(0, 0, rect.w, rect.h);
+            previewCtx.drawImage(
+                lineImage,
+                rect.x, rect.y, rect.w, rect.h,
+                0, 0, rect.w, rect.h
+            );
+
+            const vpRect = viewport.getBoundingClientRect();
+            let popX = clientX - vpRect.left + 20;
+            let popY = clientY - vpRect.top - 60;
+
+            if (popX + 340 > vpRect.width) popX = vpRect.width - 350;
+            if (popY + 380 > vpRect.height) popY = vpRect.height - 390;
+            if (popX < 15) popX = 15;
+            if (popY < 15) popY = 15;
+
+            card.style.left = `${popX}px`;
+            card.style.top = `${popY}px`;
+            card.style.display = 'flex';
+
+            const charInput = document.getElementById('inputChar');
+            charInput.value = '';
+            document.getElementById('inputNotes').value = '';
+            charInput.focus();
+
+            card._activeRect = rect;
+        }
+
+        function closeModal() {
+            const card = document.getElementById('assignmentCard');
+            card.style.display = 'none';
+            card._activeRect = null;
+            renderCanvas();
+        }
+
+        function confirmAssignment() {
+            const card = document.getElementById('assignmentCard');
+            const rect = card._activeRect;
+            if (!rect) return;
+
+            const charVal = document.getElementById('inputChar').value.trim();
+            if (!charVal) {
+                alert("Por favor ingresa la letra o carácter correspondiente.");
+                document.getElementById('inputChar').focus();
+                return;
+            }
+
+            const categoryVal = document.getElementById('selectCategory').value;
+            const notesVal = document.getElementById('inputNotes').value.trim();
+            const line = dataset[currentLineIndex];
+
+            const newBox = {
+                id: `glyph_${line.id}_${Date.now()}`,
+                x: rect.x,
+                y: rect.y,
+                w: rect.w,
+                h: rect.h,
+                character: charVal,
+                category: categoryVal,
+                notes: notesVal
+            };
+
+            currentBoxes.push(newBox);
+            closeModal();
+            renderCanvas();
+            renderSidebarList();
+        }
+
+        document.getElementById('btnConfirmAssignment').addEventListener('click', confirmAssignment);
+        document.getElementById('btnCancelAssignment').addEventListener('click', closeModal);
+        document.getElementById('btnCloseModal').addEventListener('click', closeModal);
+
+        document.getElementById('inputChar').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                confirmAssignment();
+            } else if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        function renderSidebarList() {
+            const container = document.getElementById('glyphListContainer');
+            const badge = document.getElementById('lineGlyphCount');
+            badge.textContent = `${currentBoxes.length} glifo${currentBoxes.length === 1 ? '' : 's'}`;
+
+            if (currentBoxes.length === 0) {
+                container.innerHTML = `
+                <div class="empty-state">
+                    <p>Arrastra con el mouse sobre el renglón para seleccionar y clasificar letras.</p>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            currentBoxes.forEach((box, idx) => {
+                const card = document.createElement('div');
+                card.className = 'glyph-card';
+
+                const thumbCanvas = document.createElement('canvas');
+                thumbCanvas.className = 'glyph-thumb';
+                thumbCanvas.width = Math.max(1, box.w);
+                thumbCanvas.height = Math.max(1, box.h);
+                const tCtx = thumbCanvas.getContext('2d');
+                tCtx.drawImage(lineImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
+
+                const catLabel = document.querySelector(`#selectCategory option[value="${box.category}"]`).textContent.split(' ')[1] || box.category;
+
+                card.innerHTML = `
+                <div class="glyph-info">
+                    <div class="glyph-char-row">
+                        <span class="glyph-char">${box.character}</span>
+                        <span class="category-pill cat-${box.category}">${catLabel}</span>
+                    </div>
+                    <div class="glyph-notes">${box.notes || `[x:${box.x}, y:${box.y}, ${box.w}×${box.h}px]`}</div>
+                </div>
+                <div class="glyph-actions">
+                    <button class="btn-icon" title="Eliminar Glifo" onclick="deleteBox(${idx})">🗑️</button>
+                </div>`;
+
+                card.prepend(thumbCanvas);
+                container.appendChild(card);
+            });
+        }
+
+        window.deleteBox = function(index) {
+            currentBoxes.splice(index, 1);
+            renderCanvas();
+            renderSidebarList();
+        };
+
+        async function saveLineToDatabase() {
+            const line = dataset[currentLineIndex];
+            const btn = document.getElementById('btnSaveLine');
+            btn.disabled = true;
+            btn.textContent = '⏳ Guardando...';
+
+            try {
+                const payload = {
+                    line_id: line.id,
+                    page: line.page,
+                    crop_image: line.crop_image,
+                    boxes: currentBoxes
+                };
+
+                const res = await fetch('/api/save_line', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await res.json();
+                if (result.status === 'ok') {
+                    allGlyphs = result.db.glyphs;
+                    updateGlobalStats();
+                    showToast(`✓ Renglón ${line.id} guardado (${currentBoxes.length} glifos)`);
+                } else {
+                    alert("Error al guardar: " + result.message);
+                }
+            } catch (err) {
+                console.error("Error saving line:", err);
+                alert("Error de conexión al guardar el renglón.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Guardar Renglón en Base de Datos';
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        document.getElementById('btnSaveLine').addEventListener('click', saveLineToDatabase);
+
+        document.getElementById('btnPrevLine').addEventListener('click', () => {
+            if (currentLineIndex > 0) loadLine(currentLineIndex - 1);
+        });
+        document.getElementById('btnNextLine').addEventListener('click', () => {
+            if (currentLineIndex < dataset.length - 1) loadLine(currentLineIndex + 1);
+        });
+        document.getElementById('lineSelect').addEventListener('change', (e) => {
+            loadLine(parseInt(e.target.value));
+        });
+
+        document.getElementById('btnZoomIn').addEventListener('click', () => {
+            zoom = Math.min(6.0, zoom * 1.25);
+            updateZoomDisplay();
+            renderCanvas();
+        });
+        document.getElementById('btnZoomOut').addEventListener('click', () => {
+            zoom = Math.max(0.15, zoom * 0.8);
+            updateZoomDisplay();
+            renderCanvas();
+        });
+        document.getElementById('btnResetZoom').addEventListener('click', resetZoom);
+
+        /* ========================================================
+           CATALOG & COVERAGE MODAL LOGIC
+           ======================================================== */
+        const coverageModal = document.getElementById('coverageModal');
+        
+        function openCoverageModal() {
+            updateCoverageModalData();
+            coverageModal.classList.add('open');
+        }
+
+        function closeCoverageModal() {
+            coverageModal.classList.remove('open');
+        }
+
+        document.getElementById('btnOpenCoverage').addEventListener('click', openCoverageModal);
+        document.getElementById('btnCloseCoverageModal').addEventListener('click', closeCoverageModal);
+
+        function updateCoverageModalData() {
+            // Count characters by exact char string
+            const counts = {};
+            const glyphsByChar = {};
+
+            allGlyphs.forEach(g => {
+                const ch = g.character;
+                counts[ch] = (counts[ch] || 0) + 1;
+                if (!glyphsByChar[ch]) glyphsByChar[ch] = [];
+                glyphsByChar[ch].push(g);
+            });
+
+            // Minúsculas
+            let minCapturedCount = 0;
+            const gridMin = document.getElementById('gridMinusculas');
+            gridMin.innerHTML = '';
+            SPANISH_MIN.forEach(ch => {
+                const count = counts[ch] || 0;
+                if (count > 0) minCapturedCount++;
+                const tile = createLetterTile(ch, count, 'minuscula', glyphsByChar[ch] || []);
+                gridMin.appendChild(tile);
+            });
+            document.getElementById('labelMinProgress').textContent = `${minCapturedCount} de 27 (${Math.round(minCapturedCount/27*100)}%)`;
+            document.getElementById('chipMinStats').textContent = `Minúsculas: ${minCapturedCount}/27 (${Math.round(minCapturedCount/27*100)}%)`;
+
+            // Mayúsculas
+            let mayCapturedCount = 0;
+            const gridMay = document.getElementById('gridMayusculas');
+            gridMay.innerHTML = '';
+            SPANISH_MAY.forEach(ch => {
+                const count = counts[ch] || 0;
+                if (count > 0) mayCapturedCount++;
+                const tile = createLetterTile(ch, count, 'mayuscula', glyphsByChar[ch] || []);
+                gridMay.appendChild(tile);
+            });
+            document.getElementById('labelMayProgress').textContent = `${mayCapturedCount} de 27 (${Math.round(mayCapturedCount/27*100)}%)`;
+            document.getElementById('chipMayStats').textContent = `Mayúsculas: ${mayCapturedCount}/27 (${Math.round(mayCapturedCount/27*100)}%)`;
+
+            // Números y Signos
+            const gridNums = document.getElementById('gridNumerosSignos');
+            gridNums.innerHTML = '';
+            let otherCaptured = 0;
+            NUMS_SIGNS.forEach(ch => {
+                const count = counts[ch] || 0;
+                if (count > 0) otherCaptured++;
+                const tile = createLetterTile(ch, count, 'otros', glyphsByChar[ch] || []);
+                gridNums.appendChild(tile);
+            });
+            document.getElementById('labelOthersProgress').textContent = `${otherCaptured} activos`;
+            document.getElementById('chipTotStats').textContent = `Total: ${allGlyphs.length} glifos`;
+
+            // Ligaduras y caracteres no estándar
+            const allStandard = new Set([...SPANISH_MIN, ...SPANISH_MAY, ...NUMS_SIGNS]);
+            const extraChars = Object.keys(counts).filter(c => !allStandard.has(c));
+            const secLig = document.getElementById('sectionLigaduras');
+            const gridLig = document.getElementById('gridLigaduras');
+            
+            if (extraChars.length > 0) {
+                secLig.style.display = 'block';
+                gridLig.innerHTML = '';
+                extraChars.forEach(ch => {
+                    const count = counts[ch];
+                    const tile = createLetterTile(ch, count, 'ligadura', glyphsByChar[ch] || []);
+                    gridLig.appendChild(tile);
+                });
+                document.getElementById('labelLigadurasProgress').textContent = `${extraChars.length} tipos`;
+            } else {
+                secLig.style.display = 'none';
+            }
+
+            // If a char is currently selected, refresh its gallery
+            if (selectedCatalogChar) {
+                renderCharGallery(selectedCatalogChar, glyphsByChar[selectedCatalogChar] || []);
+            }
+        }
+
+        function createLetterTile(char, count, group, glyphList) {
+            const tile = document.createElement('div');
+            tile.className = 'letter-tile';
+            
+            if (count === 0) {
+                tile.classList.add('empty');
+            } else if (count === 1) {
+                tile.classList.add('has-1');
+            } else {
+                tile.classList.add('has-many');
+            }
+
+            if (selectedCatalogChar === char) {
+                tile.classList.add('selected');
+            }
+
+            tile.innerHTML = `
+                <span class="tile-char">${char}</span>
+                <span class="tile-count">${count}</span>
+            `;
+
+            tile.addEventListener('click', () => {
+                document.querySelectorAll('.letter-tile').forEach(t => t.classList.remove('selected'));
+                tile.classList.add('selected');
+                selectedCatalogChar = char;
+                renderCharGallery(char, glyphList);
+            });
+
+            return tile;
+        }
+
+        function renderCharGallery(char, glyphList) {
+            const container = document.getElementById('galleryContainer');
+            const bigChar = document.getElementById('detailCharBig');
+            const title = document.getElementById('detailCharTitle');
+            const subtitle = document.getElementById('detailCharSubtitle');
+
+            bigChar.textContent = char;
+            title.textContent = `Glifos para '${char}'`;
+            subtitle.textContent = `${glyphList.length} muestra${glyphList.length === 1 ? '' : 's'} disponible${glyphList.length === 1 ? '' : 's'}`;
+
+            if (!glyphList || glyphList.length === 0) {
+                container.innerHTML = `
+                <div class="empty-state">
+                    <p>No hay muestras capturadas todavía para la letra <strong>'${char}'</strong>.</p>
+                    <p style="font-size: 11px; opacity: 0.7;">Búscala en los renglones y márcala para integrarla al catálogo.</p>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            glyphList.forEach((g) => {
+                const card = document.createElement('div');
+                card.className = 'sample-card';
+
+                const origSrc = `/crops/${g.crop_file}?t=${Date.now()}`;
+                const isoSrc = `/crops_isolated/${g.crop_isolated_file}?t=${Date.now()}`;
+
+                card.innerHTML = `
+                    <div class="sample-dual-view">
+                        <div class="sample-img-box" title="Recorte Original">
+                            <img src="${origSrc}" alt="Original" />
+                            <span class="sample-img-label">Original</span>
+                        </div>
+                        <div class="sample-img-box" title="Tinta Aislada (Canal Alfa)">
+                            <img src="${isoSrc}" alt="Aislado" />
+                            <span class="sample-img-label">Tinta Pura</span>
+                        </div>
+                    </div>
+                    <div class="sample-meta-row">
+                        <span>${g.line_id} (Pág ${g.page})</span>
+                        <span>${g.bbox[2]}×${g.bbox[3]} px</span>
+                        <button class="btn-icon" title="Eliminar muestra de la base de datos" onclick="deleteGlyphFromDB('${g.id}', '${char}')">🗑️</button>
+                    </div>
+                    ${g.notes ? `<div style="font-size: 11px; color: var(--accent-yellow);">📝 ${g.notes}</div>` : ''}
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        window.deleteGlyphFromDB = async function(glyphId, char) {
+            if (!confirm(`¿Eliminar esta muestra de '${char}' de la base de datos?`)) return;
+
+            try {
+                const res = await fetch('/api/delete_glyph', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: glyphId })
+                });
+                const result = await res.json();
+                if (result.status === 'ok') {
+                    allGlyphs = result.db.glyphs;
+                    updateGlobalStats();
+                    // Also refresh currentBoxes if on current line
+                    const line = dataset[currentLineIndex];
+                    currentBoxes = allGlyphs.filter(g => g.line_id === line.id).map(g => ({
+                        id: g.id,
+                        x: g.bbox[0],
+                        y: g.bbox[1],
+                        w: g.bbox[2],
+                        h: g.bbox[3],
+                        character: g.character,
+                        category: g.category,
+                        notes: g.notes || ''
+                    }));
+                    renderCanvas();
+                    renderSidebarList();
+                    showToast(`✓ Muestra eliminada correctamente`);
+                }
+            } catch (err) {
+                console.error("Error deleting glyph:", err);
+                alert("Error al eliminar el glifo de la base de datos.");
+            }
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            
+            if (e.key === 'Escape') {
+                if (coverageModal.classList.contains('open')) {
+                    closeCoverageModal();
+                }
+            } else if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
+                // Ctrl+C (when no text selected) opens coverage modal
+                if (!window.getSelection().toString()) {
+                    e.preventDefault();
+                    openCoverageModal();
+                }
+            } else if (e.key === 'ArrowRight' || e.key === 'd') {
+                if (currentLineIndex < dataset.length - 1) loadLine(currentLineIndex + 1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'a') {
+                if (currentLineIndex > 0) loadLine(currentLineIndex - 1);
+            } else if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                saveLineToDatabase();
+            } else if (e.key === 'r') {
+                resetZoom();
+            }
+        });
+
+        window.onload = init;
+    </script>
+</body>
+</html>

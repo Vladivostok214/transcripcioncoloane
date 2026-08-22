@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataset HTR Coloane - Muestras Caligrafía vs Ground Truth</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0b0f19; color: #f1f5f9; padding: 32px; margin: 0; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { color: #38bdf8; font-size: 26px; border-bottom: 2px solid #1e293b; padding-bottom: 12px; margin-bottom: 8px; }
+  .subtitle { color: #94a3b8; font-size: 15px; margin-bottom: 24px; }
+  .stats-bar { display: flex; gap: 20px; background: #1e293b; padding: 14px 20px; border-radius: 8px; margin-bottom: 28px; border-left: 4px solid #38bdf8; }
+  .stat-item { font-size: 14px; }
+  .stat-item b { color: #38bdf8; }
+  .grid { display: flex; flex-direction: column; gap: 16px; }
+  .card { background: #161e2e; border: 1px solid #27354a; border-radius: 8px; padding: 16px 20px; display: grid; grid-template-columns: 220px 1.3fr 1fr; gap: 20px; align-items: center; transition: all 0.2s ease; }
+  .card:hover { border-color: #38bdf8; box-shadow: 0 4px 20px rgba(56, 189, 248, 0.12); }
+  .meta { font-size: 12px; color: #94a3b8; }
+  .meta p { margin: 4px 0; }
+  .meta b { color: #f8fafc; }
+  .image-box { text-align: center; }
+  .image-box img { max-width: 100%; max-height: 120px; object-fit: contain; border-radius: 4px; border: 1px solid #334155; background: #fdf6e2; padding: 4px; }
+  .text-box { background: #0b0f19; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #10b981; font-family: "Georgia", serif; font-size: 16px; line-height: 1.5; color: #e2e8f0; }
+  .text-box .label { font-family: sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #10b981; margin-bottom: 4px; font-weight: bold; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; background: #0284c7; color: white; margin-bottom: 6px; }
+  .badge-red { background: #dc2626; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🔬 Dataset HTR Coloane: Emparejamiento Renglón Manuscrito ↔ Transcripción</h1>
+  <div class="subtitle">Laboratorio de Validación de Ground Truth Caligráfico (Archivo Francisco Coloane)</div>
+  <div class="stats-bar">
+    <div class="stat-item">Muestras segmentadas: <b>27</b></div>
+    <div class="stat-item">Páginas cubiertas: <b>Página 2 y Página 3</b></div>
+    <div class="stat-item">Resolución: <b>300 DPI (Lossless)</b></div>
+    <div class="stat-item">Formato de datos: <b>JSON & CSV</b></div>
+  </div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l01_titulo_top</span>
+        <p><b>Dimensión:</b> 2490 × 245 px</p>
+        <p><b>Anotación:</b> Título superior con tachaduras</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l01_titulo_top.png" alt="p03_l01_titulo_top">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Travesías y Temporales de la Isla Madre»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l02_verso1</span>
+        <p><b>Dimensión:</b> 1333 × 210 px</p>
+        <p><b>Anotación:</b> Verso 1</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l02_verso1.png" alt="p03_l02_verso1">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Vientos del oeste»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l03_verso2</span>
+        <p><b>Dimensión:</b> 2034 × 206 px</p>
+        <p><b>Anotación:</b> Verso 2</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l03_verso2.png" alt="p03_l03_verso2">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Vienen cargados con el canto»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l04_verso3</span>
+        <p><b>Dimensión:</b> 2279 × 196 px</p>
+        <p><b>Anotación:</b> Verso 3</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l04_verso3.png" alt="p03_l04_verso3">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «de los grandes pájaros oceánicos»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l05_verso4</span>
+        <p><b>Dimensión:</b> 2279 × 218 px</p>
+        <p><b>Anotación:</b> Verso 4 con 'sus' interlineal</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l05_verso4.png" alt="p03_l05_verso4">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «dejando caer sus semillas errantes»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l06_verso5</span>
+        <p><b>Dimensión:</b> 1999 × 193 px</p>
+        <p><b>Anotación:</b> Verso 5 con 'tos' tachado</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l06_verso5.png" alt="p03_l06_verso5">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «sobre lomajes terciarios»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l07_verso6</span>
+        <p><b>Dimensión:</b> 1614 × 201 px</p>
+        <p><b>Anotación:</b> Verso 6 con inserción 'nuestra gran'</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l07_verso6.png" alt="p03_l07_verso6">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «de nuestra gran isla madre»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l08_verso7</span>
+        <p><b>Dimensión:</b> 1579 × 196 px</p>
+        <p><b>Anotación:</b> Verso 7 con 'de' tachado y 'tos en' corregido</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l08_verso7.png" alt="p03_l08_verso7">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «y en sus hijas»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l09_verso8</span>
+        <p><b>Dimensión:</b> 1543 × 197 px</p>
+        <p><b>Anotación:</b> Verso 8 con 'como' tachado</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l09_verso8.png" alt="p03_l09_verso8">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «protegidas,»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l10_verso9</span>
+        <p><b>Dimensión:</b> 2069 × 241 px</p>
+        <p><b>Anotación:</b> Verso 9</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l10_verso9.png" alt="p03_l10_verso9">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «pequeños vergeles flotantes.»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l11_medio1</span>
+        <p><b>Dimensión:</b> 2209 × 227 px</p>
+        <p><b>Anotación:</b> Título central variante 1</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l11_medio1.png" alt="p03_l11_medio1">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Travesías y temporales»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l12_medio2</span>
+        <p><b>Dimensión:</b> 2139 × 219 px</p>
+        <p><b>Anotación:</b> Título central variante 2</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l12_medio2.png" alt="p03_l12_medio2">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Temporales y travesías»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge-red">Pág. 3 • p03_l13_rojo1</span>
+        <p><b>Dimensión:</b> 2314 × 306 px</p>
+        <p><b>Anotación:</b> En tinta roja subrayada</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l13_rojo1.png" alt="p03_l13_rojo1">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Isla madre, sagrada…»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge-red">Pág. 3 • p03_l14_rojo2</span>
+        <p><b>Dimensión:</b> 2981 × 218 px</p>
+        <p><b>Anotación:</b> En tinta roja - verso superior</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l14_rojo2.png" alt="p03_l14_rojo2">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Un arcoiris de sol y sombra será»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge-red">Pág. 3 • p03_l15_rojo3</span>
+        <p><b>Dimensión:</b> 1297 × 219 px</p>
+        <p><b>Anotación:</b> En tinta roja - remate de verso</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l15_rojo3.png" alt="p03_l15_rojo3">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «tu portada»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l16_bloque</span>
+        <p><b>Dimensión:</b> 2350 × 240 px</p>
+        <p><b>Anotación:</b> Mayúsculas imprenta y cursiva</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l16_bloque.png" alt="p03_l16_bloque">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «TEMPORALES Y Travesías»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 3 • p03_l17_final</span>
+        <p><b>Dimensión:</b> 2771 × 197 px</p>
+        <p><b>Anotación:</b> Nota final con firma</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p03_l17_final.png" alt="p03_l17_final">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Este es el título definitivo.»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l01_encabezado</span>
+        <p><b>Dimensión:</b> 1193 × 242 px</p>
+        <p><b>Anotación:</b> Título de sección</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l01_encabezado.png" alt="p02_l01_encabezado">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «Significaciones:»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l02_ezra1</span>
+        <p><b>Dimensión:</b> 2665 × 207 px</p>
+        <p><b>Anotación:</b> Cita Ezra Pound renglón 1</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l02_ezra1.png" alt="p02_l02_ezra1">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        ««Un lenguaje cargado de significación»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l03_ezra2</span>
+        <p><b>Dimensión:</b> 2735 × 199 px</p>
+        <p><b>Anotación:</b> Cita Ezra Pound renglón 2</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l03_ezra2.png" alt="p02_l03_ezra2">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «hasta el máximo», que es la definición»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l04_ezra3</span>
+        <p><b>Dimensión:</b> 2735 × 203 px</p>
+        <p><b>Anotación:</b> Cita Ezra Pound renglón 3</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l04_ezra3.png" alt="p02_l04_ezra3">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «de la literatura que proponía el norteame-»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l05_ezra4</span>
+        <p><b>Dimensión:</b> 1473 × 198 px</p>
+        <p><b>Anotación:</b> Cita Ezra Pound renglón 4</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l05_ezra4.png" alt="p02_l05_ezra4">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «ricano Ezra Pound.»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l06_babel</span>
+        <p><b>Dimensión:</b> 2735 × 194 px</p>
+        <p><b>Anotación:</b> Cita Génesis</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l06_babel.png" alt="p02_l06_babel">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        ««La literatura nació en Babel» (Gén., 11, 1 a 9)»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l07_todoel</span>
+        <p><b>Dimensión:</b> 2770 × 198 px</p>
+        <p><b>Anotación:</b> Cita Génesis renglón 1</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l07_todoel.png" alt="p02_l07_todoel">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        ««Todo el mundo usaba la misma lengua y las»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l08_mismas</span>
+        <p><b>Dimensión:</b> 1929 × 202 px</p>
+        <p><b>Anotación:</b> Cita Génesis renglón 2</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l08_mismas.png" alt="p02_l08_mismas">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «mismas palabras» Génesis 11, 1 a 9.»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l09_poeta_ny</span>
+        <p><b>Dimensión:</b> 2770 × 211 px</p>
+        <p><b>Anotación:</b> Cita poeta chino renglón 1</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l09_poeta_ny.png" alt="p02_l09_poeta_ny">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        ««Siente el olor en la grieta mas profunda»
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span class="badge">Pág. 2 • p02_l10_cuatro_v</span>
+        <p><b>Dimensión:</b> 2560 × 207 px</p>
+        <p><b>Anotación:</b> Cita poeta chino renglón 2</p>
+      </div>
+      <div class="image-box">
+        <img src="../02_segmentacion_lineas/crops/p02_l10_cuatro_v.png" alt="p02_l10_cuatro_v">
+      </div>
+      <div class="text-box">
+        <div class="label">Transcripción Ground Truth:</div>
+        «y elévate a la cima de los cuatro vientos»»
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

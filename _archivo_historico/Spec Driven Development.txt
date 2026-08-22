@@ -1,0 +1,95 @@
+# Proyecto de Transcripción Automatizada HTR - Archivo Francisco Coloane
+## Especificación de Desarrollo Guiada por Pruebas (Spec Driven Development - Versión 2.0)
+
+---
+
+### 1. Contexto, Visión y Objetivos del Proyecto
+
+El objetivo principal de este proyecto es automatizar la transcripción y preservación digital masiva de los cuadernos y manuscritos originales del autor chileno Francisco Coloane (iniciando con el corpus *"Escritos y relato desde Quemchi. 1977"*). 
+
+Los sistemas tradicionales de Reconocimiento Óptico de Caracteres (OCR comercial) y los métodos de segmentación de caracteres aislados resultan ineficaces ante la caligrafía cursiva del autor. Se requiere un pipeline moderno de Reconocimiento de Texto Manuscrito (HTR) de extremo a extremo que:
+- Se adapte a la caligrafía individual, el ritmo de escritura y las ligaduras orgánicas del autor.
+- Maneje la heterogeneidad de tintas (capa narrativa azul/negra y capa de correcciones/poemas en tinta roja).
+- Respete el soporte físico (grano del papel de 300 DPI, sellos de agua institucionales y renglones guía del cuaderno) sin degradar la información visual.
+
+---
+
+### 2. Aprendizajes Críticos de las Pruebas Experimentales Iniciales
+
+Las iteraciones preliminares sobre las Páginas 2 y 3 arrojaron conclusiones técnicas determinantes:
+
+1. **Inviabilidad de la segmentación y vectorización de glifos aislados:**
+   El intento de binarizar y recortar letra por letra destruye los trazos horizontales (barras de *T, E, L, f*) y las ligaduras caligráficas debido al colapso de la umbralización fija y la interferencia con los renglones del cuaderno.
+2. **Superioridad del paradigma a nivel de renglón completo (Line-Level HTR):**
+   La escritura manuscrita debe tratarse como una secuencia temporal y espacial continua. El modelo de reconocimiento debe procesar el renglón completo en escala de grises/color de alta resolución, combinando visión profunda con modelado de lenguaje contextual.
+3. **Estratificación semántica por color de tinta:**
+   El cuaderno contiene dos estratos temporales y semánticos distintos: el cuerpo en tinta azul/negra y las anotaciones/versos en tinta roja. El preprocesamiento cromático (espacio CIELAB / HSV) permite desacoplar ambas capas con total nitidez.
+
+---
+
+### 3. Arquitectura Tecnológica y Repositorios SOTA Seleccionados
+
+En lugar de desarrollar modelos desde cero, la arquitectura se apoya en los mejores repositorios abiertos del ecosistema HTR:
+
+```mermaid
+flowchart TD
+    A["Página Manuscrita (300 DPI)"] --> B["Surya / Kraken (Layout & Line Detection)"]
+    B --> C["Polígonos de Renglones / Baselines"]
+    C --> D["Extracción de Renglones Lossless"]
+    D --> E["TrOCR / PaddleOCR-VL (Transformer HTR)"]
+    E --> F["Decodificación Guiada con Léxico Coloane"]
+    F --> G["Transcripción Estructurada (Markdown / JSON / PAGE XML)"]
+```
+
+#### Componentes Principales:
+
+1. **Detección y Segmentación de Renglones: Surya (`VikParuchuri/surya`) / Kraken (`mittagessen/kraken`)**
+   - Utiliza Vision Transformers para identificar líneas de texto poligonales y orden de lectura natural en la página completa, superando renglones inclinados, notas marginales y líneas entrelazadas.
+2. **Motor HTR / VLM de Vanguardia: Florence-2 (`onnx-community/Florence-2-base-ft`)**
+   - **Resultado Validado (Exp 05):** **CER = 0.39%**, **WER = 1.50%**, latencia media = 0.52s/línea (CPU local). 25/27 renglones con coincidencia exacta (100%).
+   - Reemplaza a TrOCR tradicional por superar el sesgo de lenguaje en inglés (*Language Prior Bias*) y transcribir con precisión cursiva en español, comillas hispanas (`« »`) y signos de puntuación.
+3. **Motor HTR Monolingüe de Referencia: TrOCR Base (`microsoft/trocr-base-handwritten`)**
+   - Evaluado en Exp 05 (CER = 48.24%, WER = 67.67%). Muestra excelente precisión en imprenta/mayúsculas (0% CER en citas de Ezra Pound), pero alucina en cursiva española debido a su decodificador pre-entrenado exclusivamente en inglés.
+4. **Conjunto de Calibración y Ground Truth:**
+   - Mapeo supervisado construido a partir de las transcripciones manuales de referencia (27 renglones en Páginas 2 y 3: `dataset_muestras_p02_p03.json`) para evaluación cuantitativa estricta (CER y WER).
+
+---
+
+### 4. Flujo de Trabajo Operativo en 5 Etapas
+
+El pipeline de transcripción e investigación se ejecutará en cinco fases iterativas:
+
+#### Etapa 1: Ingesta y Segmentación Automática de Páginas
+- Extracción de imágenes a 300 DPI nativos sin compresión con pérdidas.
+- Ejecución de **Surya** para segmentar automáticamente los renglones y cajas poligonales de la página completa, generando recortes de alta resolución por línea con coordenadas registradas.
+
+#### Etapa 2: Inferencia HTR Zero-Shot / Pre-entrenada
+- Evaluación inicial de los modelos pre-entrenados de **TrOCR** y **PaddleOCR** sobre los recortes de líneas generados.
+- Medición de la Tasa de Error de Caracteres (CER) y Tasa de Error de Palabras (WER) contra las transcripciones manuales de verdad de terreno (*Ground Truth*).
+
+#### Etapa 3: Fine-Tuning y Calibración sobre la Caligrafía de Coloane
+- Ajuste fino supervisado de los pesos del decodificador y codificador de TrOCR utilizando el dataset de líneas emparejadas del autor.
+- Integración de diccionarios específicos (toponimia de Chiloé, vocabulario náutico y modismos patagónicos: *Quemchi, Huite, Tubildad, dalca, etc.*) en la etapa de decodificación.
+
+#### Etapa 4: Desacoplamiento de Capas Cromáticas y Metadatos
+- Separación de anotaciones marginales, subrayados y correcciones en tinta roja respecto al cuerpo narrativo azul mediante filtros cromáticos en espacio CIELAB.
+- Etiquetado de roles textuales (títulos, citas, poemas, notas al margen, firmas).
+
+#### Etapa 5: Transcripción Masiva, Validación Asistida y Exportación
+- Inferencia automatizada sobre los cuadernos completos.
+- Generación de interfaces de revisión humana asistida (side-by-side de imagen de renglón y texto propuesto con puntuación de confianza).
+- Exportación en formatos interoperables para humanidades digitales: Markdown enriquecido, JSON estructurado y PAGE/ALTO XML.
+
+---
+
+### 5. Orquestación del Entorno y Reproducibilidad
+
+- **Entorno de Ejecución:** Python 3.10+, PyTorch, Hugging Face `transformers`, `surya-ocr`, `paddleocr`, OpenCV.
+- **Orquestación:** Gestión de tareas, scripts de preprocesamiento, inferencias y evaluación mediante `antigravity-cli`.
+- **Registro y Trazabilidad:** Documentación de métricas de precisión (CER/WER), matrices de alineación y logs de experimentación en texto plano versionado.
+
+---
+
+### 6. Impacto y Valor Esperado
+
+Este flujo de trabajo permitirá transformar decenas de cuadernos manuscritos inéditos en un corpus digitalizado, normalizado y con búsqueda semántica instantánea. Desbloqueará el estudio automatizado de la génesis de obras emblemáticas de Coloane, sus itinerarios en el archipiélago de Chiloé, y la reconstrucción histórica del patrimonio cultural y lingüístico del sur austral de Chile.

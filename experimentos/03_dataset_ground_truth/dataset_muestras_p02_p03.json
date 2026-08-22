@@ -1,0 +1,434 @@
+[
+  {
+    "id": "p03_l01_titulo_top",
+    "page": 3,
+    "crop_image": "p03_l01_titulo_top.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l01_titulo_top.png",
+    "ground_truth": "Travesías y Temporales de la Isla Madre",
+    "notes": "Título superior con tachaduras",
+    "bbox": [
+      596,
+      52,
+      3086,
+      297
+    ],
+    "crop_width": 2490,
+    "crop_height": 245
+  },
+  {
+    "id": "p03_l02_verso1",
+    "page": 3,
+    "crop_image": "p03_l02_verso1.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l02_verso1.png",
+    "ground_truth": "Vientos del oeste",
+    "notes": "Verso 1",
+    "bbox": [
+      701,
+      393,
+      2034,
+      603
+    ],
+    "crop_width": 1333,
+    "crop_height": 210
+  },
+  {
+    "id": "p03_l03_verso2",
+    "page": 3,
+    "crop_image": "p03_l03_verso2.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l03_verso2.png",
+    "ground_truth": "Vienen cargados con el canto",
+    "notes": "Verso 2",
+    "bbox": [
+      666,
+      603,
+      2700,
+      809
+    ],
+    "crop_width": 2034,
+    "crop_height": 206
+  },
+  {
+    "id": "p03_l04_verso3",
+    "page": 3,
+    "crop_image": "p03_l04_verso3.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l04_verso3.png",
+    "ground_truth": "de los grandes pájaros oceánicos",
+    "notes": "Verso 3",
+    "bbox": [
+      596,
+      809,
+      2875,
+      1005
+    ],
+    "crop_width": 2279,
+    "crop_height": 196
+  },
+  {
+    "id": "p03_l05_verso4",
+    "page": 3,
+    "crop_image": "p03_l05_verso4.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l05_verso4.png",
+    "ground_truth": "dejando caer sus semillas errantes",
+    "notes": "Verso 4 con 'sus' interlineal",
+    "bbox": [
+      561,
+      997,
+      2840,
+      1215
+    ],
+    "crop_width": 2279,
+    "crop_height": 218
+  },
+  {
+    "id": "p03_l06_verso5",
+    "page": 3,
+    "crop_image": "p03_l06_verso5.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l06_verso5.png",
+    "ground_truth": "sobre lomajes terciarios",
+    "notes": "Verso 5 con 'tos' tachado",
+    "bbox": [
+      561,
+      1206,
+      2560,
+      1399
+    ],
+    "crop_width": 1999,
+    "crop_height": 193
+  },
+  {
+    "id": "p03_l07_verso6",
+    "page": 3,
+    "crop_image": "p03_l07_verso6.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l07_verso6.png",
+    "ground_truth": "de nuestra gran isla madre",
+    "notes": "Verso 6 con inserción 'nuestra gran'",
+    "bbox": [
+      490,
+      1399,
+      2104,
+      1600
+    ],
+    "crop_width": 1614,
+    "crop_height": 201
+  },
+  {
+    "id": "p03_l08_verso7",
+    "page": 3,
+    "crop_image": "p03_l08_verso7.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l08_verso7.png",
+    "ground_truth": "y en sus hijas",
+    "notes": "Verso 7 con 'de' tachado y 'tos en' corregido",
+    "bbox": [
+      455,
+      1596,
+      2034,
+      1792
+    ],
+    "crop_width": 1579,
+    "crop_height": 196
+  },
+  {
+    "id": "p03_l09_verso8",
+    "page": 3,
+    "crop_image": "p03_l09_verso8.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l09_verso8.png",
+    "ground_truth": "protegidas,",
+    "notes": "Verso 8 con 'como' tachado",
+    "bbox": [
+      455,
+      1792,
+      1998,
+      1989
+    ],
+    "crop_width": 1543,
+    "crop_height": 197
+  },
+  {
+    "id": "p03_l10_verso9",
+    "page": 3,
+    "crop_image": "p03_l10_verso9.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l10_verso9.png",
+    "ground_truth": "pequeños vergeles flotantes.",
+    "notes": "Verso 9",
+    "bbox": [
+      420,
+      1989,
+      2489,
+      2230
+    ],
+    "crop_width": 2069,
+    "crop_height": 241
+  },
+  {
+    "id": "p03_l11_medio1",
+    "page": 3,
+    "crop_image": "p03_l11_medio1.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l11_medio1.png",
+    "ground_truth": "Travesías y temporales",
+    "notes": "Título central variante 1",
+    "bbox": [
+      561,
+      2405,
+      2770,
+      2632
+    ],
+    "crop_width": 2209,
+    "crop_height": 227
+  },
+  {
+    "id": "p03_l12_medio2",
+    "page": 3,
+    "crop_image": "p03_l12_medio2.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l12_medio2.png",
+    "ground_truth": "Temporales y travesías",
+    "notes": "Título central variante 2",
+    "bbox": [
+      526,
+      2645,
+      2665,
+      2864
+    ],
+    "crop_width": 2139,
+    "crop_height": 219
+  },
+  {
+    "id": "p03_l13_rojo1",
+    "page": 3,
+    "crop_image": "p03_l13_rojo1.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l13_rojo1.png",
+    "ground_truth": "Isla madre, sagrada…",
+    "notes": "En tinta roja subrayada",
+    "bbox": [
+      526,
+      2908,
+      2840,
+      3214
+    ],
+    "crop_width": 2314,
+    "crop_height": 306
+  },
+  {
+    "id": "p03_l14_rojo2",
+    "page": 3,
+    "crop_image": "p03_l14_rojo2.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l14_rojo2.png",
+    "ground_truth": "Un arcoiris de sol y sombra será",
+    "notes": "En tinta roja - verso superior",
+    "bbox": [
+      105,
+      3236,
+      3086,
+      3454
+    ],
+    "crop_width": 2981,
+    "crop_height": 218
+  },
+  {
+    "id": "p03_l15_rojo3",
+    "page": 3,
+    "crop_image": "p03_l15_rojo3.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l15_rojo3.png",
+    "ground_truth": "tu portada",
+    "notes": "En tinta roja - remate de verso",
+    "bbox": [
+      105,
+      3454,
+      1402,
+      3673
+    ],
+    "crop_width": 1297,
+    "crop_height": 219
+  },
+  {
+    "id": "p03_l16_bloque",
+    "page": 3,
+    "crop_image": "p03_l16_bloque.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l16_bloque.png",
+    "ground_truth": "TEMPORALES Y Travesías",
+    "notes": "Mayúsculas imprenta y cursiva",
+    "bbox": [
+      280,
+      3651,
+      2630,
+      3891
+    ],
+    "crop_width": 2350,
+    "crop_height": 240
+  },
+  {
+    "id": "p03_l17_final",
+    "page": 3,
+    "crop_image": "p03_l17_final.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p03_l17_final.png",
+    "ground_truth": "Este es el título definitivo.",
+    "notes": "Nota final con firma",
+    "bbox": [
+      350,
+      3913,
+      3121,
+      4110
+    ],
+    "crop_width": 2771,
+    "crop_height": 197
+  },
+  {
+    "id": "p02_l01_encabezado",
+    "page": 2,
+    "crop_image": "p02_l01_encabezado.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l01_encabezado.png",
+    "ground_truth": "Significaciones:",
+    "notes": "Título de sección",
+    "bbox": [
+      1332,
+      836,
+      2525,
+      1078
+    ],
+    "crop_width": 1193,
+    "crop_height": 242
+  },
+  {
+    "id": "p02_l02_ezra1",
+    "page": 2,
+    "crop_image": "p02_l02_ezra1.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l02_ezra1.png",
+    "ground_truth": "«Un lenguaje cargado de significación",
+    "notes": "Cita Ezra Pound renglón 1",
+    "bbox": [
+      701,
+      1078,
+      3366,
+      1285
+    ],
+    "crop_width": 2665,
+    "crop_height": 207
+  },
+  {
+    "id": "p02_l03_ezra2",
+    "page": 2,
+    "crop_image": "p02_l03_ezra2.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l03_ezra2.png",
+    "ground_truth": "hasta el máximo», que es la definición",
+    "notes": "Cita Ezra Pound renglón 2",
+    "bbox": [
+      701,
+      1276,
+      3436,
+      1475
+    ],
+    "crop_width": 2735,
+    "crop_height": 199
+  },
+  {
+    "id": "p02_l04_ezra3",
+    "page": 2,
+    "crop_image": "p02_l04_ezra3.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l04_ezra3.png",
+    "ground_truth": "de la literatura que proponía el norteame-",
+    "notes": "Cita Ezra Pound renglón 3",
+    "bbox": [
+      701,
+      1461,
+      3436,
+      1664
+    ],
+    "crop_width": 2735,
+    "crop_height": 203
+  },
+  {
+    "id": "p02_l05_ezra4",
+    "page": 2,
+    "crop_image": "p02_l05_ezra4.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l05_ezra4.png",
+    "ground_truth": "ricano Ezra Pound.",
+    "notes": "Cita Ezra Pound renglón 4",
+    "bbox": [
+      701,
+      1651,
+      2174,
+      1849
+    ],
+    "crop_width": 1473,
+    "crop_height": 198
+  },
+  {
+    "id": "p02_l06_babel",
+    "page": 2,
+    "crop_image": "p02_l06_babel.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l06_babel.png",
+    "ground_truth": "«La literatura nació en Babel» (Gén., 11, 1 a 9)",
+    "notes": "Cita Génesis",
+    "bbox": [
+      736,
+      1840,
+      3471,
+      2034
+    ],
+    "crop_width": 2735,
+    "crop_height": 194
+  },
+  {
+    "id": "p02_l07_todoel",
+    "page": 2,
+    "crop_image": "p02_l07_todoel.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l07_todoel.png",
+    "ground_truth": "«Todo el mundo usaba la misma lengua y las",
+    "notes": "Cita Génesis renglón 1",
+    "bbox": [
+      701,
+      2025,
+      3471,
+      2223
+    ],
+    "crop_width": 2770,
+    "crop_height": 198
+  },
+  {
+    "id": "p02_l08_mismas",
+    "page": 2,
+    "crop_image": "p02_l08_mismas.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l08_mismas.png",
+    "ground_truth": "mismas palabras» Génesis 11, 1 a 9.",
+    "notes": "Cita Génesis renglón 2",
+    "bbox": [
+      701,
+      2210,
+      2630,
+      2412
+    ],
+    "crop_width": 1929,
+    "crop_height": 202
+  },
+  {
+    "id": "p02_l09_poeta_ny",
+    "page": 2,
+    "crop_image": "p02_l09_poeta_ny.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l09_poeta_ny.png",
+    "ground_truth": "«Siente el olor en la grieta mas profunda",
+    "notes": "Cita poeta chino renglón 1",
+    "bbox": [
+      596,
+      3170,
+      3366,
+      3381
+    ],
+    "crop_width": 2770,
+    "crop_height": 211
+  },
+  {
+    "id": "p02_l10_cuatro_v",
+    "page": 2,
+    "crop_image": "p02_l10_cuatro_v.png",
+    "crop_path": "C:\\Users\\WLADI\\Desktop\\COLOANE\\TRANSCRIPCIONES COLOANE\\experimentos\\02_segmentacion_lineas\\crops\\p02_l10_cuatro_v.png",
+    "ground_truth": "y elévate a la cima de los cuatro vientos»",
+    "notes": "Cita poeta chino renglón 2",
+    "bbox": [
+      631,
+      3381,
+      3191,
+      3588
+    ],
+    "crop_width": 2560,
+    "crop_height": 207
+  }
+]

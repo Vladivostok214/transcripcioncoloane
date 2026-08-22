@@ -1,0 +1,62 @@
+id,code,char,category,raw_image,isolated_image,svg_vector,context_word,ink,style,source_line,width,height
+GLYPH_001,T_imp,T,mayuscula,crops_raw/T_imp_raw.png,crops_isolated/T_imp_iso.png,svg_vectors/T_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,150,150
+GLYPH_002,E_imp,E,mayuscula,crops_raw/E_imp_raw.png,crops_isolated/E_imp_iso.png,svg_vectors/E_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,88,109
+GLYPH_003,M_imp,M,mayuscula,crops_raw/M_imp_raw.png,crops_isolated/M_imp_iso.png,svg_vectors/M_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,160,99
+GLYPH_004,P_imp,P,mayuscula,crops_raw/P_imp_raw.png,crops_isolated/P_imp_iso.png,svg_vectors/P_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,120,116
+GLYPH_005,O_imp,O,mayuscula,crops_raw/O_imp_raw.png,crops_isolated/O_imp_iso.png,svg_vectors/O_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,110,108
+GLYPH_006,R_imp,R,mayuscula,crops_raw/R_imp_raw.png,crops_isolated/R_imp_iso.png,svg_vectors/R_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,100,114
+GLYPH_007,A_imp,A,mayuscula,crops_raw/A_imp_raw.png,crops_isolated/A_imp_iso.png,svg_vectors/A_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,100,150
+GLYPH_008,L_imp,L,mayuscula,crops_raw/L_imp_raw.png,crops_isolated/L_imp_iso.png,svg_vectors/L_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,90,150
+GLYPH_009,S_imp,S,mayuscula,crops_raw/S_imp_raw.png,crops_isolated/S_imp_iso.png,svg_vectors/S_imp.svg,TEMPORALES (imprenta),azul,imprenta,p03_l16_bloque.png,109,150
+GLYPH_010,Y_imp,Y,mayuscula,crops_raw/Y_imp_raw.png,crops_isolated/Y_imp_iso.png,svg_vectors/Y_imp.svg,TEMPORALES Y (imprenta),azul,imprenta,p03_l16_bloque.png,110,150
+GLYPH_011,B_cur,B,mayuscula,crops_raw/B_cur_raw.png,crops_isolated/B_cur_iso.png,svg_vectors/B_cur.svg,Babel (cursiva),azul,cursiva,p02_l06_babel.png,128,159
+GLYPH_012,C_cur,C,mayuscula,crops_raw/C_cur_raw.png,crops_isolated/C_cur_iso.png,svg_vectors/C_cur.svg,Coloane (firma cursiva),azul,cursiva,p03_l17_final.png,100,76
+GLYPH_013,E_cur,E,mayuscula,crops_raw/E_cur_raw.png,crops_isolated/E_cur_iso.png,svg_vectors/E_cur.svg,Ezra (cursiva),azul,cursiva,p02_l05_ezra4.png,160,96
+GLYPH_014,G_cur,G,mayuscula,crops_raw/G_cur_raw.png,crops_isolated/G_cur_iso.png,svg_vectors/G_cur.svg,Génesis (cursiva),azul,cursiva,p02_l08_mismas.png,180,130
+GLYPH_015,I_cur_red,I,mayuscula,crops_raw/I_cur_red_raw.png,crops_isolated/I_cur_red_iso.png,svg_vectors/I_cur_red.svg,Isla (cursiva roja),roja,cursiva,p03_l13_rojo1.png,242,138
+GLYPH_016,L_cur,L,mayuscula,crops_raw/L_cur_raw.png,crops_isolated/L_cur_iso.png,svg_vectors/L_cur.svg,La literatura (cursiva),azul,cursiva,p02_l06_babel.png,180,160
+GLYPH_017,P_cur,P,mayuscula,crops_raw/P_cur_raw.png,crops_isolated/P_cur_iso.png,svg_vectors/P_cur.svg,Pound (cursiva),azul,cursiva,p02_l05_ezra4.png,240,131
+GLYPH_018,S_cur,S,mayuscula,crops_raw/S_cur_raw.png,crops_isolated/S_cur_iso.png,svg_vectors/S_cur.svg,Significaciones (cursiva),azul,cursiva,p02_l01_encabezado.png,155,183
+GLYPH_019,S_cur_red,S,mayuscula,crops_raw/S_cur_red_raw.png,crops_isolated/S_cur_red_iso.png,svg_vectors/S_cur_red.svg,Sagrada (cursiva roja),roja,cursiva,p03_l13_rojo1.png,191,152
+GLYPH_020,T_cur,T,mayuscula,crops_raw/T_cur_raw.png,crops_isolated/T_cur_iso.png,svg_vectors/T_cur.svg,Travesías (cursiva),azul,cursiva,p03_l11_medio1.png,109,162
+GLYPH_021,U_cur,U,mayuscula,crops_raw/U_cur_raw.png,crops_isolated/U_cur_iso.png,svg_vectors/U_cur.svg,Un lenguaje (cursiva),azul,cursiva,p02_l02_ezra1.png,110,101
+GLYPH_022,U_cur_red,U,mayuscula,crops_raw/U_cur_red_raw.png,crops_isolated/U_cur_red_iso.png,svg_vectors/U_cur_red.svg,Un arcoiris (cursiva roja),roja,cursiva,p03_l14_rojo2.png,179,180
+GLYPH_023,V_cur,V,mayuscula,crops_raw/V_cur_raw.png,crops_isolated/V_cur_iso.png,svg_vectors/V_cur.svg,Vientos (cursiva),azul,cursiva,p03_l02_verso1.png,101,157
+GLYPH_024,a_min,a,minuscula,crops_raw/a_min_raw.png,crops_isolated/a_min_iso.png,svg_vectors/a_min.svg,La (letra a),azul,cursiva,p02_l06_babel.png,65,109
+GLYPH_025,b_min,b,minuscula,crops_raw/b_min_raw.png,crops_isolated/b_min_iso.png,svg_vectors/b_min.svg,Babel (letra b),azul,cursiva,p02_l06_babel.png,120,137
+GLYPH_026,c_min,c,minuscula,crops_raw/c_min_raw.png,crops_isolated/c_min_iso.png,svg_vectors/c_min.svg,cargados (letra c),azul,cursiva,p03_l03_verso2.png,120,134
+GLYPH_027,d_min,d,minuscula,crops_raw/d_min_raw.png,crops_isolated/d_min_iso.png,svg_vectors/d_min.svg,del (letra d),azul,cursiva,p03_l02_verso1.png,80,84
+GLYPH_028,e_min,e,minuscula,crops_raw/e_min_raw.png,crops_isolated/e_min_iso.png,svg_vectors/e_min.svg,Vientos (letra e),azul,cursiva,p03_l02_verso1.png,70,142
+GLYPH_029,f_min,f,minuscula,crops_raw/f_min_raw.png,crops_isolated/f_min_iso.png,svg_vectors/f_min.svg,definitivo (letra f),azul,cursiva,p03_l17_final.png,120,127
+GLYPH_030,g_min,g,minuscula,crops_raw/g_min_raw.png,crops_isolated/g_min_iso.png,svg_vectors/g_min.svg,grandes (letra g),azul,cursiva,p03_l04_verso3.png,140,170
+GLYPH_031,h_min,h,minuscula,crops_raw/h_min_raw.png,crops_isolated/h_min_iso.png,svg_vectors/h_min.svg,hijas (letra h),azul,cursiva,p03_l08_verso7.png,170,144
+GLYPH_032,i_min,i,minuscula,crops_raw/i_min_raw.png,crops_isolated/i_min_iso.png,svg_vectors/i_min.svg,Vientos (letra i),azul,cursiva,p03_l02_verso1.png,60,143
+GLYPH_033,j_min,j,minuscula,crops_raw/j_min_raw.png,crops_isolated/j_min_iso.png,svg_vectors/j_min.svg,pájaros (letra j),azul,cursiva,p03_l04_verso3.png,170,180
+GLYPH_034,l_min,l,minuscula,crops_raw/l_min_raw.png,crops_isolated/l_min_iso.png,svg_vectors/l_min.svg,del (letra l),azul,cursiva,p03_l02_verso1.png,91,90
+GLYPH_035,m_min,m,minuscula,crops_raw/m_min_raw.png,crops_isolated/m_min_iso.png,svg_vectors/m_min.svg,madre (letra m roja),roja,cursiva,p03_l13_rojo1.png,210,154
+GLYPH_036,n_min,n,minuscula,crops_raw/n_min_raw.png,crops_isolated/n_min_iso.png,svg_vectors/n_min.svg,Vientos (letra n),azul,cursiva,p03_l02_verso1.png,90,61
+GLYPH_037,n_tilde_min,ñ,minuscula,crops_raw/n_tilde_min_raw.png,crops_isolated/n_tilde_min_iso.png,svg_vectors/n_tilde_min.svg,pequeños (letra ñ),azul,cursiva,p03_l09_verso8.png,170,148
+GLYPH_038,o_min,o,minuscula,crops_raw/o_min_raw.png,crops_isolated/o_min_iso.png,svg_vectors/o_min.svg,Vientos (letra o),azul,cursiva,p03_l02_verso1.png,60,58
+GLYPH_039,p_min,p,minuscula,crops_raw/p_min_raw.png,crops_isolated/p_min_iso.png,svg_vectors/p_min.svg,pequeños (letra p),azul,cursiva,p03_l09_verso8.png,122,180
+GLYPH_040,q_min,q,minuscula,crops_raw/q_min_raw.png,crops_isolated/q_min_iso.png,svg_vectors/q_min.svg,pequeños (letra q),azul,cursiva,p03_l09_verso8.png,130,142
+GLYPH_041,r_min,r,minuscula,crops_raw/r_min_raw.png,crops_isolated/r_min_iso.png,svg_vectors/r_min.svg,cargados (letra r),azul,cursiva,p03_l03_verso2.png,120,74
+GLYPH_042,s_min,s,minuscula,crops_raw/s_min_raw.png,crops_isolated/s_min_iso.png,svg_vectors/s_min.svg,Vientos (letra s),azul,cursiva,p03_l02_verso1.png,70,150
+GLYPH_043,t_min,t,minuscula,crops_raw/t_min_raw.png,crops_isolated/t_min_iso.png,svg_vectors/t_min.svg,Vientos (letra t),azul,cursiva,p03_l02_verso1.png,80,98
+GLYPH_044,u_min,u,minuscula,crops_raw/u_min_raw.png,crops_isolated/u_min_iso.png,svg_vectors/u_min.svg,pequeños (letra u),azul,cursiva,p03_l09_verso8.png,90,66
+GLYPH_045,v_min,v,minuscula,crops_raw/v_min_raw.png,crops_isolated/v_min_iso.png,svg_vectors/v_min.svg,vergeles (letra v),azul,cursiva,p03_l09_verso8.png,120,107
+GLYPH_046,x_min,x,minuscula,crops_raw/x_min_raw.png,crops_isolated/x_min_iso.png,svg_vectors/x_min.svg,máximo (letra x),azul,cursiva,p02_l03_ezra2.png,100,140
+GLYPH_047,y_min,y,minuscula,crops_raw/y_min_raw.png,crops_isolated/y_min_iso.png,svg_vectors/y_min.svg,y (conjunción),azul,cursiva,p03_l11_medio1.png,117,135
+GLYPH_048,z_min,z,minuscula,crops_raw/z_min_raw.png,crops_isolated/z_min_iso.png,svg_vectors/z_min.svg,Ezra (letra z),azul,cursiva,p02_l05_ezra4.png,100,112
+GLYPH_049,a_tilde_min,á,minuscula,crops_raw/a_tilde_min_raw.png,crops_isolated/a_tilde_min_iso.png,svg_vectors/a_tilde_min.svg,pájaros (á tilde),azul,cursiva,p03_l04_verso3.png,120,180
+GLYPH_050,e_tilde_min,é,minuscula,crops_raw/e_tilde_min_raw.png,crops_isolated/e_tilde_min_iso.png,svg_vectors/e_tilde_min.svg,Génesis (é tilde),azul,cursiva,p02_l08_mismas.png,80,127
+GLYPH_051,i_tilde_min,í,minuscula,crops_raw/i_tilde_min_raw.png,crops_isolated/i_tilde_min_iso.png,svg_vectors/i_tilde_min.svg,Travesías (í tilde),azul,cursiva,p03_l11_medio1.png,160,89
+GLYPH_052,o_tilde_min,ó,minuscula,crops_raw/o_tilde_min_raw.png,crops_isolated/o_tilde_min_iso.png,svg_vectors/o_tilde_min.svg,nació (ó tilde),azul,cursiva,p02_l06_babel.png,150,131
+GLYPH_053,num_1,1,numero,crops_raw/num_1_raw.png,crops_isolated/num_1_iso.png,svg_vectors/num_1.svg,1977 (dígito 1),azul,manuscrito,p03_l17_final.png,120,170
+GLYPH_054,num_7,7,numero,crops_raw/num_7_raw.png,crops_isolated/num_7_iso.png,svg_vectors/num_7.svg,1977 (dígito 7),azul,manuscrito,p03_l17_final.png,120,170
+GLYPH_055,num_9,9,numero,crops_raw/num_9_raw.png,crops_isolated/num_9_iso.png,svg_vectors/num_9.svg,1977 (dígito 9),azul,manuscrito,p03_l17_final.png,100,170
+GLYPH_056,signo_comilla_apertura,«,signo,crops_raw/signo_comilla_apertura_raw.png,crops_isolated/signo_comilla_apertura_iso.png,svg_vectors/signo_comilla_apertura.svg,« comillas apertura,azul,caligráfico,p02_l02_ezra1.png,55,130
+GLYPH_057,signo_comilla_cierre,»,signo,crops_raw/signo_comilla_cierre_raw.png,crops_isolated/signo_comilla_cierre_iso.png,svg_vectors/signo_comilla_cierre.svg,» comillas cierre,azul,caligráfico,p02_l03_ezra2.png,110,140
+GLYPH_058,signo_dos_puntos,:,signo,crops_raw/signo_dos_puntos_raw.png,crops_isolated/signo_dos_puntos_iso.png,svg_vectors/signo_dos_puntos.svg,: dos puntos,azul,caligráfico,p02_l01_encabezado.png,60,87
+GLYPH_059,signo_coma,",",signo,crops_raw/signo_coma_raw.png,crops_isolated/signo_coma_iso.png,svg_vectors/signo_coma.svg,", coma",azul,caligráfico,p03_l08_verso7.png,90,93
+GLYPH_060,signo_punto,.,signo,crops_raw/signo_punto_raw.png,crops_isolated/signo_punto_iso.png,svg_vectors/signo_punto.svg,. punto final,azul,caligráfico,p03_l17_final.png,67,75
+GLYPH_061,signo_puntos_suspensivos,…,signo,crops_raw/signo_puntos_suspensivos_raw.png,crops_isolated/signo_puntos_suspensivos_iso.png,svg_vectors/signo_puntos_suspensivos.svg,… puntos suspensivos,roja,caligráfico,p03_l13_rojo1.png,193,51

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.venv_htr/
+ENV/
+
+# OS Artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
+.BIN/
+
+# IDE and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary Logs
+*.log

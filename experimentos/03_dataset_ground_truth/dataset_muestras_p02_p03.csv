@@ -1,0 +1,28 @@
+id,page,image_file,ground_truth,notes,width,height
+p03_l01_titulo_top,3,p03_l01_titulo_top.png,Travesías y Temporales de la Isla Madre,Título superior con tachaduras,2490,245
+p03_l02_verso1,3,p03_l02_verso1.png,Vientos del oeste,Verso 1,1333,210
+p03_l03_verso2,3,p03_l03_verso2.png,Vienen cargados con el canto,Verso 2,2034,206
+p03_l04_verso3,3,p03_l04_verso3.png,de los grandes pájaros oceánicos,Verso 3,2279,196
+p03_l05_verso4,3,p03_l05_verso4.png,dejando caer sus semillas errantes,Verso 4 con 'sus' interlineal,2279,218
+p03_l06_verso5,3,p03_l06_verso5.png,sobre lomajes terciarios,Verso 5 con 'tos' tachado,1999,193
+p03_l07_verso6,3,p03_l07_verso6.png,de nuestra gran isla madre,Verso 6 con inserción 'nuestra gran',1614,201
+p03_l08_verso7,3,p03_l08_verso7.png,y en sus hijas,Verso 7 con 'de' tachado y 'tos en' corregido,1579,196
+p03_l09_verso8,3,p03_l09_verso8.png,"protegidas,",Verso 8 con 'como' tachado,1543,197
+p03_l10_verso9,3,p03_l10_verso9.png,pequeños vergeles flotantes.,Verso 9,2069,241
+p03_l11_medio1,3,p03_l11_medio1.png,Travesías y temporales,Título central variante 1,2209,227
+p03_l12_medio2,3,p03_l12_medio2.png,Temporales y travesías,Título central variante 2,2139,219
+p03_l13_rojo1,3,p03_l13_rojo1.png,"Isla madre, sagrada…",En tinta roja subrayada,2314,306
+p03_l14_rojo2,3,p03_l14_rojo2.png,Un arcoiris de sol y sombra será,En tinta roja - verso superior,2981,218
+p03_l15_rojo3,3,p03_l15_rojo3.png,tu portada,En tinta roja - remate de verso,1297,219
+p03_l16_bloque,3,p03_l16_bloque.png,TEMPORALES Y Travesías,Mayúsculas imprenta y cursiva,2350,240
+p03_l17_final,3,p03_l17_final.png,Este es el título definitivo.,Nota final con firma,2771,197
+p02_l01_encabezado,2,p02_l01_encabezado.png,Significaciones:,Título de sección,1193,242
+p02_l02_ezra1,2,p02_l02_ezra1.png,«Un lenguaje cargado de significación,Cita Ezra Pound renglón 1,2665,207
+p02_l03_ezra2,2,p02_l03_ezra2.png,"hasta el máximo», que es la definición",Cita Ezra Pound renglón 2,2735,199
+p02_l04_ezra3,2,p02_l04_ezra3.png,de la literatura que proponía el norteame-,Cita Ezra Pound renglón 3,2735,203
+p02_l05_ezra4,2,p02_l05_ezra4.png,ricano Ezra Pound.,Cita Ezra Pound renglón 4,1473,198
+p02_l06_babel,2,p02_l06_babel.png,"«La literatura nació en Babel» (Gén., 11, 1 a 9)",Cita Génesis,2735,194
+p02_l07_todoel,2,p02_l07_todoel.png,«Todo el mundo usaba la misma lengua y las,Cita Génesis renglón 1,2770,198
+p02_l08_mismas,2,p02_l08_mismas.png,"mismas palabras» Génesis 11, 1 a 9.",Cita Génesis renglón 2,1929,202
+p02_l09_poeta_ny,2,p02_l09_poeta_ny.png,«Siente el olor en la grieta mas profunda,Cita poeta chino renglón 1,2770,211
+p02_l10_cuatro_v,2,p02_l10_cuatro_v.png,y elévate a la cima de los cuatro vientos»,Cita poeta chino renglón 2,2560,207
