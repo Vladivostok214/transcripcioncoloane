@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "total_glyphs": 91,
-    "lines_annotated": 20,
+    "total_glyphs": 97,
+    "lines_annotated": 22,
     "last_updated": "WLADI"
   },
   "glyphs": [
@@ -1576,6 +1576,102 @@
       ],
       "crop_file": "g_custom_1787375657342_01_u00f1.png",
       "crop_isolated_file": "g_custom_1787375657342_01_u00f1_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_01_F",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "F",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        75,
+        31,
+        29,
+        38
+      ],
+      "crop_file": "g_cap_1787377048367_01_F.png",
+      "crop_isolated_file": "g_cap_1787377048367_01_F_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_02_C",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "C",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        408,
+        36,
+        28,
+        30
+      ],
+      "crop_file": "g_cap_1787377048367_02_C.png",
+      "crop_isolated_file": "g_cap_1787377048367_02_C_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_03_H",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "H",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        552,
+        32,
+        27,
+        38
+      ],
+      "crop_file": "g_cap_1787377048367_03_H.png",
+      "crop_isolated_file": "g_cap_1787377048367_03_H_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_04_R",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "R",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        232,
+        87,
+        31,
+        32
+      ],
+      "crop_file": "g_cap_1787377048367_04_R.png",
+      "crop_isolated_file": "g_cap_1787377048367_04_R_iso.png"
+    },
+    {
+      "id": "g_cap_1787377161791_01_M",
+      "line_id": "cap_1787377161791",
+      "page": "captura_externa",
+      "character": "M",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        250,
+        35,
+        40,
+        38
+      ],
+      "crop_file": "g_cap_1787377161791_01_M.png",
+      "crop_isolated_file": "g_cap_1787377161791_01_M_iso.png"
+    },
+    {
+      "id": "g_cap_1787377161791_02_N",
+      "line_id": "cap_1787377161791",
+      "page": "captura_externa",
+      "character": "N",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        132,
+        33,
+        29,
+        34
+      ],
+      "crop_file": "g_cap_1787377161791_02_N.png",
+      "crop_isolated_file": "g_cap_1787377161791_02_N_iso.png"
     }
   ]
 }

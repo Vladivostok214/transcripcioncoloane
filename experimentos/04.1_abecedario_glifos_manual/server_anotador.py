@@ -191,8 +191,9 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                 db = load_db()
                 glyphs_list = db.get('glyphs', [])
 
-                # Cleanly replace existing glyphs for this line_id / session
-                glyphs_list = [g for g in glyphs_list if g.get('line_id') != line_id]
+                import time
+                ts = int(time.time() * 1000)
+                existing_ids = {g['id'] for g in glyphs_list}
 
                 for i, b in enumerate(boxes):
                     bx, by, bw, bh = int(b['x']), int(b['y']), int(b['w']), int(b['h'])
@@ -203,6 +204,9 @@ class AnnotationHandler(BaseHTTPRequestHandler):
 
                     safe_char = get_safe_char(char_str)
                     glyph_id = f"g_{line_id}_{i+1:02d}_{safe_char}"
+                    if glyph_id in existing_ids:
+                        glyph_id = f"g_{line_id}_{i+1:02d}_{ts}_{safe_char}"
+                    
                     crop_filename = f"{glyph_id}.png"
                     crop_iso_filename = f"{glyph_id}_iso.png"
 

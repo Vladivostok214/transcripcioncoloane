@@ -1721,9 +1721,17 @@
 
                 const result = await res.json();
                 if (result.status === 'ok') {
+                    const savedCount = currentBoxes.length;
                     allGlyphs = result.db.glyphs;
                     updateGlobalStats();
-                    showToast(`✓ ${currentBoxes.length} glifo(s) guardado(s) en el banco de datos`);
+
+                    // Clear sidebar and canvas selections, ready for another batch on the same image
+                    currentBoxes = [];
+                    currentCaptureId = `cap_${Date.now()}`;
+                    renderCanvas();
+                    renderSidebarList();
+
+                    showToast(`✓ ${savedCount} glifo(s) guardado(s) en el banco de datos`);
                 } else {
                     alert("Error al guardar: " + result.message);
                 }
