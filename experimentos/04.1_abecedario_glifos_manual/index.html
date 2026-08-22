@@ -1284,16 +1284,33 @@
         });
 
         function resizeCanvas() {
-            canvas.width = viewport.clientWidth;
-            canvas.height = viewport.clientHeight;
-            renderCanvas();
+            const rect = viewport.getBoundingClientRect();
+            const w = Math.round(rect.width);
+            const h = Math.round(rect.height);
+            if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
+                canvas.width = w;
+                canvas.height = h;
+                renderCanvas();
+            }
         }
+
+        // Continuous DOM size observer to keep internal canvas buffer 1:1 with displayed size
+        const vpResizeObserver = new ResizeObserver(() => {
+            resizeCanvas();
+        });
+        vpResizeObserver.observe(viewport);
 
         // Coordinate transforms
         function screenToImage(clientX, clientY) {
-            const vpRect = viewport.getBoundingClientRect();
-            const sx = clientX - vpRect.left;
-            const sy = clientY - vpRect.top;
+            const rect = canvas.getBoundingClientRect();
+            if (!rect.width || !rect.height) return { x: 0, y: 0 };
+            
+            // Exact scale factor between display size and internal canvas buffer
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const sx = (clientX - rect.left) * scaleX;
+            const sy = (clientY - rect.top) * scaleY;
             return {
                 x: (sx - panX) / zoom,
                 y: (sy - panY) / zoom
@@ -1301,10 +1318,16 @@
         }
 
         function imageToScreen(imgX, imgY) {
-            const vpRect = viewport.getBoundingClientRect();
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = rect.width / (canvas.width || 1);
+            const scaleY = rect.height / (canvas.height || 1);
+
+            const canvasX = panX + (imgX * zoom);
+            const canvasY = panY + (imgY * zoom);
+
             return {
-                x: vpRect.left + panX + (imgX * zoom),
-                y: vpRect.top + panY + (imgY * zoom)
+                x: rect.left + (canvasX * scaleX),
+                y: rect.top + (canvasY * scaleY)
             };
         }
 
@@ -1709,9 +1732,12 @@
         viewport.addEventListener('wheel', (e) => {
             if (!currentImage) return;
             e.preventDefault();
-            const vpRect = viewport.getBoundingClientRect();
-            const mouseX = e.clientX - vpRect.left;
-            const mouseY = e.clientY - vpRect.top;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / (rect.width || 1);
+            const scaleY = canvas.height / (rect.height || 1);
+
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
 
             const zoomFactor = e.deltaY < 0 ? 1.15 : 0.85;
             const newZoom = Math.max(0.15, Math.min(6.0, zoom * zoomFactor));
@@ -1724,13 +1750,18 @@
             renderCanvas();
         });
 
+        let origPanX = 0;
+        let origPanY = 0;
+
         viewport.addEventListener('mousedown', (e) => {
             if (!currentImage) return;
-            // Right click / Middle click = Pan
+            // Right click / Middle click / Shift+click = Pan
             if (e.button === 1 || e.button === 2 || e.shiftKey || e.altKey) {
                 isPanning = true;
-                startPanX = e.clientX - panX;
-                startPanY = e.clientY - panY;
+                startPanX = e.clientX;
+                startPanY = e.clientY;
+                origPanX = panX;
+                origPanY = panY;
                 viewport.style.cursor = 'grab';
                 return;
             }
@@ -1775,8 +1806,11 @@
             };
 
             if (isPanning) {
-                panX = e.clientX - startPanX;
-                panY = e.clientY - startPanY;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / (rect.width || 1);
+                const scaleY = canvas.height / (rect.height || 1);
+                panX = origPanX + (e.clientX - startPanX) * scaleX;
+                panY = origPanY + (e.clientY - startPanY) * scaleY;
                 renderCanvas();
                 return;
             }
@@ -1793,11 +1827,12 @@
                 currentDrawRect = { x, y, w, h };
                 renderCanvas();
             } else if (selectionMode === 'polygon' && polygonPoints.length > 0) {
-                // Check proximity to first point
+                // Check proximity to first point directly in screen space
                 const p0 = polygonPoints[0];
-                const screenP0 = imageToScreen(p0.x, p0.y);
-                const distScreen = Math.hypot(e.clientX - screenP0.x, e.clientY - screenP0.y);
-                isNearStartPoint = (distScreen < 16 && polygonPoints.length >= 3);
+                const dx = currentMouseImg.x - p0.x;
+                const dy = currentMouseImg.y - p0.y;
+                const distScreen = Math.hypot(dx * zoom, dy * zoom);
+                isNearStartPoint = (distScreen < 18 && polygonPoints.length >= 3);
                 renderCanvas();
             }
         });
