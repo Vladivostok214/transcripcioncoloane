@@ -4,6 +4,13 @@
 **Fecha de Checkpoint:** 22 de Agosto de 2026  
 **Estado:** Activo y Operativo en `http://localhost:8000`
 
+> [!TIP]
+> **🚀 Comando para levantar la aplicación (desde la carpeta `TRANSCRIPCIONES COLOANE`):**
+> ```powershell
+> python experimentos/04.1_abecedario_glifos_manual/server_anotador.py
+> ```
+> Abrir en el navegador: **[http://localhost:8000](http://localhost:8000)** *(para detener: `Ctrl + C` en la terminal)*.
+
 ---
 
 ## 1. Resumen Ejecutivo y Estado del Proyecto
