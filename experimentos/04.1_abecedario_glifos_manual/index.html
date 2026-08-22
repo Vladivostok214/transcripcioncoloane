@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🖋️ Anotador de Glifos - Manuscritos Francisco Coloane</title>
+    <title>🖋️ Banco & Anotador de Glifos - Manuscritos Francisco Coloane</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
             --bg-secondary: #121824;
             --bg-card: #182030;
             --border: #232d42;
-            --border-highlight: #3b82f6;
+            --border-highlight: #38bdf8;
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --accent-blue: #38bdf8;
@@ -26,7 +26,7 @@
             --radius-sm: 6px;
             --radius-md: 10px;
             --radius-lg: 16px;
-            --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
+            --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.15);
         }
 
         * {
@@ -50,18 +50,18 @@
         header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border);
-            height: 54px;
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
+            padding: 0 20px;
             z-index: 20;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         .brand h1 {
             font-size: 16px;
@@ -80,33 +80,17 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        .nav-controls {
+        .header-center {
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .line-select {
-            background: var(--bg-card);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            font-family: 'JetBrains Mono', monospace;
-            cursor: pointer;
-            outline: none;
-            max-width: 380px;
-        }
-        .line-select:focus {
-            border-color: var(--border-highlight);
+            gap: 12px;
         }
 
         .btn {
             background: var(--bg-card);
             color: var(--text-main);
             border: 1px solid var(--border);
-            padding: 6px 12px;
+            padding: 7px 14px;
             border-radius: var(--radius-sm);
             font-size: 13px;
             font-weight: 500;
@@ -136,6 +120,18 @@
         .btn-success:hover {
             background: #047857;
         }
+        .btn-upload {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        }
+        .btn-upload:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(37, 99, 235, 0.3) 100%);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+        }
         .btn-coverage {
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             border: 1px solid #818cf8;
@@ -145,15 +141,6 @@
         .btn-coverage:hover {
             background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
         }
-        .btn-upload {
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            color: var(--accent-blue);
-        }
-        .btn-upload:hover {
-            background: rgba(56, 189, 248, 0.22);
-            border-color: var(--accent-blue);
-        }
 
         .stats-badge {
             font-family: 'JetBrains Mono', monospace;
@@ -161,15 +148,15 @@
             background: rgba(52, 211, 153, 0.12);
             color: var(--accent-green);
             border: 1px solid rgba(52, 211, 153, 0.3);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 6px;
         }
 
-        /* Main Workspace */
+        /* Workspace Layout */
         .workspace {
             display: flex;
             flex: 1;
-            height: calc(100vh - 54px);
+            height: calc(100vh - 56px);
             overflow: hidden;
         }
 
@@ -182,7 +169,8 @@
             overflow: hidden;
         }
 
-        .gt-bar {
+        /* Integrated Canvas Toolbar */
+        .canvas-toolbar {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border);
             padding: 8px 16px;
@@ -192,41 +180,17 @@
             font-size: 13px;
             z-index: 10;
         }
-        .gt-text-container {
+        .toolbar-left {
             display: flex;
             align-items: center;
-            gap: 10px;
-            overflow: hidden;
+            gap: 12px;
         }
-        .gt-label {
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-        .gt-text {
-            color: #7ee787;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            font-weight: 600;
-            background: rgba(46, 160, 67, 0.12);
-            padding: 4px 10px;
-            border-radius: 4px;
-            border: 1px solid rgba(46, 160, 67, 0.3);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .canvas-toolbar {
+        .toolbar-right {
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Tool mode group */
         .tool-mode-group {
             display: flex;
             background: var(--bg-card);
@@ -239,14 +203,14 @@
             background: transparent;
             border: none;
             color: var(--text-muted);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             transition: all 0.15s ease;
         }
         .tool-btn:hover {
@@ -256,7 +220,28 @@
         .tool-btn.active {
             background: #2563eb;
             color: #fff;
-            box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+        }
+
+        .info-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .image-dimensions-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: none;
         }
 
         .zoom-badge {
@@ -267,13 +252,18 @@
             text-align: center;
         }
 
+        /* Viewport & Empty State Dropzone */
         .viewport {
             flex: 1;
             position: relative;
             overflow: hidden;
             cursor: crosshair;
             background: radial-gradient(circle at center, #111822 0%, #080b0f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         #cropCanvas {
             position: absolute;
             top: 0;
@@ -283,7 +273,56 @@
             display: block;
         }
 
-        /* Floating Assignment Card */
+        .empty-dropzone {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            max-width: 540px;
+            background: rgba(18, 24, 36, 0.7);
+            backdrop-filter: blur(16px);
+            border: 2px dashed rgba(56, 189, 248, 0.35);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 0.2s ease;
+        }
+        .empty-dropzone.dragover {
+            border-color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            transform: scale(1.02);
+        }
+        .dropzone-icon {
+            font-size: 48px;
+            margin-bottom: 14px;
+        }
+        .dropzone-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .dropzone-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .dropzone-tip {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 8px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        /* Floating Assignment Popover */
         .assignment-card {
             position: absolute;
             background: rgba(24, 32, 44, 0.96);
@@ -785,17 +824,6 @@
             font-size: 13px;
             gap: 8px;
         }
-
-        /* Instructions tooltip in toolbar */
-        .info-hint {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 3px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
     </style>
 </head>
 <body>
@@ -803,19 +831,16 @@
     <!-- Header -->
     <header>
         <div class="brand">
-            <h1>🖋️ Anotador Manual de Glifos</h1>
+            <h1>🖋️ Banco de Glifos Coloane</h1>
             <span class="badge-exp">Exp 04.1</span>
         </div>
-        <div class="nav-controls">
-            <button class="btn" id="btnPrevLine">◀ Anterior</button>
-            <select class="line-select" id="lineSelect"></select>
-            <button class="btn" id="btnNextLine">Siguiente ▶</button>
+        <div class="header-center">
             <input type="file" id="fileUploadInput" accept="image/*" style="display: none;" />
             <button class="btn btn-upload" id="btnUploadImage" title="Subir imagen o presiona Ctrl+V para pegar captura">
                 📤 Cargar Imagen / Pegar (Ctrl+V)
             </button>
         </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
             <button class="btn btn-coverage" id="btnOpenCoverage">📊 Catálogo & Cobertura</button>
             <div class="stats-badge" id="totalStatsBadge">Total Glifos: 0</div>
         </div>
@@ -824,13 +849,9 @@
     <!-- Workspace -->
     <div class="workspace">
         <div class="editor-container">
-            <div class="gt-bar">
-                <div class="gt-text-container">
-                    <span class="gt-label">Texto Referencia:</span>
-                    <span class="gt-text" id="gtTextDisplay">Cargando...</span>
-                </div>
-                <div class="canvas-toolbar">
-                    <!-- Tool Mode Selector -->
+            <!-- Integrated Canvas Toolbar -->
+            <div class="canvas-toolbar">
+                <div class="toolbar-left">
                     <div class="tool-mode-group">
                         <button class="tool-btn active" id="btnToolRect" title="Modo Rectángulo (Tecla 1)">
                             ⬛ Rectángulo (1)
@@ -840,19 +861,36 @@
                         </button>
                     </div>
 
-                    <span class="info-hint" id="polyHint" style="display: none;">
-                        Clics: Vértices | Doble Clic / Enter: Cerrar | Esc: Cancelar
+                    <span class="info-hint" id="modeHint">
+                        Modo Rectángulo: Arrastra para encerrar una letra
                     </span>
+                </div>
 
+                <div class="toolbar-right">
+                    <span class="image-dimensions-pill" id="imageDimensionsPill">0×0 px</span>
                     <button class="btn" id="btnZoomOut" title="Reducir Zoom">-</button>
                     <span class="zoom-badge" id="zoomLevelDisplay">100%</span>
                     <button class="btn" id="btnZoomIn" title="Aumentar Zoom">+</button>
-                    <button class="btn" id="btnResetZoom" title="Ajustar (Tecla R)">Ajustar</button>
+                    <button class="btn" id="btnResetZoom" title="Ajustar a pantalla (Tecla R)">🔍 Ajustar (R)</button>
                 </div>
             </div>
 
+            <!-- Viewport & Dropzone -->
             <div class="viewport" id="viewport">
                 <canvas id="cropCanvas"></canvas>
+
+                <!-- Initial Empty State Dropzone -->
+                <div class="empty-dropzone" id="emptyDropzone">
+                    <div class="dropzone-icon">📋</div>
+                    <h2 class="dropzone-title">Pega una captura del manuscrito (Ctrl + V)</h2>
+                    <p class="dropzone-subtitle">O arrastra y suelta una imagen aquí para recortar y catalogar sus letras caligráficas.</p>
+                    <div class="dropzone-tip">
+                        💡 <strong>Tip:</strong> Usa <code>Win + Shift + S</code> en Windows para recortar cualquier letra del cuaderno y pégala aquí directamente.
+                    </div>
+                    <button class="btn btn-primary" id="btnDropzoneUpload">
+                        📂 Seleccionar Archivo
+                    </button>
+                </div>
             </div>
 
             <!-- Floating Assignment Popover -->
@@ -866,13 +904,13 @@
                 </div>
                 <div class="form-group">
                     <label>Letra / Carácter Exacto *</label>
-                    <input type="text" class="form-input" id="inputChar" maxlength="4" placeholder="ej. T, a, 7, «" autofocus autocomplete="off" />
+                    <input type="text" class="form-input" id="inputChar" maxlength="4" placeholder="ej. T, a, ñ, 7, «" autofocus autocomplete="off" />
                 </div>
                 <div class="form-group">
                     <label>Categoría Caligráfica *</label>
                     <select class="form-select" id="selectCategory">
-                        <option value="mayuscula">🔠 Mayúscula</option>
                         <option value="minuscula" selected>🔡 Minúscula</option>
+                        <option value="mayuscula">🔠 Mayúscula</option>
                         <option value="numero">🔢 Número</option>
                         <option value="signo">✒️ Signo de Puntuación</option>
                         <option value="ligadura">🔗 Ligadura / Par de letras</option>
@@ -881,7 +919,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nota / Contexto (Opcional)</label>
-                    <input type="text" class="form-input" id="inputNotes" placeholder="ej. T inicial, bucle cerrado, rojo" />
+                    <input type="text" class="form-input" id="inputNotes" placeholder="ej. x inicial, bucle cerrado, tinta azul" />
                 </div>
                 <div class="btn-row">
                     <button class="btn" id="btnCancelAssignment">Cancelar (Esc)</button>
@@ -893,17 +931,17 @@
         <!-- Sidebar Inventory -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h2>Glifos de la Vista</h2>
-                <span class="glyph-count-badge" id="lineGlyphCount">0 glifos</span>
+                <h2>Glifos de la Captura</h2>
+                <span class="glyph-count-badge" id="captureGlyphCount">0 glifos</span>
             </div>
             <div class="glyph-list" id="glyphListContainer">
                 <div class="empty-state">
-                    <p>Usa la herramienta de selección para clasificar letras y caracteres.</p>
+                    <p>Pega o carga una imagen y selecciona letras para clasificarlas.</p>
                 </div>
             </div>
             <div class="sidebar-footer">
-                <button class="btn btn-success" id="btnSaveLine" style="width: 100%; justify-content: center; padding: 10px;">
-                    💾 Guardar en Base de Datos (Ctrl+S)
+                <button class="btn btn-success" id="btnSaveGlyphs" style="width: 100%; justify-content: center; padding: 10px;" disabled>
+                    💾 Guardar en Banco de Datos (Ctrl+S)
                 </button>
             </div>
         </div>
@@ -991,13 +1029,12 @@
     <div class="toast" id="toastMessage">✓ Guardado</div>
 
     <script>
-        // Data & State
-        let dataset = [];
+        // State
         let allGlyphs = [];
-        let currentLineIndex = 0;
-        let lineImage = new Image();
+        let currentImage = null; // Image object
+        let currentImageDataUrl = null; // base64
+        let currentCaptureId = null;
         let currentBoxes = [];
-        let customImageDataUrl = null; // Stored if user loads a custom image
 
         // Selection Tool Mode: 'rect' or 'polygon'
         let selectionMode = 'rect';
@@ -1007,6 +1044,7 @@
 
         // Viewport & Pan/Zoom
         const viewport = document.getElementById('viewport');
+        const emptyDropzone = document.getElementById('emptyDropzone');
         const canvas = document.getElementById('cropCanvas');
         const ctx = canvas.getContext('2d');
         const previewCanvas = document.getElementById('previewCanvas');
@@ -1043,7 +1081,7 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             setupToolModeSwitcher();
-            setupImageUploaderAndPaste();
+            setupImageIngestion();
             setupCatalogModal();
             fetchInitData();
         });
@@ -1077,7 +1115,7 @@
         function setupToolModeSwitcher() {
             const btnRect = document.getElementById('btnToolRect');
             const btnPoly = document.getElementById('btnToolPoly');
-            const polyHint = document.getElementById('polyHint');
+            const modeHint = document.getElementById('modeHint');
 
             function setMode(mode) {
                 selectionMode = mode;
@@ -1088,11 +1126,11 @@
                 if (mode === 'rect') {
                     btnRect.classList.add('active');
                     btnPoly.classList.remove('active');
-                    polyHint.style.display = 'none';
+                    modeHint.textContent = 'Modo Rectángulo: Arrastra para encerrar una letra';
                 } else {
                     btnPoly.classList.add('active');
                     btnRect.classList.remove('active');
-                    polyHint.style.display = 'inline-block';
+                    modeHint.textContent = 'Modo Polígono: Clics: Vértices | Doble Clic / Enter: Cerrar | Esc: Cancelar';
                 }
                 renderCanvas();
             }
@@ -1107,13 +1145,7 @@
                 if (e.key === 'r' || e.key === 'R') resetZoom();
                 if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
                     e.preventDefault();
-                    saveLineToDatabase();
-                }
-                if (e.key === 'd' || e.key === 'ArrowRight') {
-                    if (currentLineIndex < dataset.length - 1) loadLine(currentLineIndex + 1);
-                }
-                if (e.key === 'a' || e.key === 'ArrowLeft') {
-                    if (currentLineIndex > 0) loadLine(currentLineIndex - 1);
+                    saveGlyphsToDatabase();
                 }
                 if (e.key === 'Escape') {
                     if (polygonPoints.length > 0) {
@@ -1133,12 +1165,14 @@
             });
         }
 
-        // Free Image Ingestion (Upload & Clipboard Paste)
-        function setupImageUploaderAndPaste() {
+        // Image Ingestion: Upload, Drag & Drop, Clipboard Paste
+        function setupImageIngestion() {
             const fileInput = document.getElementById('fileUploadInput');
             const btnUpload = document.getElementById('btnUploadImage');
+            const btnDropzone = document.getElementById('btnDropzoneUpload');
 
             btnUpload.addEventListener('click', () => fileInput.click());
+            btnDropzone.addEventListener('click', () => fileInput.click());
 
             fileInput.addEventListener('change', (e) => {
                 if (e.target.files && e.target.files[0]) {
@@ -1153,9 +1187,25 @@
                 for (let i = 0; i < items.length; i++) {
                     if (items[i].type.indexOf('image') !== -1) {
                         const blob = items[i].getAsFile();
-                        handleImageFile(blob, 'Captura Portapapeles (Ctrl+V)');
+                        handleImageFile(blob, 'Captura Portapapeles');
                         break;
                     }
+                }
+            });
+
+            // Drag and Drop support
+            viewport.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                emptyDropzone.classList.add('dragover');
+            });
+            viewport.addEventListener('dragleave', () => {
+                emptyDropzone.classList.remove('dragover');
+            });
+            viewport.addEventListener('drop', (e) => {
+                e.preventDefault();
+                emptyDropzone.classList.remove('dragover');
+                if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    handleImageFile(e.dataTransfer.files[0]);
                 }
             });
         }
@@ -1165,22 +1215,27 @@
             reader.onload = (event) => {
                 const dataUrl = event.target.result;
                 const timestamp = Date.now();
-                const customId = `custom_${timestamp}`;
-                const title = customTitle || file.name || `Captura_${timestamp}`;
+                currentCaptureId = `cap_${timestamp}`;
+                currentImageDataUrl = dataUrl;
+                currentBoxes = [];
 
-                const newLine = {
-                    id: customId,
-                    page: 'captura_externa',
-                    crop_image: null,
-                    ground_truth: `[Captura Libre] ${title}`,
-                    _isCustom: true,
-                    _dataUrl: dataUrl
+                const img = new Image();
+                img.onload = () => {
+                    currentImage = img;
+                    emptyDropzone.style.display = 'none';
+
+                    const dimPill = document.getElementById('imageDimensionsPill');
+                    dimPill.textContent = `${img.naturalWidth}×${img.naturalHeight} px`;
+                    dimPill.style.display = 'inline-block';
+
+                    document.getElementById('btnSaveGlyphs').disabled = false;
+
+                    resetZoom();
+                    renderCanvas();
+                    renderSidebarList();
+                    showToast(`✓ Imagen cargada (${img.naturalWidth}×${img.naturalHeight} px)`);
                 };
-
-                dataset.push(newLine);
-                populateLineSelector();
-                loadLine(dataset.length - 1);
-                showToast(`✓ Imagen cargada: ${title}`);
+                img.src = dataUrl;
             };
             reader.readAsDataURL(file);
         }
@@ -1190,89 +1245,30 @@
             try {
                 const res = await fetch('/api/init_data');
                 const data = await res.json();
-                dataset = data.dataset || [];
-                allGlyphs = data.db.glyphs || [];
-                populateLineSelector();
+                allGlyphs = (data.db && data.db.glyphs) ? data.db.glyphs : [];
                 updateGlobalStats();
-                loadLine(0);
             } catch (err) {
                 console.error("Error loading init data:", err);
-                alert("Error al conectar con el servidor backend.");
             }
-        }
-
-        function populateLineSelector() {
-            const select = document.getElementById('lineSelect');
-            select.innerHTML = '';
-            dataset.forEach((line, idx) => {
-                const opt = document.createElement('option');
-                opt.value = idx;
-                const count = allGlyphs.filter(g => g.line_id === line.id).length;
-                const pfx = line._isCustom ? '📂 [Captura]' : `[${String(idx + 1).padStart(2, '0')}]`;
-                opt.textContent = `${pfx} Pág ${line.page} | ${line.id} (${count} glifos)`;
-                select.appendChild(opt);
-            });
         }
 
         function updateGlobalStats() {
             const badge = document.getElementById('totalStatsBadge');
             badge.textContent = `Total Glifos: ${allGlyphs.length}`;
-            populateLineSelector();
-            document.getElementById('lineSelect').value = currentLineIndex;
             updateCoverageModalData();
         }
 
-        function loadLine(index) {
-            if (index < 0 || index >= dataset.length) return;
-            currentLineIndex = index;
-            const line = dataset[index];
-
-            document.getElementById('lineSelect').value = index;
-            document.getElementById('btnPrevLine').disabled = (index === 0);
-            document.getElementById('btnNextLine').disabled = (index === dataset.length - 1);
-            document.getElementById('gtTextDisplay').textContent = line.ground_truth || '(Sin transcripción)';
-
-            currentBoxes = allGlyphs.filter(g => g.line_id === line.id).map(g => ({
-                id: g.id,
-                x: g.bbox[0],
-                y: g.bbox[1],
-                w: g.bbox[2],
-                h: g.bbox[3],
-                polygon: g.polygon || null,
-                character: g.character,
-                category: g.category,
-                notes: g.notes || ''
-            }));
-
-            lineImage = new Image();
-            lineImage.onload = () => {
-                resetZoom();
-                renderCanvas();
-                renderSidebarList();
-            };
-
-            if (line._isCustom && line._dataUrl) {
-                customImageDataUrl = line._dataUrl;
-                lineImage.src = line._dataUrl;
-            } else {
-                customImageDataUrl = null;
-                lineImage.src = `/api/image?line_id=${line.id}&t=${Date.now()}`;
-            }
-            closeModal();
-            polygonPoints = [];
-        }
-
         function resetZoom() {
-            if (!lineImage.naturalWidth) return;
+            if (!currentImage || !currentImage.naturalWidth) return;
             const vpW = viewport.clientWidth;
             const vpH = viewport.clientHeight;
-            const fitW = (vpW - 60) / lineImage.naturalWidth;
-            const fitH = (vpH - 60) / lineImage.naturalHeight;
+            const fitW = (vpW - 60) / currentImage.naturalWidth;
+            const fitH = (vpH - 60) / currentImage.naturalHeight;
             zoom = Math.min(fitW, fitH, 1.4);
             if (zoom < 0.1) zoom = 0.1;
             
-            panX = Math.max(30, (vpW - lineImage.naturalWidth * zoom) / 2);
-            panY = Math.max(30, (vpH - lineImage.naturalHeight * zoom) / 2);
+            panX = Math.max(30, (vpW - currentImage.naturalWidth * zoom) / 2);
+            panY = Math.max(30, (vpH - currentImage.naturalHeight * zoom) / 2);
             updateZoomDisplay();
             renderCanvas();
         }
@@ -1286,11 +1282,16 @@
             ctx.save();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            if (!currentImage) {
+                ctx.restore();
+                return;
+            }
+
             ctx.translate(panX, panY);
             ctx.scale(zoom, zoom);
 
-            if (lineImage.complete && lineImage.naturalWidth > 0) {
-                ctx.drawImage(lineImage, 0, 0);
+            if (currentImage.complete && currentImage.naturalWidth > 0) {
+                ctx.drawImage(currentImage, 0, 0);
             }
 
             // Render existing classified boxes / polygons
@@ -1368,6 +1369,7 @@
 
         // Viewport Event Listeners
         viewport.addEventListener('wheel', (e) => {
+            if (!currentImage) return;
             e.preventDefault();
             const vpRect = viewport.getBoundingClientRect();
             const mouseX = e.clientX - vpRect.left;
@@ -1385,6 +1387,7 @@
         });
 
         viewport.addEventListener('mousedown', (e) => {
+            if (!currentImage) return;
             // Right click / Middle click = Pan
             if (e.button === 1 || e.button === 2 || e.shiftKey || e.altKey) {
                 isPanning = true;
@@ -1396,8 +1399,8 @@
 
             if (e.button === 0) {
                 const imgCoords = screenToImage(e.clientX, e.clientY);
-                if (imgCoords.x < 0 || imgCoords.x > lineImage.naturalWidth ||
-                    imgCoords.y < 0 || imgCoords.y > lineImage.naturalHeight) {
+                if (imgCoords.x < 0 || imgCoords.x > currentImage.naturalWidth ||
+                    imgCoords.y < 0 || imgCoords.y > currentImage.naturalHeight) {
                     return;
                 }
 
@@ -1419,16 +1422,18 @@
         });
 
         viewport.addEventListener('dblclick', (e) => {
+            if (!currentImage) return;
             if (selectionMode === 'polygon' && polygonPoints.length >= 3) {
                 completePolygonSelection();
             }
         });
 
         window.addEventListener('mousemove', (e) => {
+            if (!currentImage) return;
             const imgCoords = screenToImage(e.clientX, e.clientY);
             currentMouseImg = {
-                x: Math.round(Math.max(0, Math.min(lineImage.naturalWidth, imgCoords.x))),
-                y: Math.round(Math.max(0, Math.min(lineImage.naturalHeight, imgCoords.y)))
+                x: Math.round(Math.max(0, Math.min(currentImage.naturalWidth, imgCoords.x))),
+                y: Math.round(Math.max(0, Math.min(currentImage.naturalHeight, imgCoords.y)))
             };
 
             if (isPanning) {
@@ -1444,8 +1449,8 @@
 
                 const x = Math.max(0, Math.min(drawStartImgX, currentImgX));
                 const y = Math.max(0, Math.min(drawStartImgY, currentImgY));
-                const w = Math.min(lineImage.naturalWidth - x, Math.abs(currentImgX - drawStartImgX));
-                const h = Math.min(lineImage.naturalHeight - y, Math.abs(currentImgY - drawStartImgY));
+                const w = Math.min(currentImage.naturalWidth - x, Math.abs(currentImgX - drawStartImgX));
+                const h = Math.min(currentImage.naturalHeight - y, Math.abs(currentImgY - drawStartImgY));
 
                 currentDrawRect = { x, y, w, h };
                 renderCanvas();
@@ -1478,9 +1483,8 @@
         viewport.addEventListener('contextmenu', e => e.preventDefault());
 
         function completePolygonSelection() {
-            if (polygonPoints.length < 3) return;
+            if (polygonPoints.length < 3 || !currentImage) return;
 
-            // Calculate bounding box of polygon
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
             polygonPoints.forEach(p => {
                 if (p.x < minX) minX = p.x;
@@ -1491,8 +1495,8 @@
 
             minX = Math.max(0, minX);
             minY = Math.max(0, minY);
-            maxX = Math.min(lineImage.naturalWidth, maxX);
-            maxY = Math.min(lineImage.naturalHeight, maxY);
+            maxX = Math.min(currentImage.naturalWidth, maxX);
+            maxY = Math.min(currentImage.naturalHeight, maxY);
             const w = maxX - minX;
             const h = maxY - minY;
 
@@ -1520,7 +1524,6 @@
             previewCtx.clearRect(0, 0, rect.w, rect.h);
 
             if (polyArray && polyArray.length >= 3) {
-                // Clip preview to polygon
                 previewCtx.save();
                 previewCtx.beginPath();
                 polyArray.forEach((pt, i) => {
@@ -1532,14 +1535,14 @@
                 previewCtx.closePath();
                 previewCtx.clip();
                 previewCtx.drawImage(
-                    lineImage,
+                    currentImage,
                     rect.x, rect.y, rect.w, rect.h,
                     0, 0, rect.w, rect.h
                 );
                 previewCtx.restore();
             } else {
                 previewCtx.drawImage(
-                    lineImage,
+                    currentImage,
                     rect.x, rect.y, rect.w, rect.h,
                     0, 0, rect.w, rect.h
                 );
@@ -1590,10 +1593,9 @@
 
             const categoryVal = document.getElementById('selectCategory').value;
             const notesVal = document.getElementById('inputNotes').value.trim();
-            const line = dataset[currentLineIndex];
 
             const newBox = {
-                id: `glyph_${line.id}_${Date.now()}`,
+                id: `glyph_${currentCaptureId}_${Date.now()}`,
                 x: rect.x,
                 y: rect.y,
                 w: rect.w,
@@ -1626,13 +1628,13 @@
         // Sidebar List
         function renderSidebarList() {
             const container = document.getElementById('glyphListContainer');
-            const badge = document.getElementById('lineGlyphCount');
+            const badge = document.getElementById('captureGlyphCount');
             badge.textContent = `${currentBoxes.length} glifo${currentBoxes.length === 1 ? '' : 's'}`;
 
             if (currentBoxes.length === 0) {
                 container.innerHTML = `
                 <div class="empty-state">
-                    <p>Usa la herramienta de selección para clasificar letras y caracteres.</p>
+                    <p>Usa la herramienta de selección para clasificar letras y caracteres de la captura.</p>
                 </div>`;
                 return;
             }
@@ -1659,10 +1661,10 @@
                     });
                     tCtx.closePath();
                     tCtx.clip();
-                    tCtx.drawImage(lineImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
+                    tCtx.drawImage(currentImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
                     tCtx.restore();
                 } else {
-                    tCtx.drawImage(lineImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
+                    tCtx.drawImage(currentImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
                 }
 
                 const catOption = document.querySelector(`#selectCategory option[value="${box.category}"]`);
@@ -1692,20 +1694,23 @@
             renderSidebarList();
         };
 
-        // Save Line to Database
-        async function saveLineToDatabase() {
-            const line = dataset[currentLineIndex];
-            const btn = document.getElementById('btnSaveLine');
+        // Save Glyphs to Database
+        async function saveGlyphsToDatabase() {
+            if (!currentImageDataUrl || currentBoxes.length === 0) {
+                alert("Debes seleccionar y clasificar al menos un glifo antes de guardar.");
+                return;
+            }
+
+            const btn = document.getElementById('btnSaveGlyphs');
             btn.disabled = true;
             btn.textContent = '⏳ Guardando...';
 
             try {
                 const payload = {
-                    line_id: line.id,
-                    page: line.page,
-                    crop_image: line.crop_image,
+                    line_id: currentCaptureId,
+                    page: 'captura_externa',
                     boxes: currentBoxes,
-                    image_data: line._dataUrl || customImageDataUrl || (lineImage && lineImage.src && lineImage.src.startsWith('data:') ? lineImage.src : null)
+                    image_data: currentImageDataUrl
                 };
 
                 const res = await fetch('/api/save_line', {
@@ -1718,16 +1723,16 @@
                 if (result.status === 'ok') {
                     allGlyphs = result.db.glyphs;
                     updateGlobalStats();
-                    showToast(`✓ Vista ${line.id} guardada (${currentBoxes.length} glifos)`);
+                    showToast(`✓ ${currentBoxes.length} glifo(s) guardado(s) en el banco de datos`);
                 } else {
                     alert("Error al guardar: " + result.message);
                 }
             } catch (err) {
-                console.error("Error saving line:", err);
-                alert("Error de conexión al guardar el renglón.");
+                console.error("Error saving glyphs:", err);
+                alert("Error de conexión al guardar los glifos.");
             } finally {
                 btn.disabled = false;
-                btn.textContent = '💾 Guardar en Base de Datos (Ctrl+S)';
+                btn.textContent = '💾 Guardar en Banco de Datos (Ctrl+S)';
             }
         }
 
@@ -1738,18 +1743,7 @@
             setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        document.getElementById('btnSaveLine').addEventListener('click', saveLineToDatabase);
-
-        document.getElementById('btnPrevLine').addEventListener('click', () => {
-            if (currentLineIndex > 0) loadLine(currentLineIndex - 1);
-        });
-        document.getElementById('btnNextLine').addEventListener('click', () => {
-            if (currentLineIndex < dataset.length - 1) loadLine(currentLineIndex + 1);
-        });
-        document.getElementById('lineSelect').addEventListener('change', (e) => {
-            loadLine(parseInt(e.target.value));
-        });
-
+        document.getElementById('btnSaveGlyphs').addEventListener('click', saveGlyphsToDatabase);
         document.getElementById('btnZoomIn').addEventListener('click', () => {
             zoom = Math.min(6.0, zoom * 1.25);
             updateZoomDisplay();
@@ -1789,7 +1783,7 @@
                 glyphsByChar[c].push(g);
             });
 
-            // Populate Minusculas Grid
+            // Minusculas Grid
             const gridMin = document.getElementById('gridMinusculas');
             gridMin.innerHTML = '';
             let minCovered = 0;
@@ -1801,7 +1795,7 @@
             document.getElementById('labelMinProgress').textContent = `${minCovered} de 27 base (${Math.round(minCovered/27*100)}%)`;
             document.getElementById('chipMinStats').textContent = `Minúsculas: ${minCovered}/27 (${Math.round(minCovered/27*100)}%)`;
 
-            // Populate Mayusculas Grid
+            // Mayusculas Grid
             const gridMay = document.getElementById('gridMayusculas');
             gridMay.innerHTML = '';
             let mayCovered = 0;
@@ -1813,7 +1807,7 @@
             document.getElementById('labelMayProgress').textContent = `${mayCovered} de 27 base (${Math.round(mayCovered/27*100)}%)`;
             document.getElementById('chipMayStats').textContent = `Mayúsculas: ${mayCovered}/27 (${Math.round(mayCovered/27*100)}%)`;
 
-            // Populate Signs & Digits Grid
+            // Signs & Digits Grid
             const gridOthers = document.getElementById('gridOthers');
             gridOthers.innerHTML = '';
             let othersCount = 0;
@@ -1824,7 +1818,7 @@
             });
             document.getElementById('labelOthersProgress').textContent = `${othersCount} con muestras`;
 
-            // Populate Ligatures & Extras
+            // Ligatures & Extras
             const gridLig = document.getElementById('gridLigatures');
             gridLig.innerHTML = '';
             const existingChars = new Set([...ABC_MIN, ...ABC_MAY, ...COMMON_SIGNS]);

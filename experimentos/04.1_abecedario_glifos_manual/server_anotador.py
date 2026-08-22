@@ -13,8 +13,6 @@ import cv2
 import numpy as np
 
 BASE_DIR = r"C:\Users\WLADI\Desktop\COLOANE\TRANSCRIPCIONES COLOANE"
-DATASET_GT_PATH = os.path.join(BASE_DIR, "experimentos", "03_dataset_ground_truth", "dataset_muestras_p02_p03.json")
-LINES_CROPS_DIR = os.path.join(BASE_DIR, "experimentos", "02_segmentacion_lineas", "crops")
 EXP_DIR = os.path.join(BASE_DIR, "experimentos", "04.1_abecedario_glifos_manual")
 CROPS_OUT_DIR = os.path.join(EXP_DIR, "crops")
 CROPS_ISO_DIR = os.path.join(EXP_DIR, "crops_isolated")
@@ -34,26 +32,20 @@ def get_safe_char(char_str):
             safe.append(f"u{ord(c):04x}")
     return "".join(safe)
 
-def load_dataset_gt():
-    if os.path.exists(DATASET_GT_PATH):
-        with open(DATASET_GT_PATH, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return []
-
 def load_db():
     if os.path.exists(JSON_DB_PATH):
         try:
             with open(JSON_DB_PATH, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception:
-            return {"metadata": {"total_glyphs": 0, "lines_processed": 0}, "glyphs": []}
-    return {"metadata": {"total_glyphs": 0, "lines_processed": 0}, "glyphs": []}
+            return {"metadata": {"total_glyphs": 0, "captures_count": 0}, "glyphs": []}
+    return {"metadata": {"total_glyphs": 0, "captures_count": 0}, "glyphs": []}
 
 def save_db(data):
     lines_set = set(g.get("line_id") for g in data.get("glyphs", []))
     data["metadata"] = {
         "total_glyphs": len(data.get("glyphs", [])),
-        "lines_annotated": len(lines_set),
+        "captures_count": len(lines_set),
         "last_updated": os.getenv("USERNAME", "user")
     }
     with open(JSON_DB_PATH, 'w', encoding='utf-8') as f:
@@ -61,7 +53,7 @@ def save_db(data):
     
     with open(CSV_DB_PATH, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(["ID", "Line_ID", "Page", "Character", "Category", "Notes", "BBox_X", "BBox_Y", "BBox_W", "BBox_H", "Polygon", "Crop_File", "Crop_Isolated_File"])
+        writer.writerow(["ID", "Capture_ID", "Page", "Character", "Category", "Notes", "BBox_X", "BBox_Y", "BBox_W", "BBox_H", "Polygon", "Crop_File", "Crop_Isolated_File"])
         for g in data.get("glyphs", []):
             b = g.get("bbox", [0, 0, 0, 0])
             poly = g.get("polygon", [])
@@ -69,7 +61,7 @@ def save_db(data):
             writer.writerow([
                 g.get("id"),
                 g.get("line_id"),
-                g.get("page"),
+                g.get("page", "captura_externa"),
                 g.get("character"),
                 g.get("category"),
                 g.get("notes", ""),
@@ -120,7 +112,6 @@ class AnnotationHandler(BaseHTTPRequestHandler):
             parsed = urlparse(self.path)
             raw_path = parsed.path
             path = unquote(raw_path)
-            params = parse_qs(parsed.query)
 
             if path == '/' or path == '/index.html':
                 if os.path.exists(INDEX_HTML_PATH):
@@ -131,20 +122,9 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                     self.send_error(404, "index.html not found")
 
             elif path == '/api/init_data':
-                dataset = load_dataset_gt()
                 db = load_db()
-                data_bytes = json.dumps({'dataset': dataset, 'db': db}, ensure_ascii=False).encode('utf-8')
+                data_bytes = json.dumps({'db': db}, ensure_ascii=False).encode('utf-8')
                 self.send_bytes(data_bytes, 'application/json; charset=utf-8')
-
-            elif path == '/api/image':
-                line_id = params.get('line_id', [''])[0]
-                img_path = os.path.join(LINES_CROPS_DIR, f"{line_id}.png")
-                if os.path.exists(img_path):
-                    with open(img_path, 'rb') as f:
-                        img_bytes = f.read()
-                    self.send_bytes(img_bytes, 'image/png')
-                else:
-                    self.send_error(404, f"Image not found: {line_id}.png")
 
             elif path.startswith('/crops/'):
                 filename = os.path.basename(path)
@@ -186,25 +166,22 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                 body = self.rfile.read(length)
                 payload = json.loads(body.decode('utf-8'))
 
-                line_id = payload.get('line_id')
+                line_id = payload.get('line_id') or f"cap_{int(os.path.getmtime(JSON_DB_PATH)*1000)}"
                 page = payload.get('page', 'captura_externa')
                 boxes = payload.get('boxes', [])
-                image_data = payload.get('image_data')  # base64 dataURL if custom uploaded image
+                image_data = payload.get('image_data')
 
-                pil_line = None
-                line_img_path = os.path.join(LINES_CROPS_DIR, f"{line_id}.png")
-                if os.path.exists(line_img_path):
-                    pil_line = Image.open(line_img_path)
-                elif image_data:
-                    try:
-                        b64_str = image_data.split(',', 1)[1] if ',' in image_data else image_data
-                        img_bytes = base64.b64decode(b64_str)
-                        pil_line = Image.open(io.BytesIO(img_bytes))
-                    except Exception as e:
-                        print(f"Error decoding base64 image_data: {e}", flush=True)
+                if not image_data:
+                    err_bytes = json.dumps({'status': 'error', 'message': 'No se recibió la imagen de la captura (image_data vacía)'}).encode('utf-8')
+                    self.send_bytes(err_bytes, 'application/json', status=400)
+                    return
 
-                if pil_line is None:
-                    err_bytes = json.dumps({'status': 'error', 'message': f'Image for {line_id} not found and no image_data supplied'}).encode('utf-8')
+                try:
+                    b64_str = image_data.split(',', 1)[1] if ',' in image_data else image_data
+                    img_bytes = base64.b64decode(b64_str)
+                    pil_line = Image.open(io.BytesIO(img_bytes))
+                except Exception as e:
+                    err_bytes = json.dumps({'status': 'error', 'message': f'Error al decodificar la imagen: {e}'}).encode('utf-8')
                     self.send_bytes(err_bytes, 'application/json', status=400)
                     return
 
@@ -214,7 +191,7 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                 db = load_db()
                 glyphs_list = db.get('glyphs', [])
 
-                # Cleanly replace existing glyphs for this line_id
+                # Cleanly replace existing glyphs for this line_id / session
                 glyphs_list = [g for g in glyphs_list if g.get('line_id') != line_id]
 
                 for i, b in enumerate(boxes):
@@ -229,7 +206,7 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                     crop_filename = f"{glyph_id}.png"
                     crop_iso_filename = f"{glyph_id}_iso.png"
 
-                    # Crop bounding box area (ensure at least 1x1)
+                    # Crop bounding box area
                     bw = max(1, bw)
                     bh = max(1, bh)
                     crop_box = (bx, by, bx + bw, by + bh)
@@ -276,7 +253,7 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                 db['glyphs'] = glyphs_list
                 save_db(db)
 
-                res_bytes = json.dumps({'status': 'ok', 'db': db}, ensure_ascii=False).encode('utf-8')
+                res_bytes = json.dumps({'status': 'ok', 'db': db, 'saved_count': len(boxes)}, ensure_ascii=False).encode('utf-8')
                 self.send_bytes(res_bytes, 'application/json; charset=utf-8')
 
             elif path == '/api/delete_glyph':
@@ -301,7 +278,7 @@ class AnnotationHandler(BaseHTTPRequestHandler):
 def run(port=8000):
     server = ThreadingHTTPServer(('127.0.0.1', port), AnnotationHandler)
     print(f"============================================================", flush=True)
-    print(f"  ANOTADOR MANUAL DE GLIFOS COLOANE (Exp 04.1) ACTIVO", flush=True)
+    print(f"  ANOTADOR & BANCO DE GLIFOS COLOANE (Exp 04.1) ACTIVO", flush=True)
     print(f"  URL: http://127.0.0.1:{port}", flush=True)
     print(f"============================================================", flush=True)
     server.serve_forever()
