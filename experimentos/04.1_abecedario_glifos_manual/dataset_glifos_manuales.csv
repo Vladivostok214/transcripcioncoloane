@@ -1,85 +1,85 @@
-ID,Line_ID,Page,Character,Category,Notes,BBox_X,BBox_Y,BBox_W,BBox_H,Crop_File,Crop_Isolated_File
-g_p03_l01_titulo_top_01_T,p03_l01_titulo_top,3,T,mayuscula,T inicial,69,10,166,170,g_p03_l01_titulo_top_01_T.png,g_p03_l01_titulo_top_01_T_iso.png
-g_p03_l01_titulo_top_02_r,p03_l01_titulo_top,3,r,minuscula,,233,74,103,95,g_p03_l01_titulo_top_02_r.png,g_p03_l01_titulo_top_02_r_iso.png
-g_p03_l01_titulo_top_03_a,p03_l01_titulo_top,3,a,minuscula,,341,91,97,80,g_p03_l01_titulo_top_03_a.png,g_p03_l01_titulo_top_03_a_iso.png
-g_p03_l01_titulo_top_04_v,p03_l01_titulo_top,3,v,minuscula,,442,100,97,74,g_p03_l01_titulo_top_04_v.png,g_p03_l01_titulo_top_04_v_iso.png
-g_p03_l01_titulo_top_05_e,p03_l01_titulo_top,3,e,minuscula,,534,97,70,86,g_p03_l01_titulo_top_05_e.png,g_p03_l01_titulo_top_05_e_iso.png
-g_p03_l01_titulo_top_06_s,p03_l01_titulo_top,3,s,minuscula,,604,93,99,92,g_p03_l01_titulo_top_06_s.png,g_p03_l01_titulo_top_06_s_iso.png
-g_p03_l02_verso1_01_d,p03_l02_verso1,3,d,minuscula,,678,56,114,104,g_p03_l02_verso1_01_d.png,g_p03_l02_verso1_01_d_iso.png
-g_p03_l02_verso1_02_e,p03_l02_verso1,3,e,minuscula,,781,96,56,57,g_p03_l02_verso1_02_e.png,g_p03_l02_verso1_02_e_iso.png
-g_p03_l02_verso1_03_l,p03_l02_verso1,3,l,minuscula,,832,58,87,95,g_p03_l02_verso1_03_l.png,g_p03_l02_verso1_03_l_iso.png
-g_p03_l02_verso1_04_o,p03_l02_verso1,3,o,minuscula,,950,89,97,78,g_p03_l02_verso1_04_o.png,g_p03_l02_verso1_04_o_iso.png
-g_p03_l02_verso1_05_e,p03_l02_verso1,3,e,minuscula,,1033,84,74,63,g_p03_l02_verso1_05_e.png,g_p03_l02_verso1_05_e_iso.png
-g_p03_l02_verso1_06_s,p03_l02_verso1,3,s,minuscula,,1098,97,69,56,g_p03_l02_verso1_06_s.png,g_p03_l02_verso1_06_s_iso.png
-g_p03_l02_verso1_07_n,p03_l02_verso1,3,n,minuscula,,375,97,78,73,g_p03_l02_verso1_07_n.png,g_p03_l02_verso1_07_n_iso.png
-g_p03_l03_verso2_01_i,p03_l03_verso2,3,i,minuscula,,181,15,57,70,g_p03_l03_verso2_01_i.png,g_p03_l03_verso2_01_i_iso.png
-g_p03_l03_verso2_02_c,p03_l03_verso2,3,c,minuscula,,542,27,94,90,g_p03_l03_verso2_02_c.png,g_p03_l03_verso2_02_c_iso.png
-g_p03_l03_verso2_03_V,p03_l03_verso2,3,V,mayuscula,V inicial,81,0,95,111,g_p03_l03_verso2_03_V.png,g_p03_l03_verso2_03_V_iso.png
-g_p03_l03_verso2_04_g,p03_l03_verso2,3,g,minuscula,,736,38,104,141,g_p03_l03_verso2_04_g.png,g_p03_l03_verso2_04_g_iso.png
-g_p03_l03_verso2_05_o,p03_l03_verso2,3,o,minuscula,,1882,68,102,70,g_p03_l03_verso2_05_o.png,g_p03_l03_verso2_05_o_iso.png
-g_p03_l03_verso2_06_s,p03_l03_verso2,3,s,minuscula,s final de una palabra,1027,42,94,81,g_p03_l03_verso2_06_s.png,g_p03_l03_verso2_06_s_iso.png
-g_p03_l03_verso2_07_a,p03_l03_verso2,3,a,minuscula,,1665,57,83,73,g_p03_l03_verso2_07_a.png,g_p03_l03_verso2_07_a_iso.png
-g_p03_l03_verso2_08_o,p03_l03_verso2,3,o,minuscula,,1233,45,68,76,g_p03_l03_verso2_08_o.png,g_p03_l03_verso2_08_o_iso.png
-g_p03_l03_verso2_09_n,p03_l03_verso2,3,n,minuscula,n final de una palabra,1299,61,109,62,g_p03_l03_verso2_09_n.png,g_p03_l03_verso2_09_n_iso.png
-g_p03_l03_verso2_10_n,p03_l03_verso2,3,n,minuscula,n final de una palabra,419,42,102,68,g_p03_l03_verso2_10_n.png,g_p03_l03_verso2_10_n_iso.png
-g_p03_l03_verso2_11_n,p03_l03_verso2,3,n,minuscula,n intermedia de una palabra,296,40,74,60,g_p03_l03_verso2_11_n.png,g_p03_l03_verso2_11_n_iso.png
-g_p03_l04_verso3_01_a,p03_l04_verso3,3,a,minuscula,,1807,5,70,70,g_p03_l04_verso3_01_a.png,g_p03_l04_verso3_01_a_iso.png
-g_p03_l04_verso3_02_s,p03_l04_verso3,3,s,minuscula,s final alargada,2120,9,141,91,g_p03_l04_verso3_02_s.png,g_p03_l04_verso3_02_s_iso.png
-g_p03_l04_verso3_03_s,p03_l04_verso3,3,s,minuscula,s final normal,1505,11,87,74,g_p03_l04_verso3_03_s.png,g_p03_l04_verso3_03_s_iso.png
-g_p03_l04_verso3_04_s,p03_l04_verso3,3,s,minuscula,s inicial,925,81,93,68,g_p03_l04_verso3_04_s.png,g_p03_l04_verso3_04_s_iso.png
-g_p03_l04_verso3_05_o,p03_l04_verso3,3,o,minuscula,o inicial,1628,0,78,59,g_p03_l04_verso3_05_o.png,g_p03_l04_verso3_05_o_iso.png
-g_p03_l07_verso6_01_y,p03_l07_verso6,3,y,minuscula,y sola,43,33,119,167,g_p03_l07_verso6_01_y.png,g_p03_l07_verso6_01_y_iso.png
-g_p03_l07_verso6_02_h,p03_l07_verso6,3,h,minuscula,h inicial,844,6,181,156,g_p03_l07_verso6_02_h.png,g_p03_l07_verso6_02_h_iso.png
-g_p03_l07_verso6_03_i,p03_l07_verso6,3,i,minuscula,,1000,46,104,118,g_p03_l07_verso6_03_i.png,g_p03_l07_verso6_03_i_iso.png
-g_p03_l07_verso6_04_j,p03_l07_verso6,3,j,minuscula,,1099,9,107,191,g_p03_l07_verso6_04_j.png,g_p03_l07_verso6_04_j_iso.png
-g_p03_l07_verso6_05__44_,p03_l07_verso6,3,",",signo,,1330,137,72,63,g_p03_l07_verso6_05__44_.png,g_p03_l07_verso6_05__44__iso.png
-g_p03_l07_verso6_06_u,p03_l07_verso6,3,u,minuscula,,610,77,98,78,g_p03_l07_verso6_06_u.png,g_p03_l07_verso6_06_u_iso.png
-g_p03_l07_verso6_07_s,p03_l07_verso6,3,s,minuscula,,716,83,95,81,g_p03_l07_verso6_07_s.png,g_p03_l07_verso6_07_s_iso.png
-g_p03_l07_verso6_08_s,p03_l07_verso6,3,s,minuscula,s inicial,496,51,103,128,g_p03_l07_verso6_08_s.png,g_p03_l07_verso6_08_s_iso.png
-g_p03_l07_verso6_09_e,p03_l07_verso6,3,e,minuscula,,334,84,65,90,g_p03_l07_verso6_09_e.png,g_p03_l07_verso6_09_e_iso.png
-g_p03_l08_verso7_01_p,p03_l08_verso7,3,p,minuscula,p inicial,66,46,97,148,g_p03_l08_verso7_01_p.png,g_p03_l08_verso7_01_p_iso.png
-g_p03_l08_verso7_02_r,p03_l08_verso7,3,r,minuscula,,169,63,80,81,g_p03_l08_verso7_02_r.png,g_p03_l08_verso7_02_r_iso.png
-g_p03_l08_verso7_03_e,p03_l08_verso7,3,e,minuscula,,362,73,67,72,g_p03_l08_verso7_03_e.png,g_p03_l08_verso7_03_e_iso.png
-g_p03_l08_verso7_04_g,p03_l08_verso7,3,g,minuscula,,418,76,92,124,g_p03_l08_verso7_04_g.png,g_p03_l08_verso7_04_g_iso.png
-g_p03_l08_verso7_05_s,p03_l08_verso7,3,s,minuscula,s final,752,72,104,92,g_p03_l08_verso7_05_s.png,g_p03_l08_verso7_05_s_iso.png
-g_p03_l08_verso7_06__44_,p03_l08_verso7,3,",",signo,,815,137,75,63,g_p03_l08_verso7_06__44_.png,g_p03_l08_verso7_06__44__iso.png
-g_p03_l09_verso8_01_v,p03_l09_verso8,3,v,minuscula,v inicial,745,27,124,128,g_p03_l09_verso8_01_v.png,g_p03_l09_verso8_01_v_iso.png
-g_p03_l09_verso8_02_q,p03_l09_verso8,3,q,minuscula,,239,37,67,149,g_p03_l09_verso8_02_q.png,g_p03_l09_verso8_02_q_iso.png
-g_p03_l09_verso8_03_r,p03_l09_verso8,3,r,minuscula,,929,74,76,69,g_p03_l09_verso8_03_r.png,g_p03_l09_verso8_03_r_iso.png
-g_p03_l10_verso9_01_L,p03_l10_verso9,3,L,mayuscula,tinta verde,408,7,121,140,g_p03_l10_verso9_01_L.png,g_p03_l10_verso9_01_L_iso.png
-g_p03_l10_verso9_02_A,p03_l10_verso9,3,A,mayuscula,tinta verde,542,0,122,140,g_p03_l10_verso9_02_A.png,g_p03_l10_verso9_02_A_iso.png
-g_p03_l10_verso9_03_S,p03_l10_verso9,3,S,mayuscula,tinta verde,274,0,109,145,g_p03_l10_verso9_03_S.png,g_p03_l10_verso9_03_S_iso.png
-g_p03_l10_verso9_04_I,p03_l10_verso9,3,I,mayuscula,tinta verde,147,0,115,143,g_p03_l10_verso9_04_I.png,g_p03_l10_verso9_04_I_iso.png
-g_p03_l10_verso9_05_S,p03_l10_verso9,3,S,mayuscula,tinta verde,706,0,117,165,g_p03_l10_verso9_05_S.png,g_p03_l10_verso9_05_S_iso.png
-g_p03_l10_verso9_06_D,p03_l10_verso9,3,D,mayuscula,tinta verde,950,9,130,138,g_p03_l10_verso9_06_D.png,g_p03_l10_verso9_06_D_iso.png
-g_p03_l10_verso9_07_E,p03_l10_verso9,3,E,mayuscula,tinta verde,1121,11,134,160,g_p03_l10_verso9_07_E.png,g_p03_l10_verso9_07_E_iso.png
-g_p03_l10_verso9_08_T,p03_l10_verso9,3,T,mayuscula,tinta verde,1314,7,149,174,g_p03_l10_verso9_08_T.png,g_p03_l10_verso9_08_T_iso.png
-g_p03_l10_verso9_09_R,p03_l10_verso9,3,R,mayuscula,tinta verde,1505,7,145,174,g_p03_l10_verso9_09_R.png,g_p03_l10_verso9_09_R_iso.png
-g_p03_l10_verso9_10_A,p03_l10_verso9,3,A,mayuscula,tinta verde,1680,14,138,167,g_p03_l10_verso9_10_A.png,g_p03_l10_verso9_10_A_iso.png
-g_p03_l13_rojo1_01_m,p03_l13_rojo1,3,m,minuscula,"m inicial, tinta roja",553,16,199,120,g_p03_l13_rojo1_01_m.png,g_p03_l13_rojo1_01_m_iso.png
-g_p03_l13_rojo1_02_e,p03_l13_rojo1,3,e,minuscula,,1026,43,101,93,g_p03_l13_rojo1_02_e.png,g_p03_l13_rojo1_02_e_iso.png
-g_p03_l13_rojo1_03_s,p03_l13_rojo1,3,s,minuscula,s inicial,1216,7,156,138,g_p03_l13_rojo1_03_s.png,g_p03_l13_rojo1_03_s_iso.png
-g_p03_l13_rojo1_04__46_,p03_l13_rojo1,3,.,signo,puntos suspensivos,2023,45,209,83,g_p03_l13_rojo1_04__46_.png,g_p03_l13_rojo1_04__46__iso.png
-g_p03_l14_rojo2_01_y,p03_l14_rojo2,3,y,minuscula,,1539,29,177,164,g_p03_l14_rojo2_01_y.png,g_p03_l14_rojo2_01_y_iso.png
-g_p03_l14_rojo2_02_U,p03_l14_rojo2,3,U,mayuscula,U inicial,49,0,150,133,g_p03_l14_rojo2_02_U.png,g_p03_l14_rojo2_02_U_iso.png
-g_p03_l15_rojo3_01_p,p03_l15_rojo3,3,p,minuscula,p inicial,330,0,199,197,g_p03_l15_rojo3_01_p.png,g_p03_l15_rojo3_01_p_iso.png
-g_p03_l15_rojo3_02_u,p03_l15_rojo3,3,u,minuscula,,163,9,145,91,g_p03_l15_rojo3_02_u.png,g_p03_l15_rojo3_02_u_iso.png
-g_p03_l16_bloque_01_P,p03_l16_bloque,3,P,mayuscula,,429,14,107,109,g_p03_l16_bloque_01_P.png,g_p03_l16_bloque_01_P_iso.png
-g_p02_l01_encabezado_01_c,p02_l01_encabezado,2,c,minuscula,,969,62,88,75,g_p02_l01_encabezado_01_c.png,g_p02_l01_encabezado_01_c_iso.png
-g_p02_l01_encabezado_02_a,p02_l01_encabezado,2,a,minuscula,,1048,67,85,75,g_p02_l01_encabezado_02_a.png,g_p02_l01_encabezado_02_a_iso.png
-g_p02_l01_encabezado_03_o,p02_l01_encabezado,2,o,minuscula,,1247,64,53,73,g_p02_l01_encabezado_03_o.png,g_p02_l01_encabezado_03_o_iso.png
-g_p02_l01_encabezado_04_n,p02_l01_encabezado,2,n,minuscula,,717,70,98,69,g_p02_l01_encabezado_04_n.png,g_p02_l01_encabezado_04_n_iso.png
-g_p02_l01_encabezado_05__58_,p02_l01_encabezado,2,:,signo,dos puntos,1497,64,62,83,g_p02_l01_encabezado_05__58_.png,g_p02_l01_encabezado_05__58__iso.png
-g_p02_l03_ezra2_01_x,p02_l03_ezra2,2,x,minuscula,,1053,86,62,62,g_p02_l03_ezra2_01_x.png,g_p02_l03_ezra2_01_x_iso.png
-g_p02_l03_ezra2_02__34_,p02_l03_ezra2,2,"""",signo,cierre de comillas,1422,61,93,67,g_p02_l03_ezra2_02__34_.png,g_p02_l03_ezra2_02__34__iso.png
-g_p02_l04_ezra3_01_t,p02_l04_ezra3,2,t,minuscula,,896,35,74,110,g_p02_l04_ezra3_01_t.png,g_p02_l04_ezra3_01_t_iso.png
-g_p02_l04_ezra3_02_u,p02_l04_ezra3,2,u,minuscula,,1295,76,92,74,g_p02_l04_ezra3_02_u.png,g_p02_l04_ezra3_02_u_iso.png
-g_p02_l04_ezra3_03_r,p02_l04_ezra3,2,r,minuscula,,1533,81,74,69,g_p02_l04_ezra3_03_r.png,g_p02_l04_ezra3_03_r_iso.png
-g_p02_l05_ezra4_01_z,p02_l05_ezra4,2,z,minuscula,,792,47,109,82,g_p02_l05_ezra4_01_z.png,g_p02_l05_ezra4_01_z_iso.png
-g_p02_l05_ezra4_02_d,p02_l05_ezra4,2,d,minuscula,,1472,26,111,110,g_p02_l05_ezra4_02_d.png,g_p02_l05_ezra4_02_d_iso.png
-g_p02_l06_babel_01_B,p02_l06_babel,2,B,mayuscula,B inicial,1797,2,112,102,g_p02_l06_babel_01_B.png,g_p02_l06_babel_01_B_iso.png
-g_p02_l06_babel_02_b,p02_l06_babel,2,b,minuscula,,1986,0,95,107,g_p02_l06_babel_02_b.png,g_p02_l06_babel_02_b_iso.png
-g_p02_l06_babel_03_1,p02_l06_babel,2,1,numero,,2541,22,64,87,g_p02_l06_babel_03_1.png,g_p02_l06_babel_03_1_iso.png
-g_p02_l06_babel_04_1,p02_l06_babel,2,1,numero,,2605,20,41,79,g_p02_l06_babel_04_1.png,g_p02_l06_babel_04_1_iso.png
-g_p02_l07_todoel_01_m,p02_l07_todoel,2,m,minuscula,m inicial,1674,4,128,67,g_p02_l07_todoel_01_m.png,g_p02_l07_todoel_01_m_iso.png
-g_p02_l07_todoel_02_m,p02_l07_todoel,2,m,minuscula,m inicial,696,7,115,79,g_p02_l07_todoel_02_m.png,g_p02_l07_todoel_02_m_iso.png
+ID,Line_ID,Page,Character,Category,Notes,BBox_X,BBox_Y,BBox_W,BBox_H,Polygon,Crop_File,Crop_Isolated_File
+g_p03_l01_titulo_top_01_T,p03_l01_titulo_top,3,T,mayuscula,T inicial,69,10,166,170,,g_p03_l01_titulo_top_01_T.png,g_p03_l01_titulo_top_01_T_iso.png
+g_p03_l01_titulo_top_02_r,p03_l01_titulo_top,3,r,minuscula,,233,74,103,95,,g_p03_l01_titulo_top_02_r.png,g_p03_l01_titulo_top_02_r_iso.png
+g_p03_l01_titulo_top_03_a,p03_l01_titulo_top,3,a,minuscula,,341,91,97,80,,g_p03_l01_titulo_top_03_a.png,g_p03_l01_titulo_top_03_a_iso.png
+g_p03_l01_titulo_top_04_v,p03_l01_titulo_top,3,v,minuscula,,442,100,97,74,,g_p03_l01_titulo_top_04_v.png,g_p03_l01_titulo_top_04_v_iso.png
+g_p03_l01_titulo_top_05_e,p03_l01_titulo_top,3,e,minuscula,,534,97,70,86,,g_p03_l01_titulo_top_05_e.png,g_p03_l01_titulo_top_05_e_iso.png
+g_p03_l01_titulo_top_06_s,p03_l01_titulo_top,3,s,minuscula,,604,93,99,92,,g_p03_l01_titulo_top_06_s.png,g_p03_l01_titulo_top_06_s_iso.png
+g_p03_l02_verso1_01_d,p03_l02_verso1,3,d,minuscula,,678,56,114,104,,g_p03_l02_verso1_01_d.png,g_p03_l02_verso1_01_d_iso.png
+g_p03_l02_verso1_02_e,p03_l02_verso1,3,e,minuscula,,781,96,56,57,,g_p03_l02_verso1_02_e.png,g_p03_l02_verso1_02_e_iso.png
+g_p03_l02_verso1_03_l,p03_l02_verso1,3,l,minuscula,,832,58,87,95,,g_p03_l02_verso1_03_l.png,g_p03_l02_verso1_03_l_iso.png
+g_p03_l02_verso1_04_o,p03_l02_verso1,3,o,minuscula,,950,89,97,78,,g_p03_l02_verso1_04_o.png,g_p03_l02_verso1_04_o_iso.png
+g_p03_l02_verso1_05_e,p03_l02_verso1,3,e,minuscula,,1033,84,74,63,,g_p03_l02_verso1_05_e.png,g_p03_l02_verso1_05_e_iso.png
+g_p03_l02_verso1_06_s,p03_l02_verso1,3,s,minuscula,,1098,97,69,56,,g_p03_l02_verso1_06_s.png,g_p03_l02_verso1_06_s_iso.png
+g_p03_l02_verso1_07_n,p03_l02_verso1,3,n,minuscula,,375,97,78,73,,g_p03_l02_verso1_07_n.png,g_p03_l02_verso1_07_n_iso.png
+g_p03_l03_verso2_01_i,p03_l03_verso2,3,i,minuscula,,181,15,57,70,,g_p03_l03_verso2_01_i.png,g_p03_l03_verso2_01_i_iso.png
+g_p03_l03_verso2_02_c,p03_l03_verso2,3,c,minuscula,,542,27,94,90,,g_p03_l03_verso2_02_c.png,g_p03_l03_verso2_02_c_iso.png
+g_p03_l03_verso2_03_V,p03_l03_verso2,3,V,mayuscula,V inicial,81,0,95,111,,g_p03_l03_verso2_03_V.png,g_p03_l03_verso2_03_V_iso.png
+g_p03_l03_verso2_04_g,p03_l03_verso2,3,g,minuscula,,736,38,104,141,,g_p03_l03_verso2_04_g.png,g_p03_l03_verso2_04_g_iso.png
+g_p03_l03_verso2_05_o,p03_l03_verso2,3,o,minuscula,,1882,68,102,70,,g_p03_l03_verso2_05_o.png,g_p03_l03_verso2_05_o_iso.png
+g_p03_l03_verso2_06_s,p03_l03_verso2,3,s,minuscula,s final de una palabra,1027,42,94,81,,g_p03_l03_verso2_06_s.png,g_p03_l03_verso2_06_s_iso.png
+g_p03_l03_verso2_07_a,p03_l03_verso2,3,a,minuscula,,1665,57,83,73,,g_p03_l03_verso2_07_a.png,g_p03_l03_verso2_07_a_iso.png
+g_p03_l03_verso2_08_o,p03_l03_verso2,3,o,minuscula,,1233,45,68,76,,g_p03_l03_verso2_08_o.png,g_p03_l03_verso2_08_o_iso.png
+g_p03_l03_verso2_09_n,p03_l03_verso2,3,n,minuscula,n final de una palabra,1299,61,109,62,,g_p03_l03_verso2_09_n.png,g_p03_l03_verso2_09_n_iso.png
+g_p03_l03_verso2_10_n,p03_l03_verso2,3,n,minuscula,n final de una palabra,419,42,102,68,,g_p03_l03_verso2_10_n.png,g_p03_l03_verso2_10_n_iso.png
+g_p03_l03_verso2_11_n,p03_l03_verso2,3,n,minuscula,n intermedia de una palabra,296,40,74,60,,g_p03_l03_verso2_11_n.png,g_p03_l03_verso2_11_n_iso.png
+g_p03_l04_verso3_01_a,p03_l04_verso3,3,a,minuscula,,1807,5,70,70,,g_p03_l04_verso3_01_a.png,g_p03_l04_verso3_01_a_iso.png
+g_p03_l04_verso3_02_s,p03_l04_verso3,3,s,minuscula,s final alargada,2120,9,141,91,,g_p03_l04_verso3_02_s.png,g_p03_l04_verso3_02_s_iso.png
+g_p03_l04_verso3_03_s,p03_l04_verso3,3,s,minuscula,s final normal,1505,11,87,74,,g_p03_l04_verso3_03_s.png,g_p03_l04_verso3_03_s_iso.png
+g_p03_l04_verso3_04_s,p03_l04_verso3,3,s,minuscula,s inicial,925,81,93,68,,g_p03_l04_verso3_04_s.png,g_p03_l04_verso3_04_s_iso.png
+g_p03_l04_verso3_05_o,p03_l04_verso3,3,o,minuscula,o inicial,1628,0,78,59,,g_p03_l04_verso3_05_o.png,g_p03_l04_verso3_05_o_iso.png
+g_p03_l07_verso6_01_y,p03_l07_verso6,3,y,minuscula,y sola,43,33,119,167,,g_p03_l07_verso6_01_y.png,g_p03_l07_verso6_01_y_iso.png
+g_p03_l07_verso6_02_h,p03_l07_verso6,3,h,minuscula,h inicial,844,6,181,156,,g_p03_l07_verso6_02_h.png,g_p03_l07_verso6_02_h_iso.png
+g_p03_l07_verso6_03_i,p03_l07_verso6,3,i,minuscula,,1000,46,104,118,,g_p03_l07_verso6_03_i.png,g_p03_l07_verso6_03_i_iso.png
+g_p03_l07_verso6_04_j,p03_l07_verso6,3,j,minuscula,,1099,9,107,191,,g_p03_l07_verso6_04_j.png,g_p03_l07_verso6_04_j_iso.png
+g_p03_l07_verso6_05__44_,p03_l07_verso6,3,",",signo,,1330,137,72,63,,g_p03_l07_verso6_05__44_.png,g_p03_l07_verso6_05__44__iso.png
+g_p03_l07_verso6_06_u,p03_l07_verso6,3,u,minuscula,,610,77,98,78,,g_p03_l07_verso6_06_u.png,g_p03_l07_verso6_06_u_iso.png
+g_p03_l07_verso6_07_s,p03_l07_verso6,3,s,minuscula,,716,83,95,81,,g_p03_l07_verso6_07_s.png,g_p03_l07_verso6_07_s_iso.png
+g_p03_l07_verso6_08_s,p03_l07_verso6,3,s,minuscula,s inicial,496,51,103,128,,g_p03_l07_verso6_08_s.png,g_p03_l07_verso6_08_s_iso.png
+g_p03_l07_verso6_09_e,p03_l07_verso6,3,e,minuscula,,334,84,65,90,,g_p03_l07_verso6_09_e.png,g_p03_l07_verso6_09_e_iso.png
+g_p03_l08_verso7_01_p,p03_l08_verso7,3,p,minuscula,p inicial,66,46,97,148,,g_p03_l08_verso7_01_p.png,g_p03_l08_verso7_01_p_iso.png
+g_p03_l08_verso7_02_r,p03_l08_verso7,3,r,minuscula,,169,63,80,81,,g_p03_l08_verso7_02_r.png,g_p03_l08_verso7_02_r_iso.png
+g_p03_l08_verso7_03_e,p03_l08_verso7,3,e,minuscula,,362,73,67,72,,g_p03_l08_verso7_03_e.png,g_p03_l08_verso7_03_e_iso.png
+g_p03_l08_verso7_04_g,p03_l08_verso7,3,g,minuscula,,418,76,92,124,,g_p03_l08_verso7_04_g.png,g_p03_l08_verso7_04_g_iso.png
+g_p03_l08_verso7_05_s,p03_l08_verso7,3,s,minuscula,s final,752,72,104,92,,g_p03_l08_verso7_05_s.png,g_p03_l08_verso7_05_s_iso.png
+g_p03_l08_verso7_06__44_,p03_l08_verso7,3,",",signo,,815,137,75,63,,g_p03_l08_verso7_06__44_.png,g_p03_l08_verso7_06__44__iso.png
+g_p03_l09_verso8_01_v,p03_l09_verso8,3,v,minuscula,v inicial,745,27,124,128,,g_p03_l09_verso8_01_v.png,g_p03_l09_verso8_01_v_iso.png
+g_p03_l09_verso8_02_q,p03_l09_verso8,3,q,minuscula,,239,37,67,149,,g_p03_l09_verso8_02_q.png,g_p03_l09_verso8_02_q_iso.png
+g_p03_l09_verso8_03_r,p03_l09_verso8,3,r,minuscula,,929,74,76,69,,g_p03_l09_verso8_03_r.png,g_p03_l09_verso8_03_r_iso.png
+g_p03_l10_verso9_01_L,p03_l10_verso9,3,L,mayuscula,tinta verde,408,7,121,140,,g_p03_l10_verso9_01_L.png,g_p03_l10_verso9_01_L_iso.png
+g_p03_l10_verso9_02_A,p03_l10_verso9,3,A,mayuscula,tinta verde,542,0,122,140,,g_p03_l10_verso9_02_A.png,g_p03_l10_verso9_02_A_iso.png
+g_p03_l10_verso9_03_S,p03_l10_verso9,3,S,mayuscula,tinta verde,274,0,109,145,,g_p03_l10_verso9_03_S.png,g_p03_l10_verso9_03_S_iso.png
+g_p03_l10_verso9_04_I,p03_l10_verso9,3,I,mayuscula,tinta verde,147,0,115,143,,g_p03_l10_verso9_04_I.png,g_p03_l10_verso9_04_I_iso.png
+g_p03_l10_verso9_05_S,p03_l10_verso9,3,S,mayuscula,tinta verde,706,0,117,165,,g_p03_l10_verso9_05_S.png,g_p03_l10_verso9_05_S_iso.png
+g_p03_l10_verso9_06_D,p03_l10_verso9,3,D,mayuscula,tinta verde,950,9,130,138,,g_p03_l10_verso9_06_D.png,g_p03_l10_verso9_06_D_iso.png
+g_p03_l10_verso9_07_E,p03_l10_verso9,3,E,mayuscula,tinta verde,1121,11,134,160,,g_p03_l10_verso9_07_E.png,g_p03_l10_verso9_07_E_iso.png
+g_p03_l10_verso9_08_T,p03_l10_verso9,3,T,mayuscula,tinta verde,1314,7,149,174,,g_p03_l10_verso9_08_T.png,g_p03_l10_verso9_08_T_iso.png
+g_p03_l10_verso9_09_R,p03_l10_verso9,3,R,mayuscula,tinta verde,1505,7,145,174,,g_p03_l10_verso9_09_R.png,g_p03_l10_verso9_09_R_iso.png
+g_p03_l10_verso9_10_A,p03_l10_verso9,3,A,mayuscula,tinta verde,1680,14,138,167,,g_p03_l10_verso9_10_A.png,g_p03_l10_verso9_10_A_iso.png
+g_p03_l13_rojo1_01_m,p03_l13_rojo1,3,m,minuscula,"m inicial, tinta roja",553,16,199,120,,g_p03_l13_rojo1_01_m.png,g_p03_l13_rojo1_01_m_iso.png
+g_p03_l13_rojo1_02_e,p03_l13_rojo1,3,e,minuscula,,1026,43,101,93,,g_p03_l13_rojo1_02_e.png,g_p03_l13_rojo1_02_e_iso.png
+g_p03_l13_rojo1_03_s,p03_l13_rojo1,3,s,minuscula,s inicial,1216,7,156,138,,g_p03_l13_rojo1_03_s.png,g_p03_l13_rojo1_03_s_iso.png
+g_p03_l13_rojo1_04__46_,p03_l13_rojo1,3,.,signo,puntos suspensivos,2023,45,209,83,,g_p03_l13_rojo1_04__46_.png,g_p03_l13_rojo1_04__46__iso.png
+g_p03_l14_rojo2_01_y,p03_l14_rojo2,3,y,minuscula,,1539,29,177,164,,g_p03_l14_rojo2_01_y.png,g_p03_l14_rojo2_01_y_iso.png
+g_p03_l14_rojo2_02_U,p03_l14_rojo2,3,U,mayuscula,U inicial,49,0,150,133,,g_p03_l14_rojo2_02_U.png,g_p03_l14_rojo2_02_U_iso.png
+g_p03_l15_rojo3_01_p,p03_l15_rojo3,3,p,minuscula,p inicial,330,0,199,197,,g_p03_l15_rojo3_01_p.png,g_p03_l15_rojo3_01_p_iso.png
+g_p03_l15_rojo3_02_u,p03_l15_rojo3,3,u,minuscula,,163,9,145,91,,g_p03_l15_rojo3_02_u.png,g_p03_l15_rojo3_02_u_iso.png
+g_p03_l16_bloque_01_P,p03_l16_bloque,3,P,mayuscula,,429,14,107,109,,g_p03_l16_bloque_01_P.png,g_p03_l16_bloque_01_P_iso.png
+g_p02_l01_encabezado_01_c,p02_l01_encabezado,2,c,minuscula,,969,62,88,75,,g_p02_l01_encabezado_01_c.png,g_p02_l01_encabezado_01_c_iso.png
+g_p02_l01_encabezado_02_a,p02_l01_encabezado,2,a,minuscula,,1048,67,85,75,,g_p02_l01_encabezado_02_a.png,g_p02_l01_encabezado_02_a_iso.png
+g_p02_l01_encabezado_03_o,p02_l01_encabezado,2,o,minuscula,,1247,64,53,73,,g_p02_l01_encabezado_03_o.png,g_p02_l01_encabezado_03_o_iso.png
+g_p02_l01_encabezado_04_n,p02_l01_encabezado,2,n,minuscula,,717,70,98,69,,g_p02_l01_encabezado_04_n.png,g_p02_l01_encabezado_04_n_iso.png
+g_p02_l01_encabezado_05__58_,p02_l01_encabezado,2,:,signo,dos puntos,1497,64,62,83,,g_p02_l01_encabezado_05__58_.png,g_p02_l01_encabezado_05__58__iso.png
+g_p02_l03_ezra2_01_x,p02_l03_ezra2,2,x,minuscula,,1053,86,62,62,,g_p02_l03_ezra2_01_x.png,g_p02_l03_ezra2_01_x_iso.png
+g_p02_l03_ezra2_02__34_,p02_l03_ezra2,2,"""",signo,cierre de comillas,1422,61,93,67,,g_p02_l03_ezra2_02__34_.png,g_p02_l03_ezra2_02__34__iso.png
+g_p02_l04_ezra3_01_t,p02_l04_ezra3,2,t,minuscula,,896,35,74,110,,g_p02_l04_ezra3_01_t.png,g_p02_l04_ezra3_01_t_iso.png
+g_p02_l04_ezra3_02_u,p02_l04_ezra3,2,u,minuscula,,1295,76,92,74,,g_p02_l04_ezra3_02_u.png,g_p02_l04_ezra3_02_u_iso.png
+g_p02_l04_ezra3_03_r,p02_l04_ezra3,2,r,minuscula,,1533,81,74,69,,g_p02_l04_ezra3_03_r.png,g_p02_l04_ezra3_03_r_iso.png
+g_p02_l05_ezra4_01_z,p02_l05_ezra4,2,z,minuscula,,792,47,109,82,,g_p02_l05_ezra4_01_z.png,g_p02_l05_ezra4_01_z_iso.png
+g_p02_l05_ezra4_02_d,p02_l05_ezra4,2,d,minuscula,,1472,26,111,110,,g_p02_l05_ezra4_02_d.png,g_p02_l05_ezra4_02_d_iso.png
+g_p02_l06_babel_01_B,p02_l06_babel,2,B,mayuscula,B inicial,1797,2,112,102,,g_p02_l06_babel_01_B.png,g_p02_l06_babel_01_B_iso.png
+g_p02_l06_babel_02_b,p02_l06_babel,2,b,minuscula,,1986,0,95,107,,g_p02_l06_babel_02_b.png,g_p02_l06_babel_02_b_iso.png
+g_p02_l06_babel_03_1,p02_l06_babel,2,1,numero,,2541,22,64,87,,g_p02_l06_babel_03_1.png,g_p02_l06_babel_03_1_iso.png
+g_p02_l06_babel_04_1,p02_l06_babel,2,1,numero,,2605,20,41,79,,g_p02_l06_babel_04_1.png,g_p02_l06_babel_04_1_iso.png
+g_p02_l07_todoel_01_m,p02_l07_todoel,2,m,minuscula,m inicial,1674,4,128,67,,g_p02_l07_todoel_01_m.png,g_p02_l07_todoel_01_m_iso.png
+g_p02_l07_todoel_02_m,p02_l07_todoel,2,m,minuscula,m inicial,696,7,115,79,,g_p02_l07_todoel_02_m.png,g_p02_l07_todoel_02_m_iso.png

@@ -1705,7 +1705,7 @@
                     page: line.page,
                     crop_image: line.crop_image,
                     boxes: currentBoxes,
-                    image_data: customImageDataUrl || null
+                    image_data: line._dataUrl || customImageDataUrl || (lineImage && lineImage.src && lineImage.src.startsWith('data:') ? lineImage.src : null)
                 };
 
                 const res = await fetch('/api/save_line', {

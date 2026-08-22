@@ -178,16 +178,21 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                 line_img_path = os.path.join(LINES_CROPS_DIR, f"{line_id}.png")
                 if os.path.exists(line_img_path):
                     pil_line = Image.open(line_img_path)
-                elif image_data and ',' in image_data:
-                    # Decode base64 image data
-                    header, b64_str = image_data.split(',', 1)
-                    img_bytes = base64.b64decode(b64_str)
-                    pil_line = Image.open(io.BytesIO(img_bytes))
-                
+                elif image_data:
+                    try:
+                        b64_str = image_data.split(',', 1)[1] if ',' in image_data else image_data
+                        img_bytes = base64.b64decode(b64_str)
+                        pil_line = Image.open(io.BytesIO(img_bytes))
+                    except Exception as e:
+                        print(f"Error decoding base64 image_data: {e}", flush=True)
+
                 if pil_line is None:
                     err_bytes = json.dumps({'status': 'error', 'message': f'Image for {line_id} not found and no image_data supplied'}).encode('utf-8')
                     self.send_bytes(err_bytes, 'application/json', status=400)
                     return
+
+                if pil_line.mode not in ('RGB', 'L'):
+                    pil_line = pil_line.convert('RGB')
 
                 db = load_db()
                 glyphs_list = db.get('glyphs', [])
