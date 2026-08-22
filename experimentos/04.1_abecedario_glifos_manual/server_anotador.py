@@ -5,8 +5,9 @@ import json
 import csv
 import base64
 import io
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs
+import urllib.parse
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+from urllib.parse import urlparse, parse_qs, unquote
 from PIL import Image
 import cv2
 import numpy as np
@@ -23,6 +24,15 @@ INDEX_HTML_PATH = os.path.join(EXP_DIR, "index.html")
 
 os.makedirs(CROPS_OUT_DIR, exist_ok=True)
 os.makedirs(CROPS_ISO_DIR, exist_ok=True)
+
+def get_safe_char(char_str):
+    safe = []
+    for c in char_str:
+        if 'a' <= c <= 'z' or 'A' <= c <= 'Z' or '0' <= c <= '9':
+            safe.append(c)
+        else:
+            safe.append(f"u{ord(c):04x}")
+    return "".join(safe)
 
 def load_dataset_gt():
     if os.path.exists(DATASET_GT_PATH):
@@ -72,14 +82,20 @@ def save_db(data):
 def isolate_ink(pil_img, mask=None):
     img_cv = cv2.cvtColor(np.array(pil_img.convert('RGB')), cv2.COLOR_RGB2BGR)
     gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
-    binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 21, 10)
-    kernel = np.ones((2, 2), np.uint8)
-    binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
+    h, w = gray.shape
+
+    # Dynamically scale block_size for small glyphs down to 3x3
+    block_size = max(3, min(21, (min(h, w) // 2) * 2 + 1))
+    binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, block_size, 10)
+    
+    # Only apply morphological opening on glyphs large enough to avoid eroding thin strokes
+    if min(h, w) >= 20:
+        kernel = np.ones((2, 2), np.uint8)
+        binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
     
     if mask is not None:
         binary[mask == 0] = 0
     
-    h, w = gray.shape
     rgba = np.zeros((h, w, 4), dtype=np.uint8)
     rgba[:, :, 0] = 240
     rgba[:, :, 1] = 240
@@ -102,7 +118,8 @@ class AnnotationHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
             parsed = urlparse(self.path)
-            path = parsed.path
+            raw_path = parsed.path
+            path = unquote(raw_path)
             params = parse_qs(parsed.query)
 
             if path == '/' or path == '/index.html':
@@ -162,7 +179,7 @@ class AnnotationHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             parsed = urlparse(self.path)
-            path = parsed.path
+            path = unquote(parsed.path)
 
             if path == '/api/save_line':
                 length = int(self.headers.get('Content-Length', 0))
@@ -207,12 +224,14 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                     notes = b.get('notes', '')
                     poly = b.get('polygon', [])  # list of [x, y] points
 
-                    safe_char = "".join([c if c.isalnum() else f"_{ord(c)}_" for c in char_str])
+                    safe_char = get_safe_char(char_str)
                     glyph_id = f"g_{line_id}_{i+1:02d}_{safe_char}"
                     crop_filename = f"{glyph_id}.png"
                     crop_iso_filename = f"{glyph_id}_iso.png"
 
-                    # Crop bounding box area
+                    # Crop bounding box area (ensure at least 1x1)
+                    bw = max(1, bw)
+                    bh = max(1, bh)
                     crop_box = (bx, by, bx + bw, by + bh)
                     cropped_img = pil_line.crop(crop_box)
 
@@ -280,7 +299,7 @@ class AnnotationHandler(BaseHTTPRequestHandler):
             traceback.print_exc()
 
 def run(port=8000):
-    server = HTTPServer(('127.0.0.1', port), AnnotationHandler)
+    server = ThreadingHTTPServer(('127.0.0.1', port), AnnotationHandler)
     print(f"============================================================", flush=True)
     print(f"  ANOTADOR MANUAL DE GLIFOS COLOANE (Exp 04.1) ACTIVO", flush=True)
     print(f"  URL: http://127.0.0.1:{port}", flush=True)
