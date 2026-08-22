@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "total_glyphs": 97,
-    "lines_annotated": 22,
+    "total_glyphs": 100,
+    "lines_annotated": 25,
     "last_updated": "WLADI"
   },
   "glyphs": [
@@ -1672,6 +1672,102 @@
       ],
       "crop_file": "g_cap_1787377161791_02_N.png",
       "crop_isolated_file": "g_cap_1787377161791_02_N_iso.png"
+    },
+    {
+      "id": "g_cap_1787377598994_01_u00e1",
+      "line_id": "cap_1787377598994",
+      "page": "captura_externa",
+      "character": "á",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        522,
+        19,
+        47,
+        43
+      ],
+      "crop_file": "g_cap_1787377598994_01_u00e1.png",
+      "crop_isolated_file": "g_cap_1787377598994_01_u00e1_iso.png",
+      "polygon": [
+        [
+          543,
+          19
+        ],
+        [
+          569,
+          21
+        ],
+        [
+          550,
+          45
+        ],
+        [
+          543,
+          61
+        ],
+        [
+          522,
+          62
+        ],
+        [
+          532,
+          45
+        ],
+        [
+          543,
+          38
+        ]
+      ]
+    },
+    {
+      "id": "g_cap_1787377648006_01_n",
+      "line_id": "cap_1787377648006",
+      "page": "captura_externa",
+      "character": "n",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        596,
+        41,
+        39,
+        28
+      ],
+      "crop_file": "g_cap_1787377648006_01_n.png",
+      "crop_isolated_file": "g_cap_1787377648006_01_n_iso.png"
+    },
+    {
+      "id": "g_cap_1787377683634_01_u00e1",
+      "line_id": "cap_1787377683634",
+      "page": "captura_externa",
+      "character": "á",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        66,
+        88,
+        36,
+        36
+      ],
+      "crop_file": "g_cap_1787377683634_01_u00e1.png",
+      "crop_isolated_file": "g_cap_1787377683634_01_u00e1_iso.png",
+      "polygon": [
+        [
+          102,
+          88
+        ],
+        [
+          75,
+          103
+        ],
+        [
+          66,
+          124
+        ],
+        [
+          86,
+          124
+        ]
+      ]
     }
   ]
 }
