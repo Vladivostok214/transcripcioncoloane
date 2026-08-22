@@ -322,6 +322,159 @@
             margin-bottom: 20px;
         }
 
+        /* Bottom Missing Glyphs HUD Quest Dock */
+        .hud-missing-dock {
+            background: #0c1017;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 15;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hud-missing-dock.collapsed .hud-dock-body {
+            display: none;
+        }
+        .hud-dock-header {
+            height: 38px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0f1520;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .hud-dock-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hud-dock-icon {
+            font-size: 14px;
+        }
+        .hud-tab-group {
+            display: flex;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1px;
+            gap: 2px;
+        }
+        .hud-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .hud-tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .hud-tab-btn.active {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+        }
+        .hud-dock-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .hud-progress-mini {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .hud-prog-bar-bg {
+            width: 55px;
+            height: 6px;
+            background: #1e293b;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .hud-prog-bar-fill {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .hud-prog-bar-fill.may {
+            background: var(--accent-blue);
+        }
+
+        .hud-dock-body {
+            padding: 8px 16px;
+            max-height: 56px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            background: #080b11;
+            display: flex;
+            align-items: center;
+        }
+        .hud-chips-scroll {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+        .hud-chip {
+            background: var(--bg-card);
+            border: 1px dashed rgba(244, 63, 94, 0.45);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            padding: 3px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+        }
+        .hud-chip:hover {
+            border-color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .hud-chip .chip-letter {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .hud-chip .chip-tag {
+            font-size: 8px;
+            font-weight: 600;
+            padding: 1px 3px;
+            border-radius: 3px;
+            background: rgba(244, 63, 94, 0.2);
+            color: var(--danger);
+            text-transform: uppercase;
+        }
+        .hud-chip.pocas {
+            border-color: rgba(251, 191, 36, 0.45);
+        }
+        .hud-chip.pocas .chip-tag {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--accent-yellow);
+        }
+        .hud-all-done-banner {
+            color: var(--accent-green);
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
         /* Floating Assignment Popover */
         .assignment-card {
             position: absolute;
@@ -792,7 +945,7 @@
         /* Toast */
         .toast {
             position: fixed;
-            bottom: 24px;
+            bottom: 64px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: #047857;
@@ -890,6 +1043,40 @@
                     <button class="btn btn-primary" id="btnDropzoneUpload">
                         📂 Seleccionar Archivo
                     </button>
+                </div>
+            </div>
+
+            <!-- Bottom Missing Glyphs HUD Quest Dock -->
+            <div class="hud-missing-dock" id="hudMissingDock">
+                <div class="hud-dock-header">
+                    <div class="hud-dock-title">
+                        <span class="hud-dock-icon">🎯</span>
+                        <span style="font-weight: 700; color: #fff; font-size: 12px;">Objetivos:</span>
+                        <div class="hud-tab-group">
+                            <button class="hud-tab-btn active" id="tabMissingMin" data-filter="min">🔡 Minúsculas (<span id="countMissingMin">0</span>)</button>
+                            <button class="hud-tab-btn" id="tabMissingMay" data-filter="may">🔠 Mayúsculas (<span id="countMissingMay">0</span>)</button>
+                            <button class="hud-tab-btn" id="tabMissingPocas" data-filter="pocas">🟡 1 Sola Muestra (<span id="countMissingPocas">0</span>)</button>
+                            <button class="hud-tab-btn" id="tabMissingSigns" data-filter="signs">✒️ Signos (<span id="countMissingSigns">0</span>)</button>
+                        </div>
+                    </div>
+                    <div class="hud-dock-right">
+                        <div class="hud-progress-mini">
+                            <span class="hud-prog-label" id="hudProgMinLabel">Min: 0/27 (0%)</span>
+                            <div class="hud-prog-bar-bg"><div class="hud-prog-bar-fill" id="hudProgMinBar" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="hud-progress-mini">
+                            <span class="hud-prog-label" id="hudProgMayLabel">May: 0/27 (0%)</span>
+                            <div class="hud-prog-bar-bg"><div class="hud-prog-bar-fill may" id="hudProgMayBar" style="width: 0%;"></div></div>
+                        </div>
+                        <button class="btn-icon" id="btnToggleHudDock" title="Ocultar / Mostrar Barra de Objetivos" style="padding: 2px 6px;">
+                            <span id="iconToggleHud">▼</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hud-dock-body" id="hudDockBody">
+                    <div class="hud-chips-scroll" id="hudChipsContainer">
+                        <!-- Dynamic Chips -->
+                    </div>
                 </div>
             </div>
 
@@ -1042,6 +1229,9 @@
         let currentMouseImg = { x: 0, y: 0 };
         let isNearStartPoint = false;
 
+        // HUD Active Filter: 'min', 'may', 'pocas', 'signs'
+        let hudFilter = 'min';
+
         // Viewport & Pan/Zoom
         const viewport = document.getElementById('viewport');
         const emptyDropzone = document.getElementById('emptyDropzone');
@@ -1072,8 +1262,14 @@
             'simbolo': '#fb923c'
         };
 
-        const ABC_MIN = 'abcdefghijklmnñopqrstuvwxyzáéíóú'.split('');
-        const ABC_MAY = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ'.split('');
+        const ABC_MIN_BASE = 'abcdefghijklmnñopqrstuvwxyz'.split('');
+        const ABC_MIN_ACCENT = 'áéíóú'.split('');
+        const ABC_MIN_ALL = [...ABC_MIN_BASE, ...ABC_MIN_ACCENT];
+
+        const ABC_MAY_BASE = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+        const ABC_MAY_ACCENT = 'ÁÉÍÓÚ'.split('');
+        const ABC_MAY_ALL = [...ABC_MAY_BASE, ...ABC_MAY_ACCENT];
+
         const COMMON_SIGNS = ['1','2','3','4','5','6','7','8','9','0', '.', ',', ':', ';', '"', '«', '»', '—', '-', '?', '!', '(', ')', '/'];
 
         // Init
@@ -1083,6 +1279,7 @@
             setupToolModeSwitcher();
             setupImageIngestion();
             setupCatalogModal();
+            setupHudDock();
             fetchInitData();
         });
 
@@ -1240,6 +1437,146 @@
             reader.readAsDataURL(file);
         }
 
+        // HUD Quest Dock Logic
+        function setupHudDock() {
+            const tabs = document.querySelectorAll('.hud-tab-btn');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    hudFilter = tab.dataset.filter;
+                    updateHudChips();
+                });
+            });
+
+            const btnToggle = document.getElementById('btnToggleHudDock');
+            const dock = document.getElementById('hudMissingDock');
+            const iconToggle = document.getElementById('iconToggleHud');
+
+            btnToggle.addEventListener('click', () => {
+                dock.classList.toggle('collapsed');
+                iconToggle.textContent = dock.classList.contains('collapsed') ? '▲' : '▼';
+                setTimeout(resizeCanvas, 220);
+            });
+        }
+
+        function updateMissingDock() {
+            const glyphsByChar = {};
+            allGlyphs.forEach(g => {
+                const c = g.character;
+                if (!glyphsByChar[c]) glyphsByChar[c] = [];
+                glyphsByChar[c].push(g);
+            });
+
+            // Calculate missing
+            const missingMin = ABC_MIN_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            const missingMay = ABC_MAY_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            
+            // Few samples (< 2)
+            const pocasSamples = Object.keys(glyphsByChar).filter(c => glyphsByChar[c].length === 1);
+            
+            // Missing signs
+            const missingSigns = COMMON_SIGNS.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+
+            // Base progress
+            const minCoveredBase = ABC_MIN_BASE.filter(c => (glyphsByChar[c] && glyphsByChar[c].length > 0)).length;
+            const mayCoveredBase = ABC_MAY_BASE.filter(c => (glyphsByChar[c] && glyphsByChar[c].length > 0)).length;
+
+            const minPct = Math.round((minCoveredBase / 27) * 100);
+            const mayPct = Math.round((mayCoveredBase / 27) * 100);
+
+            // Update Header counts
+            document.getElementById('countMissingMin').textContent = missingMin.length;
+            document.getElementById('countMissingMay').textContent = missingMay.length;
+            document.getElementById('countMissingPocas').textContent = pocasSamples.length;
+            document.getElementById('countMissingSigns').textContent = missingSigns.length;
+
+            // Mini progress bars
+            document.getElementById('hudProgMinLabel').textContent = `Min: ${minCoveredBase}/27 (${minPct}%)`;
+            document.getElementById('hudProgMinBar').style.width = `${minPct}%`;
+
+            document.getElementById('hudProgMayLabel').textContent = `May: ${mayCoveredBase}/27 (${mayPct}%)`;
+            document.getElementById('hudProgMayBar').style.width = `${mayPct}%`;
+
+            updateHudChips();
+        }
+
+        function updateHudChips() {
+            const container = document.getElementById('hudChipsContainer');
+            container.innerHTML = '';
+
+            const glyphsByChar = {};
+            allGlyphs.forEach(g => {
+                const c = g.character;
+                if (!glyphsByChar[c]) glyphsByChar[c] = [];
+                glyphsByChar[c].push(g);
+            });
+
+            let targetList = [];
+            let isPocasMode = false;
+
+            if (hudFilter === 'min') {
+                targetList = ABC_MIN_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            } else if (hudFilter === 'may') {
+                targetList = ABC_MAY_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            } else if (hudFilter === 'pocas') {
+                isPocasMode = true;
+                targetList = Object.keys(glyphsByChar).filter(c => glyphsByChar[c].length === 1);
+            } else if (hudFilter === 'signs') {
+                targetList = COMMON_SIGNS.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            }
+
+            if (targetList.length === 0) {
+                const banner = document.createElement('div');
+                banner.className = 'hud-all-done-banner';
+                banner.innerHTML = `✨ ¡Todo capturado en esta sección! Excelente trabajo.`;
+                container.appendChild(banner);
+                return;
+            }
+
+            targetList.forEach(char => {
+                const chip = document.createElement('div');
+                chip.className = `hud-chip ${isPocasMode ? 'pocas' : ''}`;
+                chip.title = isPocasMode ? `Letra "${char}" tiene solo 1 muestra. ¡Haz clic para usar!` : `Falta capturar la letra "${char}". ¡Haz clic para usar!`;
+                
+                chip.innerHTML = `
+                    <span class="chip-letter">${char}</span>
+                    <span class="chip-tag">${isPocasMode ? '1x' : 'Falta'}</span>
+                `;
+
+                chip.addEventListener('click', () => {
+                    handleChipClick(char);
+                });
+
+                container.appendChild(chip);
+            });
+        }
+
+        function handleChipClick(char) {
+            const card = document.getElementById('assignmentCard');
+            if (card.style.display === 'flex') {
+                // Auto-fill assignment modal!
+                const charInput = document.getElementById('inputChar');
+                const catSelect = document.getElementById('selectCategory');
+                charInput.value = char;
+
+                if (ABC_MAY_ALL.includes(char)) {
+                    catSelect.value = 'mayuscula';
+                } else if (ABC_MIN_ALL.includes(char)) {
+                    catSelect.value = 'minuscula';
+                } else if ('0123456789'.includes(char)) {
+                    catSelect.value = 'numero';
+                } else {
+                    catSelect.value = 'signo';
+                }
+
+                document.getElementById('inputNotes').focus();
+                showToast(`🎯 Letra "${char}" aplicada al recorte actual`);
+            } else {
+                showToast(`🎯 Objetivo: "${char}". Selecciona su trazo en la imagen.`);
+            }
+        }
+
         // Backend Sync
         async function fetchInitData() {
             try {
@@ -1256,6 +1593,7 @@
             const badge = document.getElementById('totalStatsBadge');
             badge.textContent = `Total Glifos: ${allGlyphs.length}`;
             updateCoverageModalData();
+            updateMissingDock();
         }
 
         function resetZoom() {
@@ -1795,9 +2133,9 @@
             const gridMin = document.getElementById('gridMinusculas');
             gridMin.innerHTML = '';
             let minCovered = 0;
-            ABC_MIN.forEach(char => {
+            ABC_MIN_ALL.forEach(char => {
                 const count = (glyphsByChar[char] || []).length;
-                if (count > 0 && char.length === 1 && !'áéíóú'.includes(char)) minCovered++;
+                if (count > 0 && ABC_MIN_BASE.includes(char)) minCovered++;
                 gridMin.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
             });
             document.getElementById('labelMinProgress').textContent = `${minCovered} de 27 base (${Math.round(minCovered/27*100)}%)`;
@@ -1807,9 +2145,9 @@
             const gridMay = document.getElementById('gridMayusculas');
             gridMay.innerHTML = '';
             let mayCovered = 0;
-            ABC_MAY.forEach(char => {
+            ABC_MAY_ALL.forEach(char => {
                 const count = (glyphsByChar[char] || []).length;
-                if (count > 0 && char.length === 1 && !'ÁÉÍÓÚ'.includes(char)) mayCovered++;
+                if (count > 0 && ABC_MAY_BASE.includes(char)) mayCovered++;
                 gridMay.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
             });
             document.getElementById('labelMayProgress').textContent = `${mayCovered} de 27 base (${Math.round(mayCovered/27*100)}%)`;
@@ -1829,7 +2167,7 @@
             // Ligatures & Extras
             const gridLig = document.getElementById('gridLigatures');
             gridLig.innerHTML = '';
-            const existingChars = new Set([...ABC_MIN, ...ABC_MAY, ...COMMON_SIGNS]);
+            const existingChars = new Set([...ABC_MIN_ALL, ...ABC_MAY_ALL, ...COMMON_SIGNS]);
             const ligChars = Object.keys(glyphsByChar).filter(c => !existingChars.has(c) || glyphsByChar[c].some(g => g.category === 'ligadura' || g.category === 'simbolo'));
             ligChars.forEach(char => {
                 const count = glyphsByChar[char].length;
