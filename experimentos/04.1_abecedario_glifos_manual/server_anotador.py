@@ -3,6 +3,8 @@ import sys
 import traceback
 import json
 import csv
+import base64
+import io
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from PIL import Image
@@ -49,9 +51,11 @@ def save_db(data):
     
     with open(CSV_DB_PATH, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(["ID", "Line_ID", "Page", "Character", "Category", "Notes", "BBox_X", "BBox_Y", "BBox_W", "BBox_H", "Crop_File", "Crop_Isolated_File"])
+        writer.writerow(["ID", "Line_ID", "Page", "Character", "Category", "Notes", "BBox_X", "BBox_Y", "BBox_W", "BBox_H", "Polygon", "Crop_File", "Crop_Isolated_File"])
         for g in data.get("glyphs", []):
             b = g.get("bbox", [0, 0, 0, 0])
+            poly = g.get("polygon", [])
+            poly_str = json.dumps(poly) if poly else ""
             writer.writerow([
                 g.get("id"),
                 g.get("line_id"),
@@ -60,16 +64,20 @@ def save_db(data):
                 g.get("category"),
                 g.get("notes", ""),
                 b[0], b[1], b[2], b[3],
+                poly_str,
                 g.get("crop_file", ""),
                 g.get("crop_isolated_file", "")
             ])
 
-def isolate_ink(pil_img):
+def isolate_ink(pil_img, mask=None):
     img_cv = cv2.cvtColor(np.array(pil_img.convert('RGB')), cv2.COLOR_RGB2BGR)
     gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
     binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 21, 10)
     kernel = np.ones((2, 2), np.uint8)
     binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
+    
+    if mask is not None:
+        binary[mask == 0] = 0
     
     h, w = gray.shape
     rgba = np.zeros((h, w, 4), dtype=np.uint8)
@@ -81,7 +89,6 @@ def isolate_ink(pil_img):
 
 class AnnotationHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
-        # Suppress noisy logs, only log on errors
         pass
 
     def send_bytes(self, content_bytes, content_type='application/json', status=200):
@@ -163,47 +170,70 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                 payload = json.loads(body.decode('utf-8'))
 
                 line_id = payload.get('line_id')
-                page = payload.get('page')
-                crop_image = payload.get('crop_image')
+                page = payload.get('page', 'captura_externa')
                 boxes = payload.get('boxes', [])
+                image_data = payload.get('image_data')  # base64 dataURL if custom uploaded image
 
+                pil_line = None
                 line_img_path = os.path.join(LINES_CROPS_DIR, f"{line_id}.png")
-                if not os.path.exists(line_img_path):
-                    err_bytes = json.dumps({'status': 'error', 'message': f'Image {line_id}.png not found'}).encode('utf-8')
+                if os.path.exists(line_img_path):
+                    pil_line = Image.open(line_img_path)
+                elif image_data and ',' in image_data:
+                    # Decode base64 image data
+                    header, b64_str = image_data.split(',', 1)
+                    img_bytes = base64.b64decode(b64_str)
+                    pil_line = Image.open(io.BytesIO(img_bytes))
+                
+                if pil_line is None:
+                    err_bytes = json.dumps({'status': 'error', 'message': f'Image for {line_id} not found and no image_data supplied'}).encode('utf-8')
                     self.send_bytes(err_bytes, 'application/json', status=400)
                     return
 
-                pil_line = Image.open(line_img_path)
                 db = load_db()
                 glyphs_list = db.get('glyphs', [])
 
-                # Remove existing glyphs for this line_id to overwrite cleanly
+                # Cleanly replace existing glyphs for this line_id
                 glyphs_list = [g for g in glyphs_list if g.get('line_id') != line_id]
 
                 for i, b in enumerate(boxes):
-                    bx, by, bw, bh = b['x'], b['y'], b['w'], b['h']
+                    bx, by, bw, bh = int(b['x']), int(b['y']), int(b['w']), int(b['h'])
                     char_str = b['character']
                     cat = b['category']
                     notes = b.get('notes', '')
+                    poly = b.get('polygon', [])  # list of [x, y] points
 
                     safe_char = "".join([c if c.isalnum() else f"_{ord(c)}_" for c in char_str])
                     glyph_id = f"g_{line_id}_{i+1:02d}_{safe_char}"
                     crop_filename = f"{glyph_id}.png"
                     crop_iso_filename = f"{glyph_id}_iso.png"
 
-                    # Crop original
+                    # Crop bounding box area
                     crop_box = (bx, by, bx + bw, by + bh)
                     cropped_img = pil_line.crop(crop_box)
+
+                    poly_mask = None
+                    if poly and len(poly) >= 3:
+                        # Construct local polygon mask
+                        rel_poly = np.array([[int(pt[0] - bx), int(pt[1] - by)] for pt in poly], dtype=np.int32)
+                        poly_mask = np.zeros((bh, bw), dtype=np.uint8)
+                        cv2.fillPoly(poly_mask, [rel_poly], 255)
+
+                        # Mask the RGB crop: set background outside polygon to pure white
+                        img_np = np.array(cropped_img.convert('RGB'))
+                        img_np[poly_mask == 0] = [255, 255, 255]
+                        cropped_img = Image.fromarray(img_np)
+
+                    # Save RGB crop
                     cropped_img.save(os.path.join(CROPS_OUT_DIR, crop_filename))
 
-                    # Crop isolated ink
+                    # Save isolated ink RGBA
                     try:
-                        iso_img = isolate_ink(cropped_img)
+                        iso_img = isolate_ink(cropped_img, mask=poly_mask)
                         iso_img.save(os.path.join(CROPS_ISO_DIR, crop_iso_filename))
                     except Exception as e:
-                        print(f"Warning isolating ink: {e}", flush=True)
+                        print(f"Warning isolating ink for {glyph_id}: {e}", flush=True)
 
-                    glyphs_list.append({
+                    glyph_entry = {
                         "id": glyph_id,
                         "line_id": line_id,
                         "page": page,
@@ -213,7 +243,11 @@ class AnnotationHandler(BaseHTTPRequestHandler):
                         "bbox": [bx, by, bw, bh],
                         "crop_file": crop_filename,
                         "crop_isolated_file": crop_iso_filename
-                    })
+                    }
+                    if poly and len(poly) >= 3:
+                        glyph_entry["polygon"] = poly
+
+                    glyphs_list.append(glyph_entry)
 
                 db['glyphs'] = glyphs_list
                 save_db(db)

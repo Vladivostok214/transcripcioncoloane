@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anotador Manual de Glifos — Francisco Coloane (Exp 04.1)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>🖋️ Anotador de Glifos - Manuscritos Francisco Coloane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0a0d12;
-            --bg-secondary: #121820;
-            --bg-card: #18202c;
-            --bg-glass: rgba(24, 32, 44, 0.92);
-            --border: #263342;
+            --bg-primary: #0a0d14;
+            --bg-secondary: #121824;
+            --bg-card: #182030;
+            --border: #232d42;
             --border-highlight: #3b82f6;
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
@@ -22,115 +23,67 @@
             --accent-pink: #f472b6;
             --accent-orange: #fb923c;
             --danger: #f87171;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --shadow-glow: 0 0 24px rgba(56, 189, 248, 0.2);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
         body {
+            font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            user-select: none;
         }
 
         /* Top Header */
         header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border);
-            padding: 10px 20px;
+            height: 54px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            z-index: 100;
+            padding: 0 16px;
+            z-index: 20;
         }
+
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         .brand h1 {
             font-size: 16px;
             font-weight: 700;
             letter-spacing: -0.3px;
             color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         .badge-exp {
             background: rgba(56, 189, 248, 0.15);
             color: var(--accent-blue);
-            border: 1px solid rgba(56, 189, 248, 0.3);
             font-size: 11px;
             font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 6px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
             font-family: 'JetBrains Mono', monospace;
         }
 
         .nav-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        .btn {
-            background: var(--bg-card);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 6px 14px;
-            border-radius: var(--radius-md);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.15s ease;
-        }
-        .btn:hover:not(:disabled) {
-            background: #222d3d;
-            border-color: var(--border-highlight);
-            color: #fff;
-        }
-        .btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .btn-primary {
-            background: #2563eb;
-            border-color: #3b82f6;
-            color: #fff;
-        }
-        .btn-primary:hover:not(:disabled) {
-            background: #1d4ed8;
-            box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
-        }
-        .btn-success {
-            background: #059669;
-            border-color: #10b981;
-            color: #fff;
-        }
-        .btn-success:hover:not(:disabled) {
-            background: #047857;
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
-        }
-        .btn-coverage {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(168, 85, 247, 0.15));
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            color: #e0f2fe;
-            font-weight: 600;
-        }
-        .btn-coverage:hover {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(168, 85, 247, 0.3));
-            border-color: #38bdf8;
-            box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
-            color: #fff;
+            gap: 8px;
         }
 
         .line-select {
@@ -138,15 +91,68 @@
             color: var(--text-main);
             border: 1px solid var(--border);
             padding: 6px 12px;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-sm);
             font-size: 13px;
-            font-weight: 500;
-            outline: none;
+            font-family: 'JetBrains Mono', monospace;
             cursor: pointer;
-            max-width: 320px;
+            outline: none;
+            max-width: 380px;
         }
         .line-select:focus {
             border-color: var(--border-highlight);
+        }
+
+        .btn {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #222d42;
+            border-color: #475569;
+        }
+        .btn-primary {
+            background: #2563eb;
+            border-color: #3b82f6;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-success {
+            background: #059669;
+            border-color: #10b981;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #047857;
+        }
+        .btn-coverage {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border: 1px solid #818cf8;
+            color: #fff;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
+        }
+        .btn-coverage:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+        }
+        .btn-upload {
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-blue);
+        }
+        .btn-upload:hover {
+            background: rgba(56, 189, 248, 0.22);
+            border-color: var(--accent-blue);
         }
 
         .stats-badge {
@@ -217,8 +223,42 @@
         .canvas-toolbar {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
+
+        /* Tool mode group */
+        .tool-mode-group {
+            display: flex;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+            gap: 2px;
+        }
+        .tool-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+        }
+        .tool-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .tool-btn.active {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+        }
+
         .zoom-badge {
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
@@ -251,12 +291,12 @@
             border: 1px solid var(--border-highlight);
             border-radius: var(--radius-lg);
             padding: 16px;
-            width: 320px;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.8), var(--shadow-glow);
-            z-index: 200;
+            width: 330px;
             display: none;
             flex-direction: column;
             gap: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), var(--shadow-glow);
+            z-index: 100;
         }
         .assignment-header {
             display: flex;
@@ -269,64 +309,55 @@
             padding-bottom: 8px;
         }
         .crop-preview-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #020406;
+            background: #080c14;
             border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            height: 90px;
-            padding: 6px;
+            border-radius: var(--radius-sm);
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
+            position: relative;
         }
         #previewCanvas {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            max-width: 90%;
+            max-height: 90%;
+            image-rendering: auto;
             border-radius: 4px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.5);
-            display: block;
         }
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
         }
         .form-group label {
             font-size: 11px;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
-        .form-input {
+        .form-input, .form-select {
             background: var(--bg-primary);
+            color: var(--text-main);
             border: 1px solid var(--border);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 15px;
-            outline: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-        }
-        .form-input:focus {
-            border-color: var(--border-highlight);
-            box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
-        }
-        .form-select {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 7px 10px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
+            font-family: inherit;
             outline: none;
-            cursor: pointer;
-            font-weight: 500;
         }
-        .form-select:focus {
+        .form-input:focus, .form-select:focus {
             border-color: var(--border-highlight);
+        }
+        #inputChar {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            color: #fff;
+            background: #0f172a;
+            letter-spacing: 2px;
         }
         .btn-row {
             display: flex;
@@ -338,14 +369,14 @@
             justify-content: center;
         }
 
-        /* Sidebar Inventory */
+        /* Sidebar */
         .sidebar {
-            width: 380px;
+            width: 360px;
             background: var(--bg-secondary);
             border-left: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            z-index: 50;
+            z-index: 10;
         }
         .sidebar-header {
             padding: 14px 18px;
@@ -548,17 +579,16 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border);
-            background: #080b0f;
-            overflow-y: auto;
             padding: 20px;
+            overflow-y: auto;
             gap: 20px;
         }
         .catalog-section-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.6px;
-            color: var(--text-muted);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -566,37 +596,32 @@
         }
         .letters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+            gap: 6px;
         }
         .letter-tile {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 8px 4px;
+            border-radius: var(--radius-sm);
+            height: 58px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            position: relative;
             transition: all 0.15s ease;
-            user-select: none;
+            position: relative;
         }
         .letter-tile:hover {
             border-color: var(--border-highlight);
             transform: translateY(-2px);
         }
         .letter-tile.empty {
-            opacity: 0.35;
-            background: #0f151e;
+            opacity: 0.45;
             border-style: dashed;
         }
-        .letter-tile.empty:hover {
-            opacity: 0.7;
-        }
         .letter-tile.has-1 {
-            border-color: rgba(251, 191, 36, 0.5);
+            border-color: rgba(251, 191, 36, 0.4);
             background: rgba(251, 191, 36, 0.06);
         }
         .letter-tile.has-many {
@@ -760,6 +785,17 @@
             font-size: 13px;
             gap: 8px;
         }
+
+        /* Instructions tooltip in toolbar */
+        .info-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
     </style>
 </head>
 <body>
@@ -774,6 +810,10 @@
             <button class="btn" id="btnPrevLine">◀ Anterior</button>
             <select class="line-select" id="lineSelect"></select>
             <button class="btn" id="btnNextLine">Siguiente ▶</button>
+            <input type="file" id="fileUploadInput" accept="image/*" style="display: none;" />
+            <button class="btn btn-upload" id="btnUploadImage" title="Subir imagen o presiona Ctrl+V para pegar captura">
+                📤 Cargar Imagen / Pegar (Ctrl+V)
+            </button>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
             <button class="btn btn-coverage" id="btnOpenCoverage">📊 Catálogo & Cobertura</button>
@@ -790,10 +830,24 @@
                     <span class="gt-text" id="gtTextDisplay">Cargando...</span>
                 </div>
                 <div class="canvas-toolbar">
+                    <!-- Tool Mode Selector -->
+                    <div class="tool-mode-group">
+                        <button class="tool-btn active" id="btnToolRect" title="Modo Rectángulo (Tecla 1)">
+                            ⬛ Rectángulo (1)
+                        </button>
+                        <button class="tool-btn" id="btnToolPoly" title="Modo Polígono por Vértices (Tecla 2)">
+                            📐 Polígono (2)
+                        </button>
+                    </div>
+
+                    <span class="info-hint" id="polyHint" style="display: none;">
+                        Clics: Vértices | Doble Clic / Enter: Cerrar | Esc: Cancelar
+                    </span>
+
                     <button class="btn" id="btnZoomOut" title="Reducir Zoom">-</button>
                     <span class="zoom-badge" id="zoomLevelDisplay">100%</span>
                     <button class="btn" id="btnZoomIn" title="Aumentar Zoom">+</button>
-                    <button class="btn" id="btnResetZoom" title="Ajustar">Ajustar</button>
+                    <button class="btn" id="btnResetZoom" title="Ajustar (Tecla R)">Ajustar</button>
                 </div>
             </div>
 
@@ -839,17 +893,17 @@
         <!-- Sidebar Inventory -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h2>Glifos del Renglón</h2>
+                <h2>Glifos de la Vista</h2>
                 <span class="glyph-count-badge" id="lineGlyphCount">0 glifos</span>
             </div>
             <div class="glyph-list" id="glyphListContainer">
                 <div class="empty-state">
-                    <p>Arrastra con el mouse sobre el renglón para seleccionar y clasificar letras.</p>
+                    <p>Usa la herramienta de selección para clasificar letras y caracteres.</p>
                 </div>
             </div>
             <div class="sidebar-footer">
                 <button class="btn btn-success" id="btnSaveLine" style="width: 100%; justify-content: center; padding: 10px;">
-                    💾 Guardar Renglón en Base de Datos
+                    💾 Guardar en Base de Datos (Ctrl+S)
                 </button>
             </div>
         </div>
@@ -898,34 +952,34 @@
                             <span>🔢 Números y ✒️ Signos</span>
                             <span id="labelOthersProgress">0 caracteres</span>
                         </div>
-                        <div class="letters-grid" id="gridNumerosSignos"></div>
+                        <div class="letters-grid" id="gridOthers"></div>
                     </div>
 
-                    <!-- Ligaduras y Especiales -->
-                    <div id="sectionLigaduras" style="display: none;">
+                    <!-- Ligaduras y Símbolos -->
+                    <div>
                         <div class="catalog-section-title">
-                            <span>🔗 Ligaduras & Símbolos Especiales</span>
-                            <span id="labelLigadurasProgress">0</span>
+                            <span>🔗 Ligaduras & Símbolos</span>
+                            <span id="labelLigaturesProgress">0 muestras</span>
                         </div>
-                        <div class="letters-grid" id="gridLigaduras"></div>
+                        <div class="letters-grid" id="gridLigatures"></div>
                     </div>
 
                 </div>
 
-                <!-- Inspector / Galería de Glifos para la letra seleccionada -->
+                <!-- Detalle / Galería de Glifos del Carácter Seleccionado -->
                 <div class="catalog-detail-pane">
                     <div class="detail-pane-header">
                         <div class="detail-selected-char">
                             <div class="detail-char-big" id="detailCharBig">-</div>
                             <div>
-                                <h3 id="detailCharTitle" style="font-size: 15px; color: #fff;">Selecciona una letra</h3>
-                                <p id="detailCharSubtitle" style="font-size: 12px; color: var(--text-muted);">0 muestras guardadas</p>
+                                <h3 id="detailCharTitle" style="font-size: 15px; color: #fff;">Selecciona un carácter</h3>
+                                <p id="detailCharSubtitle" style="font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono';">0 muestras guardadas</p>
                             </div>
                         </div>
                     </div>
                     <div class="gallery-container" id="galleryContainer">
                         <div class="empty-state">
-                            <p>Haz clic en cualquier letra de la cuadrícula para ver todas sus muestras y recortes aislados.</p>
+                            <p>Haz clic en cualquier letra de la izquierda para ver todas sus muestras recortadas y con tinta aislada.</p>
                         </div>
                     </div>
                 </div>
@@ -933,17 +987,25 @@
         </div>
     </div>
 
-    <!-- Toast notification -->
-    <div class="toast" id="toastMessage">✓ Renglón guardado con éxito!</div>
+    <!-- Toast Notification -->
+    <div class="toast" id="toastMessage">✓ Guardado</div>
 
     <script>
+        // Data & State
         let dataset = [];
+        let allGlyphs = [];
         let currentLineIndex = 0;
         let lineImage = new Image();
         let currentBoxes = [];
-        let allGlyphs = [];
-        let selectedCatalogChar = null;
+        let customImageDataUrl = null; // Stored if user loads a custom image
 
+        // Selection Tool Mode: 'rect' or 'polygon'
+        let selectionMode = 'rect';
+        let polygonPoints = []; // [{x, y}, ...]
+        let currentMouseImg = { x: 0, y: 0 };
+        let isNearStartPoint = false;
+
+        // Viewport & Pan/Zoom
         const viewport = document.getElementById('viewport');
         const canvas = document.getElementById('cropCanvas');
         const ctx = canvas.getContext('2d');
@@ -951,52 +1013,185 @@
         const previewCtx = previewCanvas.getContext('2d');
 
         let zoom = 1.0;
-        let panX = 30;
-        let panY = 30;
+        let panX = 0;
+        let panY = 0;
         let isPanning = false;
-        let startPanX = 0, startPanY = 0;
+        let startPanX = 0;
+        let startPanY = 0;
 
+        // Rectangle Drawing
         let isDrawing = false;
-        let drawStartImgX = 0, drawStartImgY = 0;
+        let drawStartImgX = 0;
+        let drawStartImgY = 0;
         let currentDrawRect = null;
 
         const CAT_COLORS = {
-            mayuscula: '#38bdf8',
-            minuscula: '#34d399',
-            numero: '#fbbf24',
-            signo: '#c084fc',
-            ligadura: '#f472b6',
-            simbolo: '#fb923c'
+            'mayuscula': '#38bdf8',
+            'minuscula': '#34d399',
+            'numero': '#fbbf24',
+            'signo': '#c084fc',
+            'ligadura': '#f472b6',
+            'simbolo': '#fb923c'
         };
 
-        const SPANISH_MIN = "abcdefghijklmnñopqrstuvwxyzáéíóú".split('');
-        const SPANISH_MAY = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ".split('');
-        const NUMS_SIGNS = "0123456789,.:;\"'-!?«»".split('');
+        const ABC_MIN = 'abcdefghijklmnñopqrstuvwxyzáéíóú'.split('');
+        const ABC_MAY = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ'.split('');
+        const COMMON_SIGNS = ['1','2','3','4','5','6','7','8','9','0', '.', ',', ':', ';', '"', '«', '»', '—', '-', '?', '!', '(', ')', '/'];
+
+        // Init
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            setupToolModeSwitcher();
+            setupImageUploaderAndPaste();
+            setupCatalogModal();
+            fetchInitData();
+        });
 
         function resizeCanvas() {
             canvas.width = viewport.clientWidth;
             canvas.height = viewport.clientHeight;
             renderCanvas();
         }
-        window.addEventListener('resize', resizeCanvas);
 
-        function screenToImage(screenX, screenY) {
+        // Coordinate transforms
+        function screenToImage(clientX, clientY) {
             const vpRect = viewport.getBoundingClientRect();
-            const mouseX = screenX - vpRect.left;
-            const mouseY = screenY - vpRect.top;
-            const imgX = (mouseX - panX) / zoom;
-            const imgY = (mouseY - panY) / zoom;
-            return { x: imgX, y: imgY };
+            const sx = clientX - vpRect.left;
+            const sy = clientY - vpRect.top;
+            return {
+                x: (sx - panX) / zoom,
+                y: (sy - panY) / zoom
+            };
         }
 
-        async function init() {
+        function imageToScreen(imgX, imgY) {
+            const vpRect = viewport.getBoundingClientRect();
+            return {
+                x: vpRect.left + panX + (imgX * zoom),
+                y: vpRect.top + panY + (imgY * zoom)
+            };
+        }
+
+        // Tool Mode Switcher
+        function setupToolModeSwitcher() {
+            const btnRect = document.getElementById('btnToolRect');
+            const btnPoly = document.getElementById('btnToolPoly');
+            const polyHint = document.getElementById('polyHint');
+
+            function setMode(mode) {
+                selectionMode = mode;
+                polygonPoints = [];
+                isDrawing = false;
+                currentDrawRect = null;
+
+                if (mode === 'rect') {
+                    btnRect.classList.add('active');
+                    btnPoly.classList.remove('active');
+                    polyHint.style.display = 'none';
+                } else {
+                    btnPoly.classList.add('active');
+                    btnRect.classList.remove('active');
+                    polyHint.style.display = 'inline-block';
+                }
+                renderCanvas();
+            }
+
+            btnRect.addEventListener('click', () => setMode('rect'));
+            btnPoly.addEventListener('click', () => setMode('polygon'));
+
+            window.addEventListener('keydown', (e) => {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
+                if (e.key === '1') setMode('rect');
+                if (e.key === '2') setMode('polygon');
+                if (e.key === 'r' || e.key === 'R') resetZoom();
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    saveLineToDatabase();
+                }
+                if (e.key === 'd' || e.key === 'ArrowRight') {
+                    if (currentLineIndex < dataset.length - 1) loadLine(currentLineIndex + 1);
+                }
+                if (e.key === 'a' || e.key === 'ArrowLeft') {
+                    if (currentLineIndex > 0) loadLine(currentLineIndex - 1);
+                }
+                if (e.key === 'Escape') {
+                    if (polygonPoints.length > 0) {
+                        polygonPoints = [];
+                        renderCanvas();
+                    } else {
+                        closeModal();
+                    }
+                }
+                if (e.key === 'Backspace' && selectionMode === 'polygon' && polygonPoints.length > 0) {
+                    polygonPoints.pop();
+                    renderCanvas();
+                }
+                if (e.key === 'Enter' && selectionMode === 'polygon' && polygonPoints.length >= 3) {
+                    completePolygonSelection();
+                }
+            });
+        }
+
+        // Free Image Ingestion (Upload & Clipboard Paste)
+        function setupImageUploaderAndPaste() {
+            const fileInput = document.getElementById('fileUploadInput');
+            const btnUpload = document.getElementById('btnUploadImage');
+
+            btnUpload.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    handleImageFile(e.target.files[0]);
+                }
+            });
+
+            // Global Clipboard Paste (Ctrl + V)
+            window.addEventListener('paste', (e) => {
+                const items = e.clipboardData && e.clipboardData.items;
+                if (!items) return;
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        const blob = items[i].getAsFile();
+                        handleImageFile(blob, 'Captura Portapapeles (Ctrl+V)');
+                        break;
+                    }
+                }
+            });
+        }
+
+        function handleImageFile(file, customTitle) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataUrl = event.target.result;
+                const timestamp = Date.now();
+                const customId = `custom_${timestamp}`;
+                const title = customTitle || file.name || `Captura_${timestamp}`;
+
+                const newLine = {
+                    id: customId,
+                    page: 'captura_externa',
+                    crop_image: null,
+                    ground_truth: `[Captura Libre] ${title}`,
+                    _isCustom: true,
+                    _dataUrl: dataUrl
+                };
+
+                dataset.push(newLine);
+                populateLineSelector();
+                loadLine(dataset.length - 1);
+                showToast(`✓ Imagen cargada: ${title}`);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Backend Sync
+        async function fetchInitData() {
             try {
                 const res = await fetch('/api/init_data');
                 const data = await res.json();
-                dataset = data.dataset;
+                dataset = data.dataset || [];
                 allGlyphs = data.db.glyphs || [];
-
-                resizeCanvas();
                 populateLineSelector();
                 updateGlobalStats();
                 loadLine(0);
@@ -1013,7 +1208,8 @@
                 const opt = document.createElement('option');
                 opt.value = idx;
                 const count = allGlyphs.filter(g => g.line_id === line.id).length;
-                opt.textContent = `[${String(idx + 1).padStart(2, '0')}] Pág ${line.page} | ${line.id} (${count} glifos)`;
+                const pfx = line._isCustom ? '📂 [Captura]' : `[${String(idx + 1).padStart(2, '0')}]`;
+                opt.textContent = `${pfx} Pág ${line.page} | ${line.id} (${count} glifos)`;
                 select.appendChild(opt);
             });
         }
@@ -1042,6 +1238,7 @@
                 y: g.bbox[1],
                 w: g.bbox[2],
                 h: g.bbox[3],
+                polygon: g.polygon || null,
                 character: g.character,
                 category: g.category,
                 notes: g.notes || ''
@@ -1053,8 +1250,16 @@
                 renderCanvas();
                 renderSidebarList();
             };
-            lineImage.src = `/api/image?line_id=${line.id}&t=${Date.now()}`;
+
+            if (line._isCustom && line._dataUrl) {
+                customImageDataUrl = line._dataUrl;
+                lineImage.src = line._dataUrl;
+            } else {
+                customImageDataUrl = null;
+                lineImage.src = `/api/image?line_id=${line.id}&t=${Date.now()}`;
+            }
             closeModal();
+            polygonPoints = [];
         }
 
         function resetZoom() {
@@ -1064,7 +1269,7 @@
             const fitW = (vpW - 60) / lineImage.naturalWidth;
             const fitH = (vpH - 60) / lineImage.naturalHeight;
             zoom = Math.min(fitW, fitH, 1.4);
-            if (zoom < 0.2) zoom = 0.2;
+            if (zoom < 0.1) zoom = 0.1;
             
             panX = Math.max(30, (vpW - lineImage.naturalWidth * zoom) / 2);
             panY = Math.max(30, (vpH - lineImage.naturalHeight * zoom) / 2);
@@ -1076,6 +1281,7 @@
             document.getElementById('zoomLevelDisplay').textContent = `${Math.round(zoom * 100)}%`;
         }
 
+        // Canvas Rendering
         function renderCanvas() {
             ctx.save();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1087,14 +1293,26 @@
                 ctx.drawImage(lineImage, 0, 0);
             }
 
+            // Render existing classified boxes / polygons
             currentBoxes.forEach((box) => {
                 const color = CAT_COLORS[box.category] || '#38bdf8';
                 ctx.strokeStyle = color;
                 ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
                 ctx.fillStyle = color + '25';
                 
-                ctx.fillRect(box.x, box.y, box.w, box.h);
-                ctx.strokeRect(box.x, box.y, box.w, box.h);
+                if (box.polygon && box.polygon.length >= 3) {
+                    ctx.beginPath();
+                    box.polygon.forEach((pt, i) => {
+                        if (i === 0) ctx.moveTo(pt[0], pt[1]);
+                        else ctx.lineTo(pt[0], pt[1]);
+                    });
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                } else {
+                    ctx.fillRect(box.x, box.y, box.w, box.h);
+                    ctx.strokeRect(box.x, box.y, box.w, box.h);
+                }
 
                 ctx.fillStyle = color;
                 const fontSize = Math.max(12, Math.min(22, Math.round(box.h * 0.35)));
@@ -1107,7 +1325,8 @@
                 ctx.fillText(labelText, box.x + 4, box.y - 4);
             });
 
-            if (isDrawing && currentDrawRect) {
+            // Active rectangle drawing preview
+            if (selectionMode === 'rect' && isDrawing && currentDrawRect) {
                 ctx.strokeStyle = '#f43f5e';
                 ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
                 ctx.setLineDash([6 / zoom, 4 / zoom]);
@@ -1117,9 +1336,37 @@
                 ctx.setLineDash([]);
             }
 
+            // Active polygon drawing preview
+            if (selectionMode === 'polygon' && polygonPoints.length > 0) {
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+
+                ctx.beginPath();
+                polygonPoints.forEach((pt, i) => {
+                    if (i === 0) ctx.moveTo(pt.x, pt.y);
+                    else ctx.lineTo(pt.x, pt.y);
+                });
+                ctx.lineTo(currentMouseImg.x, currentMouseImg.y);
+                ctx.stroke();
+
+                // Draw vertex points
+                polygonPoints.forEach((pt, i) => {
+                    ctx.beginPath();
+                    const radius = (i === 0 && isNearStartPoint) ? 7 / zoom : 4 / zoom;
+                    ctx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
+                    ctx.fillStyle = (i === 0 && isNearStartPoint) ? '#10b981' : '#38bdf8';
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.5 / zoom;
+                    ctx.stroke();
+                });
+            }
+
             ctx.restore();
         }
 
+        // Viewport Event Listeners
         viewport.addEventListener('wheel', (e) => {
             e.preventDefault();
             const vpRect = viewport.getBoundingClientRect();
@@ -1138,6 +1385,7 @@
         });
 
         viewport.addEventListener('mousedown', (e) => {
+            // Right click / Middle click = Pan
             if (e.button === 1 || e.button === 2 || e.shiftKey || e.altKey) {
                 isPanning = true;
                 startPanX = e.clientX - panX;
@@ -1148,17 +1396,41 @@
 
             if (e.button === 0) {
                 const imgCoords = screenToImage(e.clientX, e.clientY);
-                if (imgCoords.x >= 0 && imgCoords.x <= lineImage.naturalWidth &&
-                    imgCoords.y >= 0 && imgCoords.y <= lineImage.naturalHeight) {
+                if (imgCoords.x < 0 || imgCoords.x > lineImage.naturalWidth ||
+                    imgCoords.y < 0 || imgCoords.y > lineImage.naturalHeight) {
+                    return;
+                }
+
+                if (selectionMode === 'rect') {
                     isDrawing = true;
                     drawStartImgX = Math.round(imgCoords.x);
                     drawStartImgY = Math.round(imgCoords.y);
                     currentDrawRect = { x: drawStartImgX, y: drawStartImgY, w: 0, h: 0 };
+                } else if (selectionMode === 'polygon') {
+                    // Check if clicked near start point to close polygon
+                    if (polygonPoints.length >= 3 && isNearStartPoint) {
+                        completePolygonSelection();
+                        return;
+                    }
+                    polygonPoints.push({ x: Math.round(imgCoords.x), y: Math.round(imgCoords.y) });
+                    renderCanvas();
                 }
             }
         });
 
+        viewport.addEventListener('dblclick', (e) => {
+            if (selectionMode === 'polygon' && polygonPoints.length >= 3) {
+                completePolygonSelection();
+            }
+        });
+
         window.addEventListener('mousemove', (e) => {
+            const imgCoords = screenToImage(e.clientX, e.clientY);
+            currentMouseImg = {
+                x: Math.round(Math.max(0, Math.min(lineImage.naturalWidth, imgCoords.x))),
+                y: Math.round(Math.max(0, Math.min(lineImage.naturalHeight, imgCoords.y)))
+            };
+
             if (isPanning) {
                 panX = e.clientX - startPanX;
                 panY = e.clientY - startPanY;
@@ -1166,8 +1438,7 @@
                 return;
             }
 
-            if (isDrawing) {
-                const imgCoords = screenToImage(e.clientX, e.clientY);
+            if (selectionMode === 'rect' && isDrawing) {
                 const currentImgX = Math.round(imgCoords.x);
                 const currentImgY = Math.round(imgCoords.y);
 
@@ -1178,6 +1449,13 @@
 
                 currentDrawRect = { x, y, w, h };
                 renderCanvas();
+            } else if (selectionMode === 'polygon' && polygonPoints.length > 0) {
+                // Check proximity to first point
+                const p0 = polygonPoints[0];
+                const screenP0 = imageToScreen(p0.x, p0.y);
+                const distScreen = Math.hypot(e.clientX - screenP0.x, e.clientY - screenP0.y);
+                isNearStartPoint = (distScreen < 16 && polygonPoints.length >= 3);
+                renderCanvas();
             }
         });
 
@@ -1187,10 +1465,10 @@
                 viewport.style.cursor = 'crosshair';
             }
 
-            if (isDrawing) {
+            if (selectionMode === 'rect' && isDrawing) {
                 isDrawing = false;
                 if (currentDrawRect && currentDrawRect.w > 6 && currentDrawRect.h > 6) {
-                    openAssignmentModal(currentDrawRect, e.clientX, e.clientY);
+                    openAssignmentModal(currentDrawRect, null, e.clientX, e.clientY);
                 }
                 currentDrawRect = null;
                 renderCanvas();
@@ -1199,17 +1477,73 @@
 
         viewport.addEventListener('contextmenu', e => e.preventDefault());
 
-        function openAssignmentModal(rect, clientX, clientY) {
+        function completePolygonSelection() {
+            if (polygonPoints.length < 3) return;
+
+            // Calculate bounding box of polygon
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            polygonPoints.forEach(p => {
+                if (p.x < minX) minX = p.x;
+                if (p.y < minY) minY = p.y;
+                if (p.x > maxX) maxX = p.x;
+                if (p.y > maxY) maxY = p.y;
+            });
+
+            minX = Math.max(0, minX);
+            minY = Math.max(0, minY);
+            maxX = Math.min(lineImage.naturalWidth, maxX);
+            maxY = Math.min(lineImage.naturalHeight, maxY);
+            const w = maxX - minX;
+            const h = maxY - minY;
+
+            if (w < 4 || h < 4) {
+                polygonPoints = [];
+                renderCanvas();
+                return;
+            }
+
+            const polyArray = polygonPoints.map(p => [p.x, p.y]);
+            const rect = { x: minX, y: minY, w, h };
+            const screenCenter = imageToScreen(minX + w / 2, minY + h / 2);
+
+            openAssignmentModal(rect, polyArray, screenCenter.x, screenCenter.y);
+            polygonPoints = [];
+            renderCanvas();
+        }
+
+        // Assignment Popover
+        function openAssignmentModal(rect, polyArray, clientX, clientY) {
             const card = document.getElementById('assignmentCard');
             
             previewCanvas.width = Math.max(1, rect.w);
             previewCanvas.height = Math.max(1, rect.h);
             previewCtx.clearRect(0, 0, rect.w, rect.h);
-            previewCtx.drawImage(
-                lineImage,
-                rect.x, rect.y, rect.w, rect.h,
-                0, 0, rect.w, rect.h
-            );
+
+            if (polyArray && polyArray.length >= 3) {
+                // Clip preview to polygon
+                previewCtx.save();
+                previewCtx.beginPath();
+                polyArray.forEach((pt, i) => {
+                    const rx = pt[0] - rect.x;
+                    const ry = pt[1] - rect.y;
+                    if (i === 0) previewCtx.moveTo(rx, ry);
+                    else previewCtx.lineTo(rx, ry);
+                });
+                previewCtx.closePath();
+                previewCtx.clip();
+                previewCtx.drawImage(
+                    lineImage,
+                    rect.x, rect.y, rect.w, rect.h,
+                    0, 0, rect.w, rect.h
+                );
+                previewCtx.restore();
+            } else {
+                previewCtx.drawImage(
+                    lineImage,
+                    rect.x, rect.y, rect.w, rect.h,
+                    0, 0, rect.w, rect.h
+                );
+            }
 
             const vpRect = viewport.getBoundingClientRect();
             let popX = clientX - vpRect.left + 20;
@@ -1230,18 +1564,21 @@
             charInput.focus();
 
             card._activeRect = rect;
+            card._activePoly = polyArray || null;
         }
 
         function closeModal() {
             const card = document.getElementById('assignmentCard');
             card.style.display = 'none';
             card._activeRect = null;
+            card._activePoly = null;
             renderCanvas();
         }
 
         function confirmAssignment() {
             const card = document.getElementById('assignmentCard');
             const rect = card._activeRect;
+            const poly = card._activePoly;
             if (!rect) return;
 
             const charVal = document.getElementById('inputChar').value.trim();
@@ -1261,6 +1598,7 @@
                 y: rect.y,
                 w: rect.w,
                 h: rect.h,
+                polygon: poly,
                 character: charVal,
                 category: categoryVal,
                 notes: notesVal
@@ -1285,6 +1623,7 @@
             }
         });
 
+        // Sidebar List
         function renderSidebarList() {
             const container = document.getElementById('glyphListContainer');
             const badge = document.getElementById('lineGlyphCount');
@@ -1293,7 +1632,7 @@
             if (currentBoxes.length === 0) {
                 container.innerHTML = `
                 <div class="empty-state">
-                    <p>Arrastra con el mouse sobre el renglón para seleccionar y clasificar letras.</p>
+                    <p>Usa la herramienta de selección para clasificar letras y caracteres.</p>
                 </div>`;
                 return;
             }
@@ -1308,15 +1647,33 @@
                 thumbCanvas.width = Math.max(1, box.w);
                 thumbCanvas.height = Math.max(1, box.h);
                 const tCtx = thumbCanvas.getContext('2d');
-                tCtx.drawImage(lineImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
 
-                const catLabel = document.querySelector(`#selectCategory option[value="${box.category}"]`).textContent.split(' ')[1] || box.category;
+                if (box.polygon && box.polygon.length >= 3) {
+                    tCtx.save();
+                    tCtx.beginPath();
+                    box.polygon.forEach((pt, i) => {
+                        const rx = pt[0] - box.x;
+                        const ry = pt[1] - box.y;
+                        if (i === 0) tCtx.moveTo(rx, ry);
+                        else tCtx.lineTo(rx, ry);
+                    });
+                    tCtx.closePath();
+                    tCtx.clip();
+                    tCtx.drawImage(lineImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
+                    tCtx.restore();
+                } else {
+                    tCtx.drawImage(lineImage, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
+                }
+
+                const catOption = document.querySelector(`#selectCategory option[value="${box.category}"]`);
+                const catLabel = catOption ? catOption.textContent.split(' ')[1] : box.category;
+                const polyTag = box.polygon ? ' 📐' : '';
 
                 card.innerHTML = `
                 <div class="glyph-info">
                     <div class="glyph-char-row">
                         <span class="glyph-char">${box.character}</span>
-                        <span class="category-pill cat-${box.category}">${catLabel}</span>
+                        <span class="category-pill cat-${box.category}">${catLabel}${polyTag}</span>
                     </div>
                     <div class="glyph-notes">${box.notes || `[x:${box.x}, y:${box.y}, ${box.w}×${box.h}px]`}</div>
                 </div>
@@ -1335,6 +1692,7 @@
             renderSidebarList();
         };
 
+        // Save Line to Database
         async function saveLineToDatabase() {
             const line = dataset[currentLineIndex];
             const btn = document.getElementById('btnSaveLine');
@@ -1346,7 +1704,8 @@
                     line_id: line.id,
                     page: line.page,
                     crop_image: line.crop_image,
-                    boxes: currentBoxes
+                    boxes: currentBoxes,
+                    image_data: customImageDataUrl || null
                 };
 
                 const res = await fetch('/api/save_line', {
@@ -1359,7 +1718,7 @@
                 if (result.status === 'ok') {
                     allGlyphs = result.db.glyphs;
                     updateGlobalStats();
-                    showToast(`✓ Renglón ${line.id} guardado (${currentBoxes.length} glifos)`);
+                    showToast(`✓ Vista ${line.id} guardada (${currentBoxes.length} glifos)`);
                 } else {
                     alert("Error al guardar: " + result.message);
                 }
@@ -1368,7 +1727,7 @@
                 alert("Error de conexión al guardar el renglón.");
             } finally {
                 btn.disabled = false;
-                btn.textContent = '💾 Guardar Renglón en Base de Datos';
+                btn.textContent = '💾 Guardar en Base de Datos (Ctrl+S)';
             }
         }
 
@@ -1403,183 +1762,157 @@
         });
         document.getElementById('btnResetZoom').addEventListener('click', resetZoom);
 
-        /* ========================================================
-           CATALOG & COVERAGE MODAL LOGIC
-           ======================================================== */
-        const coverageModal = document.getElementById('coverageModal');
-        
-        function openCoverageModal() {
-            updateCoverageModalData();
-            coverageModal.classList.add('open');
-        }
+        // Catalog & Coverage Modal
+        let selectedCatalogChar = null;
 
-        function closeCoverageModal() {
-            coverageModal.classList.remove('open');
-        }
+        function setupCatalogModal() {
+            const modal = document.getElementById('coverageModal');
+            const btnOpen = document.getElementById('btnOpenCoverage');
+            const btnClose = document.getElementById('btnCloseCoverageModal');
 
-        document.getElementById('btnOpenCoverage').addEventListener('click', openCoverageModal);
-        document.getElementById('btnCloseCoverageModal').addEventListener('click', closeCoverageModal);
+            btnOpen.addEventListener('click', () => {
+                updateCoverageModalData();
+                modal.classList.add('open');
+            });
+
+            btnClose.addEventListener('click', () => modal.classList.remove('open'));
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('open');
+            });
+        }
 
         function updateCoverageModalData() {
-            // Count characters by exact char string
-            const counts = {};
             const glyphsByChar = {};
-
             allGlyphs.forEach(g => {
-                const ch = g.character;
-                counts[ch] = (counts[ch] || 0) + 1;
-                if (!glyphsByChar[ch]) glyphsByChar[ch] = [];
-                glyphsByChar[ch].push(g);
+                const c = g.character;
+                if (!glyphsByChar[c]) glyphsByChar[c] = [];
+                glyphsByChar[c].push(g);
             });
 
-            // Minúsculas
-            let minCapturedCount = 0;
+            // Populate Minusculas Grid
             const gridMin = document.getElementById('gridMinusculas');
             gridMin.innerHTML = '';
-            SPANISH_MIN.forEach(ch => {
-                const count = counts[ch] || 0;
-                if (count > 0) minCapturedCount++;
-                const tile = createLetterTile(ch, count, 'minuscula', glyphsByChar[ch] || []);
-                gridMin.appendChild(tile);
+            let minCovered = 0;
+            ABC_MIN.forEach(char => {
+                const count = (glyphsByChar[char] || []).length;
+                if (count > 0 && char.length === 1 && !'áéíóú'.includes(char)) minCovered++;
+                gridMin.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
             });
-            document.getElementById('labelMinProgress').textContent = `${minCapturedCount} de 27 (${Math.round(minCapturedCount/27*100)}%)`;
-            document.getElementById('chipMinStats').textContent = `Minúsculas: ${minCapturedCount}/27 (${Math.round(minCapturedCount/27*100)}%)`;
+            document.getElementById('labelMinProgress').textContent = `${minCovered} de 27 base (${Math.round(minCovered/27*100)}%)`;
+            document.getElementById('chipMinStats').textContent = `Minúsculas: ${minCovered}/27 (${Math.round(minCovered/27*100)}%)`;
 
-            // Mayúsculas
-            let mayCapturedCount = 0;
+            // Populate Mayusculas Grid
             const gridMay = document.getElementById('gridMayusculas');
             gridMay.innerHTML = '';
-            SPANISH_MAY.forEach(ch => {
-                const count = counts[ch] || 0;
-                if (count > 0) mayCapturedCount++;
-                const tile = createLetterTile(ch, count, 'mayuscula', glyphsByChar[ch] || []);
-                gridMay.appendChild(tile);
+            let mayCovered = 0;
+            ABC_MAY.forEach(char => {
+                const count = (glyphsByChar[char] || []).length;
+                if (count > 0 && char.length === 1 && !'ÁÉÍÓÚ'.includes(char)) mayCovered++;
+                gridMay.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
             });
-            document.getElementById('labelMayProgress').textContent = `${mayCapturedCount} de 27 (${Math.round(mayCapturedCount/27*100)}%)`;
-            document.getElementById('chipMayStats').textContent = `Mayúsculas: ${mayCapturedCount}/27 (${Math.round(mayCapturedCount/27*100)}%)`;
+            document.getElementById('labelMayProgress').textContent = `${mayCovered} de 27 base (${Math.round(mayCovered/27*100)}%)`;
+            document.getElementById('chipMayStats').textContent = `Mayúsculas: ${mayCovered}/27 (${Math.round(mayCovered/27*100)}%)`;
 
-            // Números y Signos
-            const gridNums = document.getElementById('gridNumerosSignos');
-            gridNums.innerHTML = '';
-            let otherCaptured = 0;
-            NUMS_SIGNS.forEach(ch => {
-                const count = counts[ch] || 0;
-                if (count > 0) otherCaptured++;
-                const tile = createLetterTile(ch, count, 'otros', glyphsByChar[ch] || []);
-                gridNums.appendChild(tile);
+            // Populate Signs & Digits Grid
+            const gridOthers = document.getElementById('gridOthers');
+            gridOthers.innerHTML = '';
+            let othersCount = 0;
+            COMMON_SIGNS.forEach(char => {
+                const count = (glyphsByChar[char] || []).length;
+                if (count > 0) othersCount++;
+                gridOthers.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
             });
-            document.getElementById('labelOthersProgress').textContent = `${otherCaptured} activos`;
-            document.getElementById('chipTotStats').textContent = `Total: ${allGlyphs.length} glifos`;
+            document.getElementById('labelOthersProgress').textContent = `${othersCount} con muestras`;
 
-            // Ligaduras y caracteres no estándar
-            const allStandard = new Set([...SPANISH_MIN, ...SPANISH_MAY, ...NUMS_SIGNS]);
-            const extraChars = Object.keys(counts).filter(c => !allStandard.has(c));
-            const secLig = document.getElementById('sectionLigaduras');
-            const gridLig = document.getElementById('gridLigaduras');
-            
-            if (extraChars.length > 0) {
-                secLig.style.display = 'block';
-                gridLig.innerHTML = '';
-                extraChars.forEach(ch => {
-                    const count = counts[ch];
-                    const tile = createLetterTile(ch, count, 'ligadura', glyphsByChar[ch] || []);
-                    gridLig.appendChild(tile);
-                });
-                document.getElementById('labelLigadurasProgress').textContent = `${extraChars.length} tipos`;
-            } else {
-                secLig.style.display = 'none';
-            }
+            // Populate Ligatures & Extras
+            const gridLig = document.getElementById('gridLigatures');
+            gridLig.innerHTML = '';
+            const existingChars = new Set([...ABC_MIN, ...ABC_MAY, ...COMMON_SIGNS]);
+            const ligChars = Object.keys(glyphsByChar).filter(c => !existingChars.has(c) || glyphsByChar[c].some(g => g.category === 'ligadura' || g.category === 'simbolo'));
+            ligChars.forEach(char => {
+                const count = glyphsByChar[char].length;
+                gridLig.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char])));
+            });
+            document.getElementById('labelLigaturesProgress').textContent = `${ligChars.length} tipos`;
 
-            // If a char is currently selected, refresh its gallery
+            document.getElementById('chipTotStats').textContent = `Total: ${allGlyphs.length} glifos (${Object.keys(glyphsByChar).length} únicos)`;
+
             if (selectedCatalogChar) {
-                renderCharGallery(selectedCatalogChar, glyphsByChar[selectedCatalogChar] || []);
+                selectCatalogChar(selectedCatalogChar, glyphsByChar[selectedCatalogChar] || []);
             }
         }
 
-        function createLetterTile(char, count, group, glyphList) {
+        function createLetterTile(char, count, onClick) {
             const tile = document.createElement('div');
-            tile.className = 'letter-tile';
-            
-            if (count === 0) {
-                tile.classList.add('empty');
-            } else if (count === 1) {
-                tile.classList.add('has-1');
-            } else {
-                tile.classList.add('has-many');
-            }
+            let stateClass = 'empty';
+            if (count === 1) stateClass = 'has-1';
+            else if (count > 1) stateClass = 'has-many';
 
-            if (selectedCatalogChar === char) {
-                tile.classList.add('selected');
-            }
-
+            tile.className = `letter-tile ${stateClass} ${selectedCatalogChar === char ? 'selected' : ''}`;
             tile.innerHTML = `
                 <span class="tile-char">${char}</span>
                 <span class="tile-count">${count}</span>
             `;
-
             tile.addEventListener('click', () => {
                 document.querySelectorAll('.letter-tile').forEach(t => t.classList.remove('selected'));
                 tile.classList.add('selected');
-                selectedCatalogChar = char;
-                renderCharGallery(char, glyphList);
+                onClick();
             });
-
             return tile;
         }
 
-        function renderCharGallery(char, glyphList) {
+        function selectCatalogChar(char, samples) {
+            selectedCatalogChar = char;
+            document.getElementById('detailCharBig').textContent = char;
+            document.getElementById('detailCharTitle').textContent = `Carácter "${char}"`;
+            document.getElementById('detailCharSubtitle').textContent = `${samples.length} muestra${samples.length === 1 ? '' : 's'} guardada${samples.length === 1 ? '' : 's'}`;
+
             const container = document.getElementById('galleryContainer');
-            const bigChar = document.getElementById('detailCharBig');
-            const title = document.getElementById('detailCharTitle');
-            const subtitle = document.getElementById('detailCharSubtitle');
-
-            bigChar.textContent = char;
-            title.textContent = `Glifos para '${char}'`;
-            subtitle.textContent = `${glyphList.length} muestra${glyphList.length === 1 ? '' : 's'} disponible${glyphList.length === 1 ? '' : 's'}`;
-
-            if (!glyphList || glyphList.length === 0) {
+            if (samples.length === 0) {
                 container.innerHTML = `
                 <div class="empty-state">
-                    <p>No hay muestras capturadas todavía para la letra <strong>'${char}'</strong>.</p>
-                    <p style="font-size: 11px; opacity: 0.7;">Búscala en los renglones y márcala para integrarla al catálogo.</p>
+                    <p>No hay muestras capturadas aún para el carácter <strong>"${char}"</strong>.</p>
                 </div>`;
                 return;
             }
 
             container.innerHTML = '';
-            glyphList.forEach((g) => {
+            samples.forEach((glyph) => {
                 const card = document.createElement('div');
                 card.className = 'sample-card';
 
-                const origSrc = `/crops/${g.crop_file}?t=${Date.now()}`;
-                const isoSrc = `/crops_isolated/${g.crop_isolated_file}?t=${Date.now()}`;
+                const catOption = document.querySelector(`#selectCategory option[value="${glyph.category}"]`);
+                const catLabel = catOption ? catOption.textContent : glyph.category;
+                const bbox = glyph.bbox || [0,0,0,0];
 
                 card.innerHTML = `
-                    <div class="sample-dual-view">
-                        <div class="sample-img-box" title="Recorte Original">
-                            <img src="${origSrc}" alt="Original" />
-                            <span class="sample-img-label">Original</span>
-                        </div>
-                        <div class="sample-img-box" title="Tinta Aislada (Canal Alfa)">
-                            <img src="${isoSrc}" alt="Aislado" />
-                            <span class="sample-img-label">Tinta Pura</span>
-                        </div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span class="category-pill cat-${glyph.category}">${catLabel}</span>
+                    <button class="btn-icon" title="Eliminar esta muestra" onclick="deleteGlyphSample('${glyph.id}')">🗑️</button>
+                </div>
+                <div class="sample-dual-view">
+                    <div class="sample-img-box">
+                        <img src="/crops/${glyph.crop_file}?t=${Date.now()}" alt="Original" />
+                        <span class="sample-img-label">Original RGB</span>
                     </div>
-                    <div class="sample-meta-row">
-                        <span>${g.line_id} (Pág ${g.page})</span>
-                        <span>${g.bbox[2]}×${g.bbox[3]} px</span>
-                        <button class="btn-icon" title="Eliminar muestra de la base de datos" onclick="deleteGlyphFromDB('${g.id}', '${char}')">🗑️</button>
+                    <div class="sample-img-box">
+                        <img src="/crops_isolated/${glyph.crop_isolated_file}?t=${Date.now()}" alt="Tinta Aislada" />
+                        <span class="sample-img-label">Tinta RGBA</span>
                     </div>
-                    ${g.notes ? `<div style="font-size: 11px; color: var(--accent-yellow);">📝 ${g.notes}</div>` : ''}
+                </div>
+                <div class="sample-meta-row">
+                    <span>${glyph.line_id}</span>
+                    <span>${bbox[2]}×${bbox[3]} px</span>
+                </div>
+                ${glyph.notes ? `<div style="font-size: 11px; color: #94a3b8; font-style: italic;">Nota: ${glyph.notes}</div>` : ''}
                 `;
 
                 container.appendChild(card);
             });
         }
 
-        window.deleteGlyphFromDB = async function(glyphId, char) {
-            if (!confirm(`¿Eliminar esta muestra de '${char}' de la base de datos?`)) return;
-
+        window.deleteGlyphSample = async function(glyphId) {
+            if (!confirm(`¿Eliminar la muestra ${glyphId}?`)) return;
             try {
                 const res = await fetch('/api/delete_glyph', {
                     method: 'POST',
@@ -1590,54 +1923,16 @@
                 if (result.status === 'ok') {
                     allGlyphs = result.db.glyphs;
                     updateGlobalStats();
-                    // Also refresh currentBoxes if on current line
-                    const line = dataset[currentLineIndex];
-                    currentBoxes = allGlyphs.filter(g => g.line_id === line.id).map(g => ({
-                        id: g.id,
-                        x: g.bbox[0],
-                        y: g.bbox[1],
-                        w: g.bbox[2],
-                        h: g.bbox[3],
-                        character: g.character,
-                        category: g.category,
-                        notes: g.notes || ''
-                    }));
+                    currentBoxes = currentBoxes.filter(b => b.id !== glyphId);
                     renderCanvas();
                     renderSidebarList();
-                    showToast(`✓ Muestra eliminada correctamente`);
+                    showToast("✓ Muestra eliminada correctamente");
                 }
             } catch (err) {
                 console.error("Error deleting glyph:", err);
-                alert("Error al eliminar el glifo de la base de datos.");
+                alert("Error al eliminar glifo.");
             }
         };
-
-        window.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-            
-            if (e.key === 'Escape') {
-                if (coverageModal.classList.contains('open')) {
-                    closeCoverageModal();
-                }
-            } else if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
-                // Ctrl+C (when no text selected) opens coverage modal
-                if (!window.getSelection().toString()) {
-                    e.preventDefault();
-                    openCoverageModal();
-                }
-            } else if (e.key === 'ArrowRight' || e.key === 'd') {
-                if (currentLineIndex < dataset.length - 1) loadLine(currentLineIndex + 1);
-            } else if (e.key === 'ArrowLeft' || e.key === 'a') {
-                if (currentLineIndex > 0) loadLine(currentLineIndex - 1);
-            } else if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                saveLineToDatabase();
-            } else if (e.key === 'r') {
-                resetZoom();
-            }
-        });
-
-        window.onload = init;
     </script>
 </body>
 </html>
