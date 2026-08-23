@@ -1,4 +1,4 @@
-ID,Line_ID,Page,Character,Category,Notes,BBox_X,BBox_Y,BBox_W,BBox_H,Polygon,Crop_File,Crop_Isolated_File
+ID,Capture_ID,Page,Character,Category,Notes,BBox_X,BBox_Y,BBox_W,BBox_H,Polygon,Crop_File,Crop_Isolated_File
 g_p03_l01_titulo_top_01_T,p03_l01_titulo_top,3,T,mayuscula,T inicial,69,10,166,170,,g_p03_l01_titulo_top_01_T.png,g_p03_l01_titulo_top_01_T_iso.png
 g_p03_l01_titulo_top_02_r,p03_l01_titulo_top,3,r,minuscula,,233,74,103,95,,g_p03_l01_titulo_top_02_r.png,g_p03_l01_titulo_top_02_r_iso.png
 g_p03_l01_titulo_top_03_a,p03_l01_titulo_top,3,a,minuscula,,341,91,97,80,,g_p03_l01_titulo_top_03_a.png,g_p03_l01_titulo_top_03_a_iso.png
@@ -96,6 +96,11 @@ g_cap_1787377048367_03_H,cap_1787377048367,captura_externa,H,mayuscula,,552,32,2
 g_cap_1787377048367_04_R,cap_1787377048367,captura_externa,R,mayuscula,,232,87,31,32,,g_cap_1787377048367_04_R.png,g_cap_1787377048367_04_R_iso.png
 g_cap_1787377161791_01_M,cap_1787377161791,captura_externa,M,mayuscula,,250,35,40,38,,g_cap_1787377161791_01_M.png,g_cap_1787377161791_01_M_iso.png
 g_cap_1787377161791_02_N,cap_1787377161791,captura_externa,N,mayuscula,,132,33,29,34,,g_cap_1787377161791_02_N.png,g_cap_1787377161791_02_N_iso.png
-g_cap_1787377598994_01_á,cap_1787377598994,captura_externa,á,minuscula,,522,19,47,43,"[[543, 19], [569, 21], [550, 45], [543, 61], [522, 62], [532, 45], [543, 38]]",g_cap_1787377598994_01_á.png,g_cap_1787377598994_01_á_iso.png
+g_cap_1787377598994_01_u00e1,cap_1787377598994,captura_externa,á,minuscula,,522,19,47,43,"[[543, 19], [569, 21], [550, 45], [543, 61], [522, 62], [532, 45], [543, 38]]",g_cap_1787377598994_01_u00e1.png,g_cap_1787377598994_01_u00e1_iso.png
 g_cap_1787377648006_01_n,cap_1787377648006,captura_externa,n,minuscula,,596,41,39,28,,g_cap_1787377648006_01_n.png,g_cap_1787377648006_01_n_iso.png
-g_cap_1787377683634_01_á,cap_1787377683634,captura_externa,á,minuscula,,66,88,36,36,"[[102, 88], [75, 103], [66, 124], [86, 124]]",g_cap_1787377683634_01_á.png,g_cap_1787377683634_01_á_iso.png
+g_cap_1787377683634_01_u00e1,cap_1787377683634,captura_externa,á,minuscula,,66,88,36,36,"[[102, 88], [75, 103], [66, 124], [86, 124]]",g_cap_1787377683634_01_u00e1.png,g_cap_1787377683634_01_u00e1_iso.png
+g_cap_1787379122998_01_f,cap_1787379122998,captura_externa,f,minuscula,,775,664,81,79,"[[812, 672], [775, 735], [797, 743], [856, 664]]",g_cap_1787379122998_01_f.png,g_cap_1787379122998_01_f_iso.png
+g_cap_1787379184669_01_l,cap_1787379184669,captura_externa,l,minuscula,l final,674,18,54,59,,g_cap_1787379184669_01_l.png,g_cap_1787379184669_01_l_iso.png
+g_cap_1787379291083_01_h,cap_1787379291083,captura_externa,h,minuscula,,4,378,87,83,"[[91, 387], [46, 461], [4, 446], [7, 411], [69, 378]]",g_cap_1787379291083_01_h.png,g_cap_1787379291083_01_h_iso.png
+g_cap_1787522953850_01_s,cap_1787522953850,captura_externa,s,minuscula,,131,10,19,25,,g_cap_1787522953850_01_s.png,g_cap_1787522953850_01_s_iso.png
+g_cap_1787522976312_01_n,cap_1787522976312,captura_externa,n,minuscula,,2,73,34,22,,g_cap_1787522976312_01_n.png,g_cap_1787522976312_01_n_iso.png

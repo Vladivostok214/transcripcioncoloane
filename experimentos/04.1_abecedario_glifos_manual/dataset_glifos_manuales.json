@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "total_glyphs": 100,
-    "lines_annotated": 25,
+    "total_glyphs": 105,
+    "captures_count": 30,
     "last_updated": "WLADI"
   },
   "glyphs": [
@@ -1768,6 +1768,126 @@
           124
         ]
       ]
+    },
+    {
+      "id": "g_cap_1787379122998_01_f",
+      "line_id": "cap_1787379122998",
+      "page": "captura_externa",
+      "character": "f",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        775,
+        664,
+        81,
+        79
+      ],
+      "crop_file": "g_cap_1787379122998_01_f.png",
+      "crop_isolated_file": "g_cap_1787379122998_01_f_iso.png",
+      "polygon": [
+        [
+          812,
+          672
+        ],
+        [
+          775,
+          735
+        ],
+        [
+          797,
+          743
+        ],
+        [
+          856,
+          664
+        ]
+      ]
+    },
+    {
+      "id": "g_cap_1787379184669_01_l",
+      "line_id": "cap_1787379184669",
+      "page": "captura_externa",
+      "character": "l",
+      "category": "minuscula",
+      "notes": "l final",
+      "bbox": [
+        674,
+        18,
+        54,
+        59
+      ],
+      "crop_file": "g_cap_1787379184669_01_l.png",
+      "crop_isolated_file": "g_cap_1787379184669_01_l_iso.png"
+    },
+    {
+      "id": "g_cap_1787379291083_01_h",
+      "line_id": "cap_1787379291083",
+      "page": "captura_externa",
+      "character": "h",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        4,
+        378,
+        87,
+        83
+      ],
+      "crop_file": "g_cap_1787379291083_01_h.png",
+      "crop_isolated_file": "g_cap_1787379291083_01_h_iso.png",
+      "polygon": [
+        [
+          91,
+          387
+        ],
+        [
+          46,
+          461
+        ],
+        [
+          4,
+          446
+        ],
+        [
+          7,
+          411
+        ],
+        [
+          69,
+          378
+        ]
+      ]
+    },
+    {
+      "id": "g_cap_1787522953850_01_s",
+      "line_id": "cap_1787522953850",
+      "page": "captura_externa",
+      "character": "s",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        131,
+        10,
+        19,
+        25
+      ],
+      "crop_file": "g_cap_1787522953850_01_s.png",
+      "crop_isolated_file": "g_cap_1787522953850_01_s_iso.png"
+    },
+    {
+      "id": "g_cap_1787522976312_01_n",
+      "line_id": "cap_1787522976312",
+      "page": "captura_externa",
+      "character": "n",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        2,
+        73,
+        34,
+        22
+      ],
+      "crop_file": "g_cap_1787522976312_01_n.png",
+      "crop_isolated_file": "g_cap_1787522976312_01_n_iso.png"
     }
   ]
 }

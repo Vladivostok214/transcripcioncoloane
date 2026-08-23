@@ -1,0 +1,520 @@
+{
+  "evaluations": {
+    "g_p03_l01_titulo_top_01_T": {
+      "status": "approved",
+      "reason": "",
+      "notes": "",
+      "timestamp": "2026-08-22T07:21:40"
+    },
+    "g_p03_l01_titulo_top_02_r": {
+      "status": "tweaks",
+      "notes": "le falta la linea que baja hasta la parte inferior izquierda, , Suavizar bordes",
+      "timestamp": "2026-08-22T04:15:53.530006"
+    },
+    "g_p03_l01_titulo_top_03_a": {
+      "status": "tweaks",
+      "notes": "Unir trazo superior cortado",
+      "timestamp": "2026-08-22T04:16:39.972066"
+    },
+    "g_p03_l01_titulo_top_04_v": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortado",
+      "timestamp": "2026-08-22T04:16:58.683282"
+    },
+    "g_p03_l01_titulo_top_05_e": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortados",
+      "timestamp": "2026-08-22T04:17:09.323603"
+    },
+    "g_p03_l01_titulo_top_06_s": {
+      "status": "tweaks",
+      "notes": "la punta de la izquierda no debe terminar cortada, y le falta la linea que va hacia la derecha",
+      "timestamp": "2026-08-22T04:17:56.549963"
+    },
+    "g_p03_l02_verso1_01_d": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado, Cerrar panza de la letra",
+      "timestamp": "2026-08-22T04:18:04.204890"
+    },
+    "g_p03_l02_verso1_02_e": {
+      "status": "tweaks",
+      "notes": "Suavizar bordes, Unir trazo cortado",
+      "timestamp": "2026-08-22T04:18:13.512815"
+    },
+    "g_p03_l02_verso1_03_l": {
+      "status": "tweaks",
+      "notes": "esta es una letra l, no es un 1",
+      "timestamp": "2026-08-22T04:18:54.575579"
+    },
+    "g_p03_l02_verso1_04_o": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:25:28"
+    },
+    "g_p03_l02_verso1_05_e": {
+      "status": "tweaks",
+      "notes": "esta es una e minuscula ligada, debe tener un bucle como una e",
+      "timestamp": "2026-08-22T04:19:42.471197"
+    },
+    "g_p03_l02_verso1_06_s": {
+      "status": "tweaks",
+      "notes": "parece una a pero es una s, hay que unir la linea superior y hacer un corte en la curva inferior",
+      "timestamp": "2026-08-22T04:19:48.969707"
+    },
+    "g_p03_l02_verso1_07_n": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:25:39"
+    },
+    "g_p03_l03_verso2_01_i": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:25:42"
+    },
+    "g_p03_l03_verso2_02_c": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:25:45"
+    },
+    "g_p03_l03_verso2_03_V": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:25:47"
+    },
+    "g_p03_l03_verso2_04_g": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortados",
+      "timestamp": "2026-08-22T04:20:03.273968"
+    },
+    "g_p03_l03_verso2_05_o": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:26:01"
+    },
+    "g_p03_l03_verso2_06_s": {
+      "status": "approved",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:20:07.145864"
+    },
+    "g_p03_l03_verso2_07_a": {
+      "status": "approved",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:20:10.704498"
+    },
+    "g_p03_l03_verso2_08_o": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortados, Suavizar bordes",
+      "timestamp": "2026-08-22T04:20:19.611039"
+    },
+    "g_p03_l03_verso2_09_n": {
+      "status": "tweaks",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:20:32.911076"
+    },
+    "g_p03_l03_verso2_10_n": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:26:19"
+    },
+    "g_p03_l03_verso2_11_n": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:26:20"
+    },
+    "g_p03_l04_verso3_01_a": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:26:22"
+    },
+    "g_p03_l04_verso3_02_s": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado, Suavizar bordes",
+      "timestamp": "2026-08-22T04:20:42.378394"
+    },
+    "g_p03_l04_verso3_03_s": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:26:34"
+    },
+    "g_p03_l04_verso3_04_s": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:26:40"
+    },
+    "g_p03_l04_verso3_05_o": {
+      "status": "tweaks",
+      "notes": "Cerrar panza de la letra,",
+      "timestamp": "2026-08-22T04:20:57.951098"
+    },
+    "g_p03_l07_verso6_01_y": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortados",
+      "timestamp": "2026-08-22T04:21:09.068298"
+    },
+    "g_p03_l07_verso6_02_h": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortados",
+      "timestamp": "2026-08-22T04:21:15.009112"
+    },
+    "g_p03_l07_verso6_03_i": {
+      "status": "tweaks",
+      "notes": "Eliminar mota / residuo, la linea que se ve en la parte inferior derecha",
+      "timestamp": "2026-08-22T04:21:37.342186"
+    },
+    "g_p03_l07_verso6_04_j": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:01"
+    },
+    "g_p03_l07_verso6_44_u002c": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:11"
+    },
+    "g_p03_l07_verso6_06_u": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:13"
+    },
+    "g_p03_l07_verso6_07_s": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:21:42.655668"
+    },
+    "g_p03_l07_verso6_08_s": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:19"
+    },
+    "g_p03_l07_verso6_09_e": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:20"
+    },
+    "g_p03_l08_verso7_01_p": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:21:51.277082"
+    },
+    "g_p03_l08_verso7_02_r": {
+      "status": "tweaks",
+      "notes": "le falta el extremo de la pata izquierda",
+      "timestamp": "2026-08-22T04:22:16.697638"
+    },
+    "g_p03_l08_verso7_03_e": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:22:21.926384"
+    },
+    "g_p03_l08_verso7_04_g": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortados",
+      "timestamp": "2026-08-22T04:22:28.648685"
+    },
+    "g_p03_l08_verso7_05_s": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:31"
+    },
+    "g_p03_l08_verso7_44_u002c": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:36"
+    },
+    "g_p03_l09_verso8_01_v": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:22:37.749868"
+    },
+    "g_p03_l09_verso8_02_q": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:43"
+    },
+    "g_p03_l09_verso8_03_r": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado, y dibujar pata izquierda",
+      "timestamp": "2026-08-22T04:23:03.152580"
+    },
+    "g_p03_l10_verso9_01_L": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:51"
+    },
+    "g_p03_l10_verso9_02_A": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:53"
+    },
+    "g_p03_l10_verso9_03_S": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:53"
+    },
+    "g_p03_l10_verso9_04_I": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:56"
+    },
+    "g_p03_l10_verso9_05_S": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:27:57"
+    },
+    "g_p03_l10_verso9_06_D": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:07"
+    },
+    "g_p03_l10_verso9_07_E": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:08"
+    },
+    "g_p03_l10_verso9_08_T": {
+      "status": "rejected",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:23:11.053784"
+    },
+    "g_p03_l10_verso9_09_R": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:15"
+    },
+    "g_p03_l10_verso9_10_A": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:17"
+    },
+    "g_p03_l13_rojo1_01_m": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:21"
+    },
+    "g_p03_l13_rojo1_02_e": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:23:14.526269"
+    },
+    "g_p03_l13_rojo1_03_s": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:27"
+    },
+    "g_p03_l13_rojo1_46_u002e": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:31"
+    },
+    "g_p03_l14_rojo2_01_y": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:33"
+    },
+    "g_p03_l14_rojo2_02_U": {
+      "status": "tweaks",
+      "notes": "Unir trazos cortados",
+      "timestamp": "2026-08-22T04:23:27.399129"
+    },
+    "g_p03_l15_rojo3_01_p": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:28:37"
+    },
+    "g_p03_l15_rojo3_02_u": {
+      "status": "tweaks",
+      "notes": "agregar pata izquierda",
+      "timestamp": "2026-08-22T04:23:39.007822"
+    },
+    "g_p03_l16_bloque_01_P": {
+      "status": "tweaks",
+      "notes": "unir trazos cortados",
+      "timestamp": "2026-08-22T04:23:59.384587"
+    },
+    "g_p02_l01_encabezado_01_c": {
+      "status": "tweaks",
+      "notes": "unir trazos cortados",
+      "timestamp": "2026-08-22T04:24:10.629579"
+    },
+    "g_p02_l01_encabezado_02_a": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:29:02"
+    },
+    "g_p02_l01_encabezado_03_o": {
+      "status": "tweaks",
+      "notes": "unir trazos cortados",
+      "timestamp": "2026-08-22T04:24:20.145340"
+    },
+    "g_p02_l01_encabezado_04_n": {
+      "status": "tweaks",
+      "notes": "el extremo inferior se ve cortado",
+      "timestamp": "2026-08-22T04:24:40.305080"
+    },
+    "g_p02_l01_encabezado_58_u003a": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:29:14"
+    },
+    "g_p02_l03_ezra2_01_x": {
+      "status": "tweaks",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:24:47.475768"
+    },
+    "g_p02_l03_ezra2_34_u0022": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:29:23"
+    },
+    "g_p02_l04_ezra3_01_t": {
+      "status": "tweaks",
+      "notes": "agregar extremos de la parte superior de la t",
+      "timestamp": "2026-08-22T04:24:55.256947"
+    },
+    "g_p02_l04_ezra3_02_u": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:29:31"
+    },
+    "g_p02_l04_ezra3_03_r": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:29:34"
+    },
+    "g_p02_l05_ezra4_01_z": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:29:37"
+    },
+    "g_p02_l05_ezra4_02_d": {
+      "status": "tweaks",
+      "notes": "Suavizar bordes, Suavizar bordes",
+      "timestamp": "2026-08-22T04:25:09.362185"
+    },
+    "g_p02_l06_babel_01_B": {
+      "status": "tweaks",
+      "notes": "reconstruis bucle del centro",
+      "timestamp": "2026-08-22T04:25:32.693229"
+    },
+    "g_p02_l06_babel_02_b": {
+      "status": "tweaks",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:25:37.385934"
+    },
+    "g_p02_l06_babel_03_1": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:29:54"
+    },
+    "g_p02_l06_babel_04_1": {
+      "status": "tweaks",
+      "notes": "Unir trazo cortado",
+      "timestamp": "2026-08-22T04:25:43.765645"
+    },
+    "g_p02_l07_todoel_01_m": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:00"
+    },
+    "g_p02_l07_todoel_02_m": {
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:00"
+    },
+    "g_custom_1787375326385_01_E": {
+      "status": "rejected",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:25:47.416995"
+    },
+    "g_custom_1787375326385_03_p": {
+      "status": "rejected",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:25:49.447773"
+    },
+    "g_custom_1787375326385_04_u00e9": {
+      "status": "rejected",
+      "notes": "Suavizar bordes, le falta el acento",
+      "timestamp": "2026-08-22T04:25:53.532148"
+    },
+    "g_custom_1787375326385_05_t": {
+      "status": "rejected",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:25:55.573964"
+    },
+    "g_custom_1787375326385_06_t": {
+      "status": "rejected",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:25:56.874284"
+    },
+    "g_custom_1787375326385_07_v": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:24"
+    },
+    "g_custom_1787375657342_01_u00f1": {
+      "status": "rejected",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:25:58.825767"
+    },
+    "g_cap_1787377048367_01_F": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:36"
+    },
+    "g_cap_1787377048367_02_C": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:37"
+    },
+    "g_cap_1787377048367_03_H": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:38"
+    },
+    "g_cap_1787377048367_04_R": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:41"
+    },
+    "g_cap_1787377161791_01_M": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:42"
+    },
+    "g_cap_1787377161791_02_N": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:43"
+    },
+    "g_cap_1787377598994_01_u00e1": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:47"
+    },
+    "g_cap_1787377648006_01_n": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:49"
+    },
+    "g_cap_1787377683634_01_u00e1": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:55"
+    },
+    "g_cap_1787379122998_01_f": {
+      "status": "rejected",
+      "notes": "",
+      "timestamp": "2026-08-22T07:30:57"
+    },
+    "g_cap_1787379184669_01_l": {
+      "status": "tweaks",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:26:03.004506"
+    },
+    "g_cap_1787379291083_01_h": {
+      "status": "rejected",
+      "notes": "Suavizar bordes",
+      "timestamp": "2026-08-22T04:26:04.830972"
+    }
+  }
+}

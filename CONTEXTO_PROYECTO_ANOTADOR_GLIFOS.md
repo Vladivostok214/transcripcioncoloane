@@ -1,7 +1,7 @@
 # 📖 Documento de Contexto y Arquitectura: Anotador Manual y Catálogo de Glifos
 **Proyecto:** Transcripción y Reconocimiento de Manuscritos de Francisco Coloane  
 **Experimento Activo:** `04.1_abecedario_glifos_manual`  
-**Fecha de Checkpoint:** 22 de Agosto de 2026  
+**Fecha de Checkpoint:** 23 de Agosto de 2026  
 **Estado:** Activo y Operativo en `http://localhost:8000`
 
 > [!TIP]
@@ -22,7 +22,7 @@ Tras evaluar y descartar los modelos genéricos de Visión-Lenguaje (VLM / HTR d
 2. Extraer de forma aislada la tinta (máscaras RGBA sin fondo de papel).
 3. Establecer una base de datos estructurada en JSON y CSV que servirá como diccionario maestro para algoritmos de correlación morfológica, segmentación dirigida y modelos de reconocimiento específicos.
 
-Al momento de este checkpoint, se han clasificado y verificado **84 glifos individuales** correspondientes a **40 caracteres únicos** a lo largo de las páginas 2 y 3.
+Al momento de este checkpoint, se han clasificado y verificado **105 glifos individuales** correspondientes a **49 caracteres únicos** a lo largo de las páginas 2, 3 y capturas externas.
 
 ---
 
@@ -137,24 +137,24 @@ Accesible a través del botón superior **"📊 Catálogo & Cobertura"**:
 ## 7. Métricas y Estado de la Base de Datos al Checkpoint
 
 ### Resumen General:
-* **Total de glifos guardados:** **84 muestras**
-* **Caracteres únicos clasificados:** **40 caracteres**
-* **Renglones procesados:** 11 renglones anotados con muestras puras.
+* **Total de glifos guardados:** **105 muestras**
+* **Caracteres únicos clasificados:** **49 caracteres**
+* **Renglones / fuentes procesados:** 30 fuentes y renglones anotados con muestras puras (páginas 2, 3 y capturas externas).
 
 ### Desglose por Categoría:
 
 | Categoría | Glifos Capturados | Caracteres Únicos | Cobertura del Abecedario Base |
 | :--- | :---: | :---: | :--- |
-| **🔡 Minúsculas** | **62** | **23** | **85.2% (23 de 27 letras)** |
-| **🔠 Mayúsculas** | **15** | **12** | **44.4% (12 de 27 letras)** |
+| **🔡 Minúsculas** | **76** | **27** *(25 base + `á`, `é`)* | **92.6% (25 de 27 letras)** |
+| **🔠 Mayúsculas** | **22** | **17** | **63.0% (17 de 27 letras)** |
 | **✒️ Signos** | **5** | **4** | Comas (`,`), Comillas (`"`), Puntos (`.`), Dos puntos (`:`) |
 | **🔢 Números** | **2** | **1** | Dígito `1` |
 
 ### Detalle de Caracteres Capturados:
-* **Minúsculas capturadas (23):** `s` (10), `e` (6), `n` (5), `o` (5), `a` (4), `r` (4), `m` (3), `u` (3), `c` (2), `d` (2), `g` (2), `i` (2), `p` (2), `v` (2), `y` (2), `b` (1), `h` (1), `j` (1), `l` (1), `q` (1), `t` (1), `x` (1), `z` (1).
-* **Minúsculas faltantes:** `f`, `k`, `ñ`, `w` *(prioritarias: `f` y `ñ`)*.
-* **Mayúsculas capturadas (12):** `A` (2), `S` (2), `T` (2), `B` (1), `D` (1), `E` (1), `I` (1), `L` (1), `P` (1), `R` (1), `U` (1), `V` (1).
-* **Mayúsculas faltantes:** `C`, `F`, `G`, `H`, `J`, `K`, `M`, `N`, `Ñ`, `O`, `Q`, `W`, `X`, `Y`, `Z`.
+* **Minúsculas capturadas (27):** `s` (11), `n` (7), `e` (6), `o` (5), `a` (4), `r` (4), `m` (3), `p` (3), `t` (3), `u` (3), `v` (3), `c` (2), `d` (2), `g` (2), `h` (2), `i` (2), `l` (2), `y` (2), `á` (2), `b` (1), `f` (1), `j` (1), `q` (1), `x` (1), `z` (1), `é` (1), `ñ` (1).
+* **Minúsculas faltantes del abecedario base (2):** `k`, `w`. *(Se capturaron con éxito las prioritarias `f` y `ñ`, además de las vocales tildadas `á` y `é`)*.
+* **Mayúsculas capturadas (17):** `A` (2), `E` (2), `R` (2), `S` (2), `T` (2), `B` (1), `C` (1), `D` (1), `F` (1), `H` (1), `I` (1), `L` (1), `M` (1), `N` (1), `P` (1), `U` (1), `V` (1).
+* **Mayúsculas faltantes del abecedario base (10):** `G`, `J`, `K`, `Ñ`, `O`, `Q`, `W`, `X`, `Y`, `Z`.
 
 ---
 

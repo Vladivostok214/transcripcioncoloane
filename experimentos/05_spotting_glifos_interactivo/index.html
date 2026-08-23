@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experimento 05 — Interactive Glyph Spotter & Active Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0d14;
+      --bg-panel: rgba(16, 22, 34, 0.85);
+      --bg-card: #131b2c;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --border-focus: #10b981;
+      --accent-emerald: #10b981;
+      --accent-emerald-glow: rgba(16, 185, 129, 0.3);
+      --accent-cyan: #06b6d4;
+      --accent-cyan-glow: rgba(6, 182, 212, 0.3);
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar */
+    header {
+      background: var(--bg-panel);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 50;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 0 12px var(--accent-emerald-glow);
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      color: #fff;
+    }
+
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: 'Fira Code', monospace;
+    }
+
+    .selectors-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      max-width: 800px;
+      justify-content: center;
+    }
+
+    .select-card {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.3rem 0.75rem;
+    }
+
+    .select-card label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    select, input[type="text"], input[type="number"] {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    select option {
+      background: #131b2c;
+      color: #fff;
+    }
+
+    .glyph-preview-mini {
+      width: 28px;
+      height: 28px;
+      background: #ffffff;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .glyph-preview-mini img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+
+    .btn-scan {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      box-shadow: 0 0 15px var(--accent-emerald-glow);
+    }
+
+    .btn-scan:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px var(--accent-emerald-glow);
+    }
+
+    .btn-scan:active {
+      transform: translateY(0);
+    }
+
+    /* Main Workspace */
+    main {
+      flex: 1;
+      position: relative;
+      background: #07090e;
+      overflow: hidden;
+      cursor: grab;
+    }
+
+    main.grabbing {
+      cursor: grabbing;
+    }
+
+    main.adding-mode {
+      cursor: crosshair;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Floating View Controls */
+    .view-controls {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      background: var(--bg-panel);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.4rem;
+      z-index: 30;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* Bottom HUD */
+    footer {
+      background: var(--bg-panel);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+      gap: 1.5rem;
+    }
+
+    .hud-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .badge-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.4rem 0.85rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+    }
+
+    .stat-val-detected {
+      color: var(--accent-emerald);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .stat-val-user {
+      color: var(--accent-cyan);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .input-reales-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 8px;
+      padding: 0.3rem 0.75rem;
+    }
+
+    .input-reales-wrap label {
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .input-reales {
+      width: 45px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .hud-slider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hud-slider label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 140px;
+      height: 6px;
+      border-radius: 3px;
+      background: #1e293b;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-emerald-glow);
+    }
+
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-learn {
+      background: linear-gradient(135deg, #0891b2, #06b6d4);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.55rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      box-shadow: 0 0 15px var(--accent-cyan-glow);
+    }
+
+    .btn-learn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-learn:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px var(--accent-cyan-glow);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 0.55rem 0.95rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    /* Helper Notice Banner */
+    .helper-banner {
+      position: absolute;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(19, 27, 44, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 30px;
+      padding: 0.45rem 1.25rem;
+      font-size: 0.82rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 40;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.8; }
+    }
+
+    .ground-truth-box {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      max-width: 320px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <span class="brand-badge">EXP 05</span>
+      <div>
+        <div class="brand-title">Interactive Glyph Spotter</div>
+        <div class="brand-sub">Active Learning &bull; Template Matching</div>
+      </div>
+    </div>
+
+    <div class="selectors-group">
+      <!-- Renglón Selector -->
+      <div class="select-card">
+        <label>Renglón:</label>
+        <select id="lineSelect">
+          <option value="">Cargando renglones...</option>
+        </select>
+      </div>
+
+      <!-- Glifo Selector -->
+      <div class="select-card">
+        <label>Glifo Objetivo:</label>
+        <div class="glyph-preview-mini" id="glyphPreview">
+          <span style="color:#000; font-weight:700;">?</span>
+        </div>
+        <select id="glyphSelect">
+          <option value="">Cargando glifos...</option>
+        </select>
+      </div>
+
+      <!-- Scan Button -->
+      <button class="btn-scan" id="btnScan">
+        <span>🎯</span> Escanear
+      </button>
+    </div>
+
+    <div class="ground-truth-box" id="gtText" title="Transcripción Ground Truth del Renglón">
+      Texto: ...
+    </div>
+  </header>
+
+  <!-- Main Canvas Area -->
+  <main id="mainWorkspace">
+    <canvas id="spotterCanvas"></canvas>
+
+    <!-- Notification / Instruction Banner -->
+    <div class="helper-banner" id="helperBanner" style="display: none;">
+      <span class="pulse-dot"></span>
+      <span id="helperText">Haz clic en la imagen donde están las letras omitidas</span>
+    </div>
+
+    <!-- View Controls -->
+    <div class="view-controls">
+      <button class="icon-btn" id="btnZoomIn" title="Acercar (+)">＋</button>
+      <button class="icon-btn" id="btnZoomOut" title="Alejar (-)">－</button>
+      <button class="icon-btn" id="btnFit" title="Ajustar a Pantalla (R)">⛶</button>
+    </div>
+  </main>
+
+  <!-- Bottom HUD -->
+  <footer>
+    <div class="hud-left">
+      <!-- Detected Count Badge -->
+      <div class="badge-stat">
+        <span>Detectadas:</span>
+        <span class="stat-val-detected" id="statDetected">0</span>
+      </div>
+
+      <!-- User Real Count Input -->
+      <div class="input-reales-wrap">
+        <label>Reales:</label>
+        <input type="number" id="inputReales" class="input-reales" placeholder="?" min="0" max="50">
+      </div>
+
+      <!-- User Added Clicks Badge -->
+      <div class="badge-stat" id="badgeUserClicks" style="display: none;">
+        <span>Faltantes marcadas:</span>
+        <span class="stat-val-user" id="statUserClicks">0</span>
+      </div>
+
+      <!-- Umbral Slider -->
+      <div class="hud-slider">
+        <label>Sensibilidad (<span id="valThreshold">0.55</span>):</label>
+        <input type="range" id="sliderThreshold" min="0.30" max="0.85" step="0.02" value="0.55">
+      </div>
+    </div>
+
+    <div class="hud-right">
+      <button class="btn-secondary" id="btnClearClicks" title="Limpiar marcas de clics">
+        Descartar Clics
+      </button>
+      <button class="btn-secondary" id="btnResetMem" title="Restablecer memoria de este glifo">
+        🧹 Reset Memoria
+      </button>
+      <button class="btn-learn" id="btnLearn" disabled>
+        <span>🧠</span> Aprender y Recalibrar (<span id="learnCount">0</span>)
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    // State
+    const state = {
+      lines: [],
+      glyphs: [],
+      memoria: {},
+      selectedLine: null,
+      selectedGlyph: null,
+      lineImage: null,
+      matches: [],
+      userClicks: [], // [{x, y, w, h}]
+      threshold: 0.55,
+      zoom: 1,
+      panX: 0,
+      panY: 0,
+      isPanning: false,
+      lastMouseX: 0,
+      lastMouseY: 0
+    };
+
+    // DOM Elements
+    const canvas = document.getElementById('spotterCanvas');
+    const ctx = canvas.getContext('2d');
+    const lineSelect = document.getElementById('lineSelect');
+    const glyphSelect = document.getElementById('glyphSelect');
+    const glyphPreview = document.getElementById('glyphPreview');
+    const btnScan = document.getElementById('btnScan');
+    const gtText = document.getElementById('gtText');
+    const statDetected = document.getElementById('statDetected');
+    const inputReales = document.getElementById('inputReales');
+    const badgeUserClicks = document.getElementById('badgeUserClicks');
+    const statUserClicks = document.getElementById('statUserClicks');
+    const sliderThreshold = document.getElementById('sliderThreshold');
+    const valThreshold = document.getElementById('valThreshold');
+    const btnLearn = document.getElementById('btnLearn');
+    const learnCount = document.getElementById('learnCount');
+    const btnClearClicks = document.getElementById('btnClearClicks');
+    const btnResetMem = document.getElementById('btnResetMem');
+    const helperBanner = document.getElementById('helperBanner');
+    const helperText = document.getElementById('helperText');
+    const mainWorkspace = document.getElementById('mainWorkspace');
+
+    // Resize canvas
+    function resizeCanvas() {
+      canvas.width = mainWorkspace.clientWidth;
+      canvas.height = mainWorkspace.clientHeight;
+      render();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    // Load initial dataset
+    async function init() {
+      try {
+        const res = await fetch('/api/init_data');
+        const data = await res.json();
+        state.lines = data.lines;
+        state.glyphs = data.glyphs;
+        state.memoria = data.memoria || {};
+
+        populateLineSelect();
+        populateGlyphSelect();
+        resizeCanvas();
+
+        if (state.lines.length > 0) {
+          selectLine(state.lines[0].id);
+        }
+        if (state.glyphs.length > 0) {
+          // Default to an approved glyph if available (like 'e' or 'o' or 'r')
+          const defaultGlyph = state.glyphs.find(g => g.character === 'e' || g.character === 'o') || state.glyphs[0];
+          selectGlyph(defaultGlyph.id);
+        }
+      } catch (err) {
+        console.error('Error cargando datos iniciales:', err);
+      }
+    }
+
+    function populateLineSelect() {
+      lineSelect.innerHTML = state.lines.map(l => 
+        `<option value="${l.id}">${l.id} (Pág ${l.page}) — "${l.text.substring(0, 24)}..."</option>`
+      ).join('');
+    }
+
+    function populateGlyphSelect() {
+      // Group glyphs by character
+      glyphSelect.innerHTML = state.glyphs.map(g => 
+        `<option value="${g.id}">[${g.character}] ${g.id} (${g.category})</option>`
+      ).join('');
+    }
+
+    function selectLine(lineId) {
+      const line = state.lines.find(l => l.id === lineId);
+      if (!line) return;
+      state.selectedLine = line;
+      lineSelect.value = lineId;
+      gtText.innerText = `Texto: "${line.text}"`;
+      gtText.title = line.text;
+
+      // Cargar imagen
+      const img = new Image();
+      img.onload = () => {
+        state.lineImage = img;
+        fitToScreen();
+        state.matches = [];
+        state.userClicks = [];
+        updateHUD();
+        render();
+        // Trigger auto-scan
+        runScan();
+      };
+      img.src = line.url;
+    }
+
+    function selectGlyph(glyphId) {
+      const glyph = state.glyphs.find(g => g.id === glyphId);
+      if (!glyph) return;
+      state.selectedGlyph = glyph;
+      glyphSelect.value = glyphId;
+
+      glyphPreview.innerHTML = `<img src="${glyph.crop_isolated_url || glyph.crop_url}" alt="${glyph.character}">`;
+      
+      // Update expected count hint if Ground Truth exists
+      if (state.selectedLine && state.selectedLine.text) {
+        const countInGT = (state.selectedLine.text.match(new RegExp(glyph.character, 'g')) || []).length;
+        if (countInGT > 0) {
+          inputReales.value = countInGT;
+        } else {
+          inputReales.value = '';
+        }
+      }
+      
+      state.matches = [];
+      state.userClicks = [];
+      updateHUD();
+      render();
+    }
+
+    lineSelect.addEventListener('change', (e) => selectLine(e.target.value));
+    glyphSelect.addEventListener('change', (e) => selectGlyph(e.target.value));
+
+    // Run Spotting Scan
+    async function runScan() {
+      if (!state.selectedLine || !state.selectedGlyph) return;
+
+      btnScan.disabled = true;
+      btnScan.innerHTML = '<span>⏳</span> Escaneando...';
+
+      try {
+        const res = await fetch('/api/spot_glyph', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            line_id: state.selectedLine.id,
+            glyph_id: state.selectedGlyph.id,
+            character: state.selectedGlyph.character,
+            threshold: state.threshold,
+            scales: [0.85, 0.95, 1.0, 1.05, 1.15]
+          })
+        });
+
+        const data = await res.json();
+        if (data.error) {
+          alert(data.error);
+        } else {
+          state.matches = data.matches || [];
+          updateHUD();
+          render();
+        }
+      } catch (err) {
+        console.error('Error en escaneo:', err);
+      } finally {
+        btnScan.disabled = false;
+        btnScan.innerHTML = '<span>🎯</span> Escanear';
+      }
+    }
+
+    btnScan.addEventListener('click', runScan);
+
+    // Threshold slider
+    sliderThreshold.addEventListener('input', (e) => {
+      state.threshold = parseFloat(e.target.value);
+      valThreshold.innerText = state.threshold.toFixed(2);
+    });
+
+    sliderThreshold.addEventListener('change', () => {
+      runScan();
+    });
+
+    // Active Learning: Send learned patches
+    async function learnPatches() {
+      if (!state.userClicks.length || !state.selectedLine || !state.selectedGlyph) return;
+
+      btnLearn.disabled = true;
+      btnLearn.innerHTML = '<span>⏳</span> Aprendiendo...';
+
+      try {
+        const res = await fetch('/api/learn_patches', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            line_id: state.selectedLine.id,
+            glyph_id: state.selectedGlyph.id,
+            character: state.selectedGlyph.character,
+            clicks: state.userClicks
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          state.userClicks = [];
+          updateHUD();
+          // Re-scan with new multi-template memory
+          await runScan();
+          showHelperBanner(`🧠 ¡Aprendidas ${data.new_patches_added} nuevas variantes! Memoria activa: ${data.total_memory_patches}`);
+        }
+      } catch (err) {
+        console.error('Error al aprender parches:', err);
+      } finally {
+        btnLearn.disabled = false;
+        btnLearn.innerHTML = `<span>🧠</span> Aprender y Recalibrar (${state.userClicks.length})`;
+      }
+    }
+
+    btnLearn.addEventListener('click', learnPatches);
+
+    // Clear clicks
+    btnClearClicks.addEventListener('click', () => {
+      state.userClicks = [];
+      updateHUD();
+      render();
+    });
+
+    // Reset Memory
+    btnResetMem.addEventListener('click', async () => {
+      if (!confirm(`¿Restablecer las variantes aprendidas para [${state.selectedGlyph.character}]?`)) return;
+      await fetch('/api/reset_memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ glyph_id: state.selectedGlyph.id })
+      });
+      runScan();
+    });
+
+    // Update HUD & Helper
+    function updateHUD() {
+      statDetected.innerText = state.matches.length;
+      statUserClicks.innerText = state.userClicks.length;
+      learnCount.innerText = state.userClicks.length;
+
+      if (state.userClicks.length > 0) {
+        badgeUserClicks.style.display = 'flex';
+        btnLearn.disabled = false;
+      } else {
+        badgeUserClicks.style.display = 'none';
+        btnLearn.disabled = true;
+      }
+
+      const expected = parseInt(inputReales.value);
+      if (!isNaN(expected) && expected > state.matches.length) {
+        const missing = expected - state.matches.length - state.userClicks.length;
+        if (missing > 0) {
+          showHelperBanner(`Faltan ${missing} ocurrencias de [${state.selectedGlyph.character}]. Haz clic en la imagen donde se encuentran.`);
+        } else {
+          showHelperBanner(`¡Marcadas todas las omisiones! Pulsa 'Aprender y Recalibrar' para incorporarlas.`);
+        }
+      } else {
+        helperBanner.style.display = 'none';
+      }
+    }
+
+    function showHelperBanner(msg) {
+      helperText.innerText = msg;
+      helperBanner.style.display = 'flex';
+    }
+
+    inputReales.addEventListener('input', updateHUD);
+
+    // Render Canvas
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!state.lineImage) return;
+
+      ctx.save();
+      ctx.translate(state.panX, state.panY);
+      ctx.scale(state.zoom, state.zoom);
+
+      // 1. Draw manuscript line image
+      ctx.drawImage(state.lineImage, 0, 0);
+
+      // 2. Draw auto-detected matches (Emerald)
+      state.matches.forEach((m, idx) => {
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2.5 / state.zoom;
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+        ctx.strokeRect(m.x, m.y, m.w, m.h);
+        ctx.fillRect(m.x, m.y, m.w, m.h);
+
+        // Score tag
+        ctx.fillStyle = '#10b981';
+        ctx.font = `${Math.max(10, 12 / state.zoom)}px Fira Code`;
+        ctx.fillText(`${(m.score * 100).toFixed(0)}%`, m.x, Math.max(12, m.y - 4 / state.zoom));
+      });
+
+      // 3. Draw user added clicks / learned missing spots (Cyan)
+      state.userClicks.forEach((c, idx) => {
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 2.5 / state.zoom;
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.25)';
+        ctx.strokeRect(c.x, c.y, c.w, c.h);
+        ctx.fillRect(c.x, c.y, c.w, c.h);
+
+        ctx.fillStyle = '#06b6d4';
+        ctx.font = `${Math.max(10, 11 / state.zoom)}px Fira Code`;
+        ctx.fillText(`+Learn #${idx + 1}`, c.x, Math.max(12, c.y - 4 / state.zoom));
+      });
+
+      ctx.restore();
+    }
+
+    // Interactive Pan & Zoom
+    function fitToScreen() {
+      if (!state.lineImage) return;
+      const scaleX = (canvas.width - 60) / state.lineImage.width;
+      const scaleY = (canvas.height - 60) / state.lineImage.height;
+      state.zoom = Math.min(scaleX, scaleY, 1.2);
+      state.panX = (canvas.width - state.lineImage.width * state.zoom) / 2;
+      state.panY = (canvas.height - state.lineImage.height * state.zoom) / 2;
+      render();
+    }
+
+    document.getElementById('btnFit').addEventListener('click', fitToScreen);
+    document.getElementById('btnZoomIn').addEventListener('click', () => {
+      state.zoom = Math.min(state.zoom * 1.25, 5);
+      render();
+    });
+    document.getElementById('btnZoomOut').addEventListener('click', () => {
+      state.zoom = Math.max(state.zoom / 1.25, 0.2);
+      render();
+    });
+
+    // Canvas Events (Pan, Zoom with Wheel, Click to Mark Missing)
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const zoomFactor = e.deltaY < 0 ? 1.15 : 0.87;
+      const newZoom = Math.max(0.2, Math.min(6, state.zoom * zoomFactor));
+
+      state.panX = mouseX - (mouseX - state.panX) * (newZoom / state.zoom);
+      state.panY = mouseY - (mouseY - state.panY) * (newZoom / state.zoom);
+      state.zoom = newZoom;
+      render();
+    });
+
+    canvas.addEventListener('mousedown', (e) => {
+      if (e.button === 1 || e.button === 2 || e.shiftKey) {
+        // Pan
+        state.isPanning = true;
+        state.lastMouseX = e.clientX;
+        state.lastMouseY = e.clientY;
+        mainWorkspace.classList.add('grabbing');
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (state.isPanning) {
+        state.panX += e.clientX - state.lastMouseX;
+        state.panY += e.clientY - state.lastMouseY;
+        state.lastMouseX = e.clientX;
+        state.lastMouseY = e.clientY;
+        render();
+      }
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (state.isPanning) {
+        state.isPanning = false;
+        mainWorkspace.classList.remove('grabbing');
+      }
+    });
+
+    // Left Click on image to add a missing spot
+    canvas.addEventListener('click', (e) => {
+      if (e.button !== 0 || e.shiftKey) return;
+      if (!state.lineImage || !state.selectedGlyph) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const imgX = (e.clientX - rect.left - state.panX) / state.zoom;
+      const imgY = (e.clientY - rect.top - state.panY) / state.zoom;
+
+      if (imgX < 0 || imgX >= state.lineImage.width || imgY < 0 || imgY >= state.lineImage.height) return;
+
+      // Check if clicking on an existing user click to remove it
+      const clickedUserIdx = state.userClicks.findIndex(c => 
+        imgX >= c.x && imgX <= c.x + c.w && imgY >= c.y && imgY <= c.y + c.h
+      );
+
+      if (clickedUserIdx !== -1) {
+        state.userClicks.splice(clickedUserIdx, 1);
+        updateHUD();
+        render();
+        return;
+      }
+
+      // Add new missing box (using default or glyph-proportional dimensions)
+      const gw = (state.selectedGlyph.bbox && state.selectedGlyph.bbox[2]) || 32;
+      const gh = (state.selectedGlyph.bbox && state.selectedGlyph.bbox[3]) || 45;
+
+      const boxX = Math.round(Math.max(0, imgX - gw / 2));
+      const boxY = Math.round(Math.max(0, imgY - gh / 2));
+
+      state.userClicks.push({
+        x: boxX,
+        y: boxY,
+        w: Math.round(gw),
+        h: Math.round(gh)
+      });
+
+      updateHUD();
+      render();
+    });
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+      if (e.key === 'r' || e.key === 'R') fitToScreen();
+      if (e.key === 'Enter') runScan();
+      if (e.key === ' ') {
+        if (!btnLearn.disabled) learnPatches();
+      }
+    });
+
+    // Context menu prevent on canvas for right click pan
+    canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Start
+    init();
+  </script>
+</body>
+</html>\n
