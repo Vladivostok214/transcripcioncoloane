@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analizador & Transcriptor Asistido · Francisco Coloane (Exp 08)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #060910;
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-card: #151d30;
+            --border: #232f48;
+            --border-highlight: #38bdf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-purple: #a855f7;
+            --accent-rose: #f43f5e;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --trans: 0.18s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            height: 56px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 50;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand h1 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-exp {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .badge-knowledge {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #10b981;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .badge-sandbox {
+            background: rgba(168, 85, 247, 0.12);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            color: #c084fc;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--trans);
+            user-select: none;
+        }
+
+        .btn:hover {
+            border-color: var(--accent-blue);
+            background: #1c263c;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            border-color: var(--accent-emerald);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #10b981;
+            color: #fff;
+        }
+
+        /* Workspace Dual-Panel */
+        .workspace {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 56px);
+            overflow: hidden;
+        }
+
+        /* Left Diagnostic Viewer (55%) */
+        .viewer-panel {
+            flex: 1.2;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .viewer-toolbar {
+            height: 48px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .segmented-btn-group {
+            display: flex;
+            background: #060910;
+            padding: 2px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            gap: 2px;
+        }
+
+        .segmented-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--trans);
+        }
+
+        .segmented-btn.active {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+            border: 1px solid var(--border-highlight);
+        }
+
+        .samples-bar {
+            padding: 8px 16px;
+            background: #080c14;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .sample-pill {
+            background: #111827;
+            border: 1px solid var(--border);
+            color: #94a3b8;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--trans);
+        }
+
+        .sample-pill:hover, .sample-pill.active {
+            border-color: var(--accent-blue);
+            color: #fff;
+            background: #1e293b;
+        }
+
+        .viewport-stage {
+            flex: 1;
+            position: relative;
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: radial-gradient(circle at center, #0e1526 0%, #060911 100%);
+        }
+
+        #diagImage {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 6px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--border);
+            object-fit: contain;
+        }
+
+        /* Characters Bottom Diagnostics */
+        .char-breakdown-bar {
+            height: 90px;
+            background: #090e18;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .char-chip {
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 44px;
+            gap: 2px;
+        }
+
+        .char-chip-letter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .char-chip-conf {
+            font-size: 9px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .conf-high { color: var(--accent-emerald); }
+        .conf-mid { color: var(--accent-amber); }
+        .conf-low { color: var(--accent-rose); }
+
+        /* Right Transcription Panel (45%) */
+        .transcription-panel {
+            flex: 1;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        .panel-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .transcription-textarea {
+            width: 100%;
+            background: #060910;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            resize: vertical;
+            min-height: 90px;
+            line-height: 1.5;
+        }
+
+        .transcription-textarea:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        }
+
+        .words-suggestions-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .word-token {
+            background: #0a0f1d;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .word-token-text {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .notes-input {
+            width: 100%;
+            background: #060910;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            color: #cbd5e1;
+            font-size: 12px;
+            outline: none;
+        }
+
+        /* Modal Aprobadas */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 700px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .approved-item {
+            background: #080d18;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <h1>🔬 Analizador & Transcriptor Asistido</h1>
+            <span class="badge-exp">Exp 08 · Coloane</span>
+            <span class="badge-knowledge" title="Entrenado sobre catálogo de glifos">🧠 114 Glifos</span>
+            <span class="badge-knowledge" title="Vocabulario de las obras de Coloane">📖 16,495 Palabras</span>
+            <span class="badge-sandbox" title="Almacenamiento aislado dentro de Exp 08">💾 Sandbox Aislado</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn" id="btnOpenApprovedModal">📜 Ver Aprobadas (<span id="countApproved">0</span>)</button>
+        </div>
+    </header>
+
+    <!-- Workspace -->
+    <div class="workspace">
+        <!-- Left Diagnostic Viewer (55%) -->
+        <div class="viewer-panel">
+            <div class="viewer-toolbar">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Capas:</span>
+                    <div class="segmented-btn-group" id="layerGroup">
+                        <button class="segmented-btn active" data-layer="detection_boxes">📦 Cajas & Confianza</button>
+                        <button class="segmented-btn" data-layer="original">📷 Original</button>
+                        <button class="segmented-btn" data-layer="ink_isolated">🧹 Tinta Pura</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                    <label class="btn" style="cursor: pointer;">
+                        📁 Subir Imagen
+                        <input type="file" id="fileUploadInput" accept="image/*" style="display: none;" />
+                    </label>
+                </div>
+            </div>
+
+            <!-- Samples Carousel -->
+            <div class="samples-bar" id="samplesBar">
+                <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-right: 4px;">Muestras:</span>
+            </div>
+
+            <!-- Viewport Stage -->
+            <div class="viewport-stage">
+                <img id="diagImage" src="" alt="Cargando análisis..." style="display: none;" />
+                <div id="loadingIndicator" style="display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--accent-blue);">
+                    <span>🔬 Analizando trazos y contexto de Coloane...</span>
+                </div>
+            </div>
+
+            <!-- Character Breakdown Bar -->
+            <div class="char-breakdown-bar" id="charBreakdownBar">
+                <span style="font-size: 11px; color: var(--text-muted);">Carga una imagen para ver el desglose letra a letra.</span>
+            </div>
+        </div>
+
+        <!-- Right Transcription Panel (45%) -->
+        <div class="transcription-panel">
+            <!-- Transcription Card -->
+            <div class="panel-card">
+                <div class="card-header">
+                    <span class="card-title">1. Transcripción Generada (Editable)</span>
+                    <span id="badgeOverallConfidence" class="badge-knowledge" style="font-size: 11px;">Confianza: --%</span>
+                </div>
+                <textarea class="transcription-textarea" id="txtTranscription" placeholder="La transcripción aparecerá aquí..."></textarea>
+                
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 500;">
+                    💡 Puedes corregir o editar el texto libremente antes de guardar.
+                </div>
+            </div>
+
+            <!-- Context & Word Suggestions Card -->
+            <div class="panel-card">
+                <div class="card-header">
+                    <span class="card-title">2. Contexto de Palabras y Sugerencias</span>
+                </div>
+                <div class="words-suggestions-box" id="wordsSuggestionsBox">
+                    <span style="font-size: 11px; color: var(--text-muted);">Sin palabras analizadas.</span>
+                </div>
+            </div>
+
+            <!-- Save & Actions Card -->
+            <div class="panel-card">
+                <div class="card-header">
+                    <span class="card-title">3. Acciones y Guardado en Sandbox</span>
+                </div>
+                <input type="text" class="notes-input" id="inputUserNotes" placeholder="Notas u observaciones (opcional)..." />
+                
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <button class="btn btn-primary" id="btnSaveApproved" style="flex: 1; justify-content: center;">
+                        💾 Guardar Transcripción Aprobada
+                    </button>
+                    <button class="btn" id="btnCopyClipboard" title="Copiar texto al portapapeles">
+                        📋 Copiar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Transcripciones Aprobadas -->
+    <div class="modal-overlay" id="approvedModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span style="font-size: 14px; font-weight: 700; color: #fff;">📜 Transcripciones Aprobadas (Exp 08 Sandbox)</span>
+                <button class="btn" id="btnCloseApprovedModal">✕ Cerrar</button>
+            </div>
+            <div class="modal-body" id="approvedListContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentAnalysisResult = null;
+        let currentActiveLayer = 'detection_boxes';
+        let currentImageName = 'muestra.png';
+
+        // =========================================================================
+        // INICIALIZACIÓN Y CARGA DE MUESTRAS
+        // =========================================================================
+        async function init() {
+            await loadSamples();
+            await updateApprovedCount();
+        }
+
+        async function loadSamples() {
+            try {
+                const res = await fetch('/api/sample_images');
+                if (res.ok) {
+                    const data = await res.json();
+                    const container = document.getElementById('samplesBar');
+                    container.innerHTML = '<span style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-right: 4px;">Muestras:</span>';
+
+                    (data.samples || []).forEach((s, idx) => {
+                        const pill = document.createElement('div');
+                        pill.className = `sample-pill ${idx === 0 ? 'active' : ''}`;
+                        pill.textContent = s.label;
+                        pill.addEventListener('click', () => {
+                            document.querySelectorAll('.sample-pill').forEach(p => p.classList.remove('active'));
+                            pill.classList.add('active');
+                            analyzeSample(s);
+                        });
+                        container.appendChild(pill);
+                    });
+
+                    if (data.samples && data.samples.length > 0) {
+                        analyzeSample(data.samples[0]);
+                    }
+                }
+            } catch (err) {
+                console.error("Error al cargar muestras:", err);
+            }
+        }
+
+        async function analyzeSample(sample) {
+            showLoading(true);
+            currentImageName = sample.id;
+            try {
+                const res = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        source_type: 'sample',
+                        sample_url: sample.url
+                    })
+                });
+
+                if (res.ok) {
+                    currentAnalysisResult = await res.json();
+                    renderAnalysisView();
+                }
+            } catch (err) {
+                console.error("Error en análisis:", err);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // =========================================================================
+        // RENDERIZADO DE RESULTADOS DEL ANALIZADOR
+        // =========================================================================
+        function renderAnalysisView() {
+            if (!currentAnalysisResult) return;
+
+            // 1. Actualizar Capa Visual
+            updateActiveLayerImage();
+
+            // 2. Transcripción Editable
+            document.getElementById('txtTranscription').value = currentAnalysisResult.transcription;
+
+            // 3. Confianza Global
+            const confPct = Math.round(currentAnalysisResult.average_confidence * 100);
+            const badgeConf = document.getElementById('badgeOverallConfidence');
+            badgeConf.textContent = `Confianza: ${confPct}%`;
+            badgeConf.className = confPct >= 75 ? 'badge-knowledge' : 'badge-exp';
+
+            // 4. Desglose Letra a Letra
+            const charBar = document.getElementById('charBreakdownBar');
+            charBar.innerHTML = '';
+
+            (currentAnalysisResult.characters || []).forEach(c => {
+                const chip = document.createElement('div');
+                chip.className = 'char-chip';
+                const cPct = Math.round(c.confidence * 100);
+                const confClass = cPct >= 75 ? 'conf-high' : (cPct >= 50 ? 'conf-mid' : 'conf-low');
+
+                chip.innerHTML = `
+                    <span class="char-chip-letter">${c.char}</span>
+                    <span class="char-chip-conf ${confClass}">${cPct}%</span>
+                `;
+                charBar.appendChild(chip);
+            });
+
+            // 5. Palabras y Sugerencias de Contexto
+            const wordsBox = document.getElementById('wordsSuggestionsBox');
+            wordsBox.innerHTML = '';
+
+            (currentAnalysisResult.words || []).forEach(w => {
+                const token = document.createElement('div');
+                token.className = 'word-token';
+                const wPct = Math.round(w.confidence * 100);
+                const confClass = wPct >= 75 ? 'conf-high' : 'conf-mid';
+
+                token.innerHTML = `
+                    <span class="word-token-text">«${w.text}»</span>
+                    <span class="${confClass}" style="font-size: 10px;">${wPct}%</span>
+                `;
+                wordsBox.appendChild(token);
+            });
+        }
+
+        function updateActiveLayerImage() {
+            if (!currentAnalysisResult || !currentAnalysisResult.diagnostic_layers) return;
+            const imgEl = document.getElementById('diagImage');
+            const layerUrl = currentAnalysisResult.diagnostic_layers[currentActiveLayer];
+            if (layerUrl) {
+                imgEl.src = `${layerUrl}?t=${Date.now()}`;
+                imgEl.style.display = 'block';
+            }
+        }
+
+        function showLoading(isLoading) {
+            document.getElementById('loadingIndicator').style.display = isLoading ? 'flex' : 'none';
+            if (isLoading) document.getElementById('diagImage').style.display = 'none';
+        }
+
+        // =========================================================================
+        // GUARDADO DE TRANSCRIPCIÓN APROBADA (AISLADO EN EXP 08)
+        // =========================================================================
+        async function saveApprovedTranscription() {
+            const approvedText = document.getElementById('txtTranscription').value.trim();
+            if (!approvedText) return;
+
+            const userNotes = document.getElementById('inputUserNotes').value;
+            const rawPred = currentAnalysisResult ? currentAnalysisResult.transcription : '';
+
+            try {
+                const res = await fetch('/api/save_approved', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image_name: currentImageName,
+                        raw_prediction: rawPred,
+                        approved_text: approvedText,
+                        user_notes: userNotes
+                    })
+                });
+
+                if (res.ok) {
+                    alert("✓ Transcripción Aprobada guardada con éxito en el dataset del Exp 08.");
+                    document.getElementById('inputUserNotes').value = '';
+                    await updateApprovedCount();
+                }
+            } catch (err) {
+                console.error("Error al guardar:", err);
+            }
+        }
+
+        async function updateApprovedCount() {
+            try {
+                const res = await fetch('/api/approved_transcriptions');
+                if (res.ok) {
+                    const data = await res.json();
+                    const list = data.approved_transcriptions || [];
+                    document.getElementById('countApproved').textContent = list.length;
+                    renderApprovedModalList(list);
+                }
+            } catch (err) {
+                console.error("Error al obtener aprobadas:", err);
+            }
+        }
+
+        function renderApprovedModalList(list) {
+            const container = document.getElementById('approvedListContainer');
+            container.innerHTML = '';
+            if (list.length === 0) {
+                container.innerHTML = `<span style="color: var(--text-muted); font-size: 12px;">Aún no has guardado transcripciones aprobadas.</span>`;
+                return;
+            }
+
+            list.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'approved-item';
+                div.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--accent-blue);">
+                        <span>📷 ${item.image_name}</span>
+                        <span style="color: var(--text-muted);">${item.timestamp}</span>
+                    </div>
+                    <div style="font-family: 'JetBrains Mono'; font-size: 14px; font-weight: 700; color: #fff;">
+                        «${item.approved_text}»
+                    </div>
+                    ${item.user_notes ? `<div style="font-size: 11px; color: var(--text-muted);">Nota: ${item.user_notes}</div>` : ''}
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // =========================================================================
+        // EVENT LISTENERS
+        // =========================================================================
+        document.querySelectorAll('#layerGroup .segmented-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#layerGroup .segmented-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentActiveLayer = btn.dataset.layer;
+                updateActiveLayerImage();
+            });
+        });
+
+        document.getElementById('fileUploadInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            showLoading(true);
+            currentImageName = file.name;
+
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const base64Str = reader.result;
+                try {
+                    const res = await fetch('/api/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ base64_image: base64Str })
+                    });
+                    if (res.ok) {
+                        currentAnalysisResult = await res.json();
+                        renderAnalysisView();
+                    }
+                } catch (err) {
+                    console.error("Error al analizar archivo:", err);
+                } finally {
+                    showLoading(false);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('btnSaveApproved').addEventListener('click', saveApprovedTranscription);
+
+        document.getElementById('btnCopyClipboard').addEventListener('click', () => {
+            const text = document.getElementById('txtTranscription').value;
+            navigator.clipboard.writeText(text);
+            alert("📋 Transcripción copiada al portapapeles.");
+        });
+
+        document.getElementById('btnOpenApprovedModal').addEventListener('click', () => {
+            document.getElementById('approvedModal').style.display = 'flex';
+        });
+
+        document.getElementById('btnCloseApprovedModal').addEventListener('click', () => {
+            document.getElementById('approvedModal').style.display = 'none';
+        });
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
