@@ -1,8 +1,9 @@
 {
   "metadata": {
-    "total_glyphs": 105,
-    "captures_count": 30,
-    "last_updated": "WLADI"
+    "total_glyphs": 106,
+    "captures_count": 31,
+    "last_updated": "Wladimir",
+    "last_sync": "2026-08-24T00:48:16.287Z"
   },
   "glyphs": [
     {
@@ -1888,6 +1889,24 @@
       ],
       "crop_file": "g_cap_1787522976312_01_n.png",
       "crop_isolated_file": "g_cap_1787522976312_01_n_iso.png"
+    },
+    {
+      "id": "g_cap_1787532417888_01_a",
+      "line_id": "cap_1787532417888",
+      "page": "captura_externa",
+      "character": "a",
+      "category": "minuscula",
+      "notes": "",
+      "author": "Wladimir",
+      "bbox": [
+        325,
+        9,
+        22,
+        20
+      ],
+      "polygon": [],
+      "crop_file": "g_cap_1787532417888_01_a.png",
+      "crop_isolated_file": "g_cap_1787532417888_01_a_iso.png"
     }
   ]
 }
