@@ -1008,6 +1008,105 @@
             gap: 8px;
         }
 
+        /* Quick Onboarding Guide Cards in Sidebar */
+        .sidebar-guide-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px 4px;
+        }
+        .guide-header {
+            text-align: left;
+            margin-bottom: 2px;
+            padding: 0 4px;
+        }
+        .guide-header h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .guide-header p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+        .guide-step-card {
+            background: #0f1522;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            display: flex;
+            gap: 11px;
+            align-items: flex-start;
+            transition: all 0.15s ease;
+        }
+        .guide-step-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: #141d2e;
+            transform: translateX(2px);
+        }
+        .guide-step-num {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .guide-step-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            text-align: left;
+        }
+        .guide-step-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        .guide-step-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        .guide-step-desc kbd {
+            background: #1c2638;
+            border: 1px solid #2e3e5c;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: #38bdf8;
+        }
+        .sidebar-tip-banner {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 6px;
+            text-align: left;
+        }
+        .sidebar-tip-banner strong {
+            color: #38bdf8;
+        }
+
         /* User Profile & Admin Badges */
         .user-profile-badge {
             background: var(--bg-card);
@@ -1165,21 +1264,21 @@
         </div>
         <div class="header-center">
             <input type="file" id="fileUploadInput" accept="image/*" style="display: none;" />
-            <button class="btn btn-upload" id="btnUploadImage" title="Subir imagen o presiona Ctrl+V para pegar captura">
+            <button class="btn btn-upload" id="btnUploadImage" title="📤 Cargar imagen de manuscrito (PNG/JPG) o presiona Ctrl+V para pegar directamente desde el portapapeles">
                 📤 Cargar Imagen / Pegar (Ctrl+V)
             </button>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
-            <button class="btn" id="btnOpenAdminReview" style="display: none; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border-color: #f59e0b; color: #fff; box-shadow: 0 0 12px rgba(245, 158, 11, 0.3); font-weight: 600;">
+            <button class="btn" id="btnOpenAdminReview" style="display: none; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border-color: #f59e0b; color: #fff; box-shadow: 0 0 12px rgba(245, 158, 11, 0.3); font-weight: 600;" title="📥 Bandeja de Curaduría Admin: Revisa los glifos pendientes enviados por colaboradores y sincroniza a GitHub">
                 📥 Revisión <span class="badge-count" id="adminPendingCount" style="background: rgba(0,0,0,0.5); padding: 1px 7px; border-radius: 10px; font-size: 11px; margin-left: 4px; font-family: 'JetBrains Mono';">0</span>
             </button>
-            <div class="user-profile-badge" id="btnChangeUser" title="Haz clic para cambiar de colaborador">
+            <div class="user-profile-badge" id="btnChangeUser" title="👤 Identificación: Haz clic para cambiar tu nombre o alias de colaborador">
                 <span>👤</span>
                 <span class="user-name" id="displayUserName">Colaborador</span>
                 <span class="user-role-tag" id="displayUserRole" style="display: none;">Admin</span>
             </div>
-            <button class="btn btn-coverage" id="btnOpenCoverage">📊 Catálogo & Cobertura</button>
-            <div class="stats-badge" id="totalStatsBadge">Total Glifos: 0</div>
+            <button class="btn btn-coverage" id="btnOpenCoverage" title="📊 Catálogo & Cobertura: Explora todas las muestras clasificadas, progreso del abecedario y vistas de tinta pura">📊 Catálogo & Cobertura</button>
+            <div class="stats-badge" id="totalStatsBadge" title="Cantidad total de glifos curados en el catálogo maestro">Total Glifos: 0</div>
         </div>
     </header>
 
@@ -1190,10 +1289,10 @@
             <div class="canvas-toolbar">
                 <div class="toolbar-left">
                     <div class="tool-mode-group">
-                        <button class="tool-btn active" id="btnToolRect" title="Modo Rectángulo (Tecla 1)">
+                        <button class="tool-btn active" id="btnToolRect" title="⬛ Modo Rectángulo (Tecla 1): Arrastra para encerrar letras limpias e independientes">
                             ⬛ Rectángulo (1)
                         </button>
-                        <button class="tool-btn" id="btnToolPoly" title="Modo Polígono por Vértices (Tecla 2)">
+                        <button class="tool-btn" id="btnToolPoly" title="📐 Modo Polígono (Tecla 2): Clics para definir vértices. Ideal para letras entrelazadas o trazos curvos (Enter o doble clic para cerrar)">
                             📐 Polígono (2)
                         </button>
                     </div>
@@ -1208,7 +1307,7 @@
                     <button class="btn" id="btnZoomOut" title="Reducir Zoom">-</button>
                     <span class="zoom-badge" id="zoomLevelDisplay">100%</span>
                     <button class="btn" id="btnZoomIn" title="Aumentar Zoom">+</button>
-                    <button class="btn" id="btnResetZoom" title="Ajustar a pantalla (Tecla R)">🔍 Ajustar (R)</button>
+                    <button class="btn" id="btnResetZoom" title="🔍 Ajustar a pantalla (Tecla R): Centra y encuadra la imagen en el lienzo">🔍 Ajustar (R)</button>
                 </div>
             </div>
 
@@ -1317,16 +1416,51 @@
                 <span class="glyph-count-badge" id="captureGlyphCount">0 glifos</span>
             </div>
             <div class="glyph-list" id="glyphListContainer">
-                <div class="empty-state">
-                    <p>Pega o carga una imagen y selecciona letras para clasificarlas.</p>
+                <div class="sidebar-guide-container">
+                    <div class="guide-header">
+                        <h3>🧭 Guía Rápida de Uso</h3>
+                        <p>Sigue estos 4 sencillos pasos para catalogar letras manuscritas:</p>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">1</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Carga una Imagen</div>
+                            <div class="guide-step-desc">Presiona <strong>📤 Cargar</strong> o pega una captura con <kbd>Ctrl+V</kbd>.</div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">2</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Selecciona una Letra</div>
+                            <div class="guide-step-desc">Usa <strong>⬛ Rectángulo</strong> (<kbd>1</kbd>) o <strong>📐 Polígono</strong> (<kbd>2</kbd>) para encerrar el trazo.</div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">3</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Clasifica y Asigna</div>
+                            <div class="guide-step-desc">Escribe el carácter exacto en el popover y presiona <kbd>Enter</kbd>.</div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">4</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Guarda en la Nube</div>
+                            <div class="guide-step-desc">Presiona <strong>💾 Guardar</strong> (<kbd>Ctrl+S</kbd>) para enviar el lote a revisión.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 8px;">
                 <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; padding: 0 4px;">
                     <span>Aportando como: <strong id="sidebarAuthorName" style="color: var(--accent-blue);">Colaborador</strong></span>
-                    <a href="javascript:void(0)" id="linkChangeAuthor" style="color: var(--text-muted); text-decoration: underline; font-size: 11px; cursor: pointer;">Cambiar</a>
+                    <a href="javascript:void(0)" id="linkChangeAuthor" style="color: var(--text-muted); text-decoration: underline; font-size: 11px; cursor: pointer;" title="Cambiar el nombre del colaborador">Cambiar</a>
                 </div>
-                <button class="btn btn-success" id="btnSaveGlyphs" style="width: 100%; justify-content: center; padding: 10px;" disabled>
+                <button class="btn btn-success" id="btnSaveGlyphs" style="width: 100%; justify-content: center; padding: 10px;" disabled title="💾 Guardar (Ctrl+S): Envía todos los glifos clasificados de esta captura al banco de datos en la nube">
                     💾 Guardar en Banco de Datos (Ctrl+S)
                 </button>
             </div>
@@ -2565,8 +2699,43 @@
 
             if (currentBoxes.length === 0) {
                 container.innerHTML = `
-                <div class="empty-state">
-                    <p>Usa la herramienta de selección para clasificar letras y caracteres de la captura.</p>
+                <div class="sidebar-guide-container">
+                    <div class="guide-header">
+                        <h3>🧭 Guía Rápida de Uso</h3>
+                        <p>Sigue estos 4 sencillos pasos para catalogar letras manuscritas:</p>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">1</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Carga una Imagen</div>
+                            <div class="guide-step-desc">Presiona <strong>📤 Cargar</strong> o pega una captura con <kbd>Ctrl+V</kbd>.</div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">2</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Selecciona una Letra</div>
+                            <div class="guide-step-desc">Usa <strong>⬛ Rectángulo</strong> (<kbd>1</kbd>) o <strong>📐 Polígono</strong> (<kbd>2</kbd>) para encerrar el trazo.</div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">3</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Clasifica y Asigna</div>
+                            <div class="guide-step-desc">Escribe el carácter exacto en el popover y presiona <kbd>Enter</kbd>.</div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step-card">
+                        <div class="guide-step-num">4</div>
+                        <div class="guide-step-content">
+                            <div class="guide-step-title">Guarda en la Nube</div>
+                            <div class="guide-step-desc">Presiona <strong>💾 Guardar</strong> (<kbd>Ctrl+S</kbd>) para enviar el lote a revisión.</div>
+                        </div>
+                    </div>
                 </div>`;
                 return;
             }
@@ -2585,7 +2754,7 @@
 
                 const catOption = document.querySelector(`#selectCategory option[value="${box.category}"]`);
                 const catLabel = catOption ? catOption.textContent.split(' ')[1] : box.category;
-                const polyTag = box.polygon ? ' 📐' : '';
+                const polyTag = (box.polygon && box.polygon.length >= 3) ? ' 📐' : '';
 
                 card.innerHTML = `
                 <div class="glyph-info">
@@ -2602,6 +2771,15 @@
                 card.prepend(thumbImg);
                 container.appendChild(card);
             });
+
+            // Banner explicativo inferior cuando hay glifos agregados
+            const tipBanner = document.createElement('div');
+            tipBanner.className = 'sidebar-tip-banner';
+            tipBanner.innerHTML = `
+                <div style="font-size: 14px;">💡</div>
+                <div>Puedes seguir seleccionando todas las letras que desees de esta imagen. Cuando termines, presiona <strong>💾 Guardar en Banco de Datos</strong> abajo.</div>
+            `;
+            container.appendChild(tipBanner);
         }
 
         window.deleteBox = function(index) {
