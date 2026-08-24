@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sintetizador de Frases Cursivas · Francisco Coloane (Exp 07.1)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #070a10;
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-card: #151d30;
+            --border: #232f48;
+            --border-highlight: #38bdf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-purple: #a855f7;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.15);
+            --trans: 0.18s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            height: 56px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 50;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand h1 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-exp {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--trans);
+            user-select: none;
+        }
+
+        .btn:hover {
+            border-color: var(--accent-blue);
+            background: #1c263c;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            border-color: var(--accent-blue);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }
+
+        /* Workspace */
+        .workspace {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 56px);
+            overflow: hidden;
+        }
+
+        /* Controls Left Panel */
+        .controls-panel {
+            width: 380px;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            gap: 16px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .panel-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .phrase-input {
+            width: 100%;
+            background: #060910;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .phrase-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .preset-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .preset-btn {
+            background: #131b2e;
+            border: 1px solid var(--border);
+            color: #94a3b8;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all var(--trans);
+        }
+
+        .preset-btn:hover {
+            border-color: var(--accent-blue);
+            color: #fff;
+            background: #1a2540;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .slider-header span strong {
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .custom-slider {
+            width: 100%;
+            accent-color: var(--accent-blue);
+            cursor: pointer;
+        }
+
+        .segmented-btn-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            background: #060910;
+            padding: 3px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .segmented-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 4px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--trans);
+        }
+
+        .segmented-btn.active {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+            border: 1px solid var(--border-highlight);
+        }
+
+        /* Canvas Workspace Right */
+        .stage-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #060910;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-toolbar {
+            height: 42px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 10;
+        }
+
+        .stage-viewport {
+            flex: 1;
+            position: relative;
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: radial-gradient(circle at center, #0f1523 0%, #060911 100%);
+        }
+
+        #synthesisCanvas {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(56, 189, 248, 0.1);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            max-width: 100%;
+        }
+
+        /* Ground Truth Comparison Drawer */
+        .ground-truth-drawer {
+            height: 160px;
+            background: #090e18;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 10px 16px;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .gt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gt-cards-container {
+            flex: 1;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .gt-card {
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+
+        .gt-card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .gt-img-box {
+            height: 50px;
+            background: #060910;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gt-img-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <h1>🖋️ Sintetizador de Frases Cursivas</h1>
+            <span class="badge-exp">Exp 07.1 · Coloane</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn btn-primary" id="btnDownloadPNG">📥 Descargar PNG (300 DPI)</button>
+        </div>
+    </header>
+
+    <!-- Workspace -->
+    <div class="workspace">
+        <!-- Controls Left -->
+        <div class="controls-panel">
+            <div class="panel-section">
+                <div class="section-title">
+                    <span>1. Frase Manuscrita a Sintetizar</span>
+                </div>
+                <input type="text" class="phrase-input" id="inputPhrase" value="los reyes y aristóteles" placeholder="Escribe cualquier frase aquí..." />
+                
+                <div class="slider-header">
+                    <span>Frases Rápidas:</span>
+                </div>
+                <div class="preset-pills">
+                    <button class="preset-btn" data-text="los reyes y aristóteles">«los reyes y aristóteles»</button>
+                    <button class="preset-btn" data-text="como dice aristóteles">«como dice aristóteles»</button>
+                    <button class="preset-btn" data-text="problemas de la historia griega">«problemas de la historia griega»</button>
+                    <button class="preset-btn" data-text="el mar y la noche">«el mar y la noche»</button>
+                </div>
+            </div>
+
+            <!-- Ligature & Spacing Controls -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span>2. Parámetros de Ligadura y Espaciado</span>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>Avance Horizontal entre Letras ($\Delta x$):</span>
+                        <span><strong id="valAdvance">21</strong> px</span>
+                    </div>
+                    <input type="range" class="custom-slider" id="sliderAdvance" min="15" max="30" value="21" step="1" />
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>Espacio entre Palabras:</span>
+                        <span><strong id="valWordSpace">38</strong> px</span>
+                    </div>
+                    <input type="range" class="custom-slider" id="sliderWordSpace" min="20" max="60" value="38" step="1" />
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>Tensión de Curva Bézier ($C^1$):</span>
+                        <span><strong id="valTension">0.45</strong></span>
+                    </div>
+                    <input type="range" class="custom-slider" id="sliderTension" min="0.1" max="0.9" value="0.45" step="0.05" />
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>Variabilidad Orgánica de la Mano (Jitter):</span>
+                        <span><strong id="valJitter">Activo</strong></span>
+                    </div>
+                    <input type="range" class="custom-slider" id="sliderJitter" min="0" max="3" value="1.2" step="0.2" />
+                </div>
+            </div>
+
+            <!-- Canvas Aesthetic -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span>3. Textura de Fondo y Tinta</span>
+                </div>
+
+                <div class="slider-header">
+                    <span>Fondo del Cuaderno:</span>
+                </div>
+                <div class="segmented-btn-group" id="bgModeGroup">
+                    <button class="segmented-btn active" data-bg="paper">📜 Cuaderno</button>
+                    <button class="segmented-btn" data-bg="noir">🌑 Noir</button>
+                    <button class="segmented-btn" data-bg="trans">🏁 Transp.</button>
+                </div>
+
+                <div class="slider-header" style="margin-top: 6px;">
+                    <span>Tono de Tinta:</span>
+                </div>
+                <div class="segmented-btn-group" id="inkColorGroup">
+                    <button class="segmented-btn active" data-ink="coloane_blue">✒️ Azul Coloane</button>
+                    <button class="segmented-btn" data-ink="black">🖤 Tinta Negra</button>
+                    <button class="segmented-btn" data-ink="sepia">🩸 Tinta Sepia</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage Right -->
+        <div class="stage-container">
+            <div class="stage-toolbar">
+                <span id="canvasStats" style="font-family: 'JetBrains Mono'; font-size: 11px; color: var(--text-muted);">
+                    Sintetizando...
+                </span>
+                <button class="btn" id="btnReRollVariation" title="Generar otra variación estocástica de trazos">
+                    🎲 Re-generar Variación Manual
+                </button>
+            </div>
+
+            <div class="stage-viewport">
+                <canvas id="synthesisCanvas"></canvas>
+            </div>
+
+            <!-- Ground Truth Real vs Synthesized -->
+            <div class="ground-truth-drawer">
+                <div class="gt-header">
+                    <span>🔬 Cotejo Ground Truth: Palabras Reales del Manuscrito (Exp 07)</span>
+                    <span style="font-size: 10px; color: var(--text-muted);">Compara el trazo generado vs original</span>
+                </div>
+                <div class="gt-cards-container" id="gtCardsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // ESTADO GLOBAL DEL SINTETIZADOR
+        // =========================================================================
+        let glyphsByChar = {};
+        let realWordsList = [];
+        let loadedImagesCache = {};
+
+        let bgMode = 'paper'; // 'paper' | 'noir' | 'trans'
+        let inkTone = 'coloane_blue'; // 'coloane_blue' | 'black' | 'sepia'
+
+        const canvas = document.getElementById('synthesisCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const INK_COLORS = {
+            coloane_blue: { r: 24, g: 32, b: 52 },
+            black: { r: 15, g: 15, b: 18 },
+            sepia: { r: 56, g: 36, b: 24 }
+        };
+
+        // =========================================================================
+        // CARGA DE DATOS (GLIFOS DE EXP 06 Y PALABRAS DE EXP 07)
+        // =========================================================================
+        async function initData() {
+            try {
+                // Cargar Glifos
+                const resG = await fetch('/api/init_glyphs');
+                if (resG.ok) {
+                    const dataG = await resG.json();
+                    (dataG.glyphs || []).forEach(g => {
+                        const c = g.character;
+                        if (!glyphsByChar[c]) glyphsByChar[c] = [];
+                        glyphsByChar[c].push(g);
+                    });
+                }
+
+                // Cargar Palabras Reales Ground Truth
+                const resW = await fetch('/api/init_words');
+                if (resW.ok) {
+                    const dataW = await resW.json();
+                    realWordsList = dataW.words || [];
+                    renderGroundTruthCards();
+                }
+
+                renderSynthesis();
+            } catch (err) {
+                console.error("Error al inicializar datos:", err);
+            }
+        }
+
+        function renderGroundTruthCards() {
+            const container = document.getElementById('gtCardsContainer');
+            container.innerHTML = '';
+            if (realWordsList.length === 0) {
+                container.innerHTML = `<span style="font-size: 11px; color: var(--text-muted);">No hay palabras en el catálogo del Exp 07 aún.</span>`;
+                return;
+            }
+
+            realWordsList.forEach(w => {
+                const card = document.createElement('div');
+                card.className = 'gt-card';
+                card.innerHTML = `
+                    <div class="gt-card-title">
+                        <span>«${w.word_text}»</span>
+                        <span style="font-size: 9px; color: #94a3b8;">${w.character_count}l</span>
+                    </div>
+                    <div class="gt-img-box">
+                        <img src="/crops_palabras_isolated/${w.crop_isolated_file}" alt="${w.word_text}" />
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // =========================================================================
+        // MOTOR DE SÍNTESIS CALIGRÁFICA Y TRAZADO DE LIGADURAS
+        // =========================================================================
+        async function renderSynthesis() {
+            const phrase = document.getElementById('inputPhrase').value;
+            if (!phrase) return;
+
+            const charAdvance = parseFloat(document.getElementById('sliderAdvance').value);
+            const wordSpace = parseFloat(document.getElementById('sliderWordSpace').value);
+            const tension = parseFloat(document.getElementById('sliderTension').value);
+            const jitterAmount = parseFloat(document.getElementById('sliderJitter').value);
+
+            const words = phrase.split(' ');
+            const canvasH = 150;
+            const canvasW = Math.max(600, Math.round(phrase.length * charAdvance + words.length * wordSpace + 140));
+
+            canvas.width = canvasW;
+            canvas.height = canvasH;
+
+            // 1. Dibujar Fondo
+            if (bgMode === 'paper') {
+                ctx.fillStyle = '#f4ede2';
+                ctx.fillRect(0, 0, canvasW, canvasH);
+                // Grano orgánico
+                const imgData = ctx.getImageData(0, 0, canvasW, canvasH);
+                const d = imgData.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    const noise = (Math.random() - 0.5) * 6;
+                    d[i] = Math.min(255, Math.max(0, d[i] + noise));
+                    d[i+1] = Math.min(255, Math.max(0, d[i+1] + noise));
+                    d[i+2] = Math.min(255, Math.max(0, d[i+2] + noise));
+                }
+                ctx.putImageData(imgData, 0, 0);
+            } else if (bgMode === 'noir') {
+                ctx.fillStyle = '#0b0f19';
+                ctx.fillRect(0, 0, canvasW, canvasH);
+            } else {
+                ctx.clearRect(0, 0, canvasW, canvasH);
+            }
+
+            let cursorX = 40;
+            const baselineY = 82;
+            const activeInk = INK_COLORS[inkTone];
+
+            let glyphsToDraw = [];
+
+            for (let wIdx = 0; wIdx < words.length; wIdx++) {
+                const word = words[wIdx];
+                if (!word) continue;
+                const wLen = word.length;
+                let lastExit = null;
+
+                for (let i = 0; i < wLen; i++) {
+                    const char = word[i];
+                    let posType = 'media';
+                    if (i === 0 && wLen > 1) posType = 'inicial';
+                    else if (i === wLen - 1 && wLen > 1) posType = 'final';
+                    else if (wLen === 1) posType = 'aislada';
+
+                    const glyph = pickGlyph(char, posType);
+                    if (!glyph) {
+                        cursorX += charAdvance;
+                        continue;
+                    }
+
+                    const img = await loadCropImage(glyph.crop_isolated_file);
+                    if (!img) {
+                        cursorX += charAdvance;
+                        continue;
+                    }
+
+                    const gw = img.naturalWidth || img.width;
+                    const gh = img.naturalHeight || img.height;
+
+                    let yOff = -gh * 0.65;
+                    if ('gyjpq'.includes(char)) yOff = -gh * 0.40;
+                    else if ('ldbhkft'.includes(char)) yOff = -gh * 0.75;
+                    else if (char === char.toUpperCase() && char !== char.toLowerCase()) yOff = -gh * 0.80;
+
+                    const jX = (Math.random() - 0.5) * jitterAmount * 2;
+                    const jY = (Math.random() - 0.5) * jitterAmount * 2;
+
+                    const px = Math.round(cursorX + jX);
+                    const py = Math.round(baselineY + yOff + jY);
+
+                    const entryPt = { x: px + gw * 0.15, y: py + gh * 0.70 };
+                    const exitPt = { x: px + gw * 0.85, y: py + gh * 0.70 };
+
+                    // Dibujar ligadura Bézier con la letra anterior dentro de la misma palabra
+                    if (lastExit) {
+                        const p0 = lastExit;
+                        const p3 = entryPt;
+                        const dx = p3.x - p0.x;
+                        const p1 = { x: p0.x + dx * tension, y: p0.y - (Math.random() * 2) };
+                        const p2 = { x: p3.x - dx * tension, y: p3.y - (Math.random() * 2) };
+
+                        ctx.save();
+                        ctx.strokeStyle = `rgba(${activeInk.r}, ${activeInk.g}, ${activeInk.b}, 0.9)`;
+                        ctx.lineWidth = 1.8;
+                        ctx.lineCap = 'round';
+                        ctx.beginPath();
+                        ctx.moveTo(p0.x, p0.y);
+                        ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+
+                    // Dibujar glifo teñido
+                    drawTintedGlyph(img, px, py, activeInk);
+
+                    lastExit = exitPt;
+                    cursorX += Math.max(14, gw * 0.60 + Math.random() * 3);
+                }
+
+                cursorX += wordSpace;
+            }
+
+            document.getElementById('canvasStats').textContent = `Frase: «${phrase}» (${canvasW}×${canvasH}px) · ${words.length} palabras`;
+        }
+
+        function pickGlyph(char, posType) {
+            let list = glyphsByChar[char] || [];
+            if (list.length === 0) {
+                // Fallbacks
+                if (char === 'á') list = glyphsByChar['a'] || [];
+                else if (char === 'é') list = glyphsByChar['e'] || [];
+                else if (char === 'í') list = glyphsByChar['i'] || [];
+                else if (char === 'ó') list = glyphsByChar['o'] || [];
+                else if (char === 'ú') list = glyphsByChar['u'] || [];
+                else if (glyphsByChar[char.toLowerCase()]) list = glyphsByChar[char.toLowerCase()];
+                else if (glyphsByChar[char.toUpperCase()]) list = glyphsByChar[char.toUpperCase()];
+            }
+
+            if (list.length === 0) return null;
+
+            const posMatches = list.filter(g => g.position === posType);
+            const candidates = posMatches.length > 0 ? posMatches : list;
+            return candidates[Math.floor(Math.random() * candidates.length)];
+        }
+
+        function loadCropImage(filename) {
+            if (loadedImagesCache[filename]) return Promise.resolve(loadedImagesCache[filename]);
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    loadedImagesCache[filename] = img;
+                    resolve(img);
+                };
+                img.onerror = () => resolve(null);
+                img.src = `/crops_isolated/${filename}`;
+            });
+        }
+
+        function drawTintedGlyph(img, x, y, ink) {
+            const w = img.naturalWidth || img.width;
+            const h = img.naturalHeight || img.height;
+
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = w;
+            offCanvas.height = h;
+            const offCtx = offCanvas.getContext('2d');
+            offCtx.drawImage(img, 0, 0);
+
+            const imgData = offCtx.getImageData(0, 0, w, h);
+            const d = imgData.data;
+            for (let i = 0; i < d.length; i += 4) {
+                if (d[i+3] > 0) {
+                    d[i] = ink.r;
+                    d[i+1] = ink.g;
+                    d[i+2] = ink.b;
+                }
+            }
+            offCtx.putImageData(imgData, 0, 0);
+            ctx.drawImage(offCanvas, x, y);
+        }
+
+        // =========================================================================
+        // EVENT LISTENERS & UI
+        // =========================================================================
+        document.getElementById('inputPhrase').addEventListener('input', () => renderSynthesis());
+
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('inputPhrase').value = btn.dataset.text;
+                renderSynthesis();
+            });
+        });
+
+        ['sliderAdvance', 'sliderWordSpace', 'sliderTension', 'sliderJitter'].forEach(id => {
+            const slider = document.getElementById(id);
+            slider.addEventListener('input', (e) => {
+                if (id === 'sliderAdvance') document.getElementById('valAdvance').textContent = e.target.value;
+                if (id === 'sliderWordSpace') document.getElementById('valWordSpace').textContent = e.target.value;
+                if (id === 'sliderTension') document.getElementById('valTension').textContent = e.target.value;
+                if (id === 'sliderJitter') document.getElementById('valJitter').textContent = e.target.value > 0 ? `${e.target.value}px` : 'Inactivo';
+                renderSynthesis();
+            });
+        });
+
+        document.querySelectorAll('#bgModeGroup .segmented-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#bgModeGroup .segmented-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                bgMode = btn.dataset.bg;
+                renderSynthesis();
+            });
+        });
+
+        document.querySelectorAll('#inkColorGroup .segmented-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#inkColorGroup .segmented-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                inkTone = btn.dataset.ink;
+                renderSynthesis();
+            });
+        });
+
+        document.getElementById('btnReRollVariation').addEventListener('click', () => renderSynthesis());
+
+        document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = `coloane_frase_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+
+        window.addEventListener('load', initData);
+    </script>
+</body>
+</html>
