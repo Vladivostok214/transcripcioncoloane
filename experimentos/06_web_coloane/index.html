@@ -591,6 +591,71 @@
             justify-content: center;
         }
 
+        /* Position Chips Selector & Pills */
+        .position-chips-group {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin-top: 2px;
+        }
+        .pos-chip {
+            padding: 5px 2px;
+            background: #141c2b;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--trans);
+            user-select: none;
+        }
+        .pos-chip:hover {
+            border-color: var(--accent-blue);
+            color: #fff;
+        }
+        .pos-chip.active {
+            background: rgba(56, 189, 248, 0.18);
+            border-color: var(--accent-blue);
+            color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+            font-weight: 700;
+        }
+        .pos-pill {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: capitalize;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .pos-pill.pos-inicial {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: #34d399;
+        }
+        .pos-pill.pos-media {
+            background: rgba(56, 189, 248, 0.12);
+            border-color: rgba(56, 189, 248, 0.35);
+            color: #38bdf8;
+        }
+        .pos-pill.pos-final {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.35);
+            color: #fbbf24;
+        }
+        .pos-pill.pos-aislada {
+            background: rgba(168, 85, 247, 0.12);
+            border-color: rgba(168, 85, 247, 0.35);
+            color: #c084fc;
+        }
+
         /* Sidebar */
         .sidebar {
             width: 360px;
@@ -1484,8 +1549,17 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>Posición en la Palabra *</label>
+                    <div class="position-chips-group" id="positionChipsGroup">
+                        <button type="button" class="pos-chip active" data-pos="media" title="Letra en medio de una palabra con enlaces a ambos lados">📍 Media</button>
+                        <button type="button" class="pos-chip" data-pos="inicial" title="Letra que abre una palabra">📍 Inicial</button>
+                        <button type="button" class="pos-chip" data-pos="final" title="Letra que cierra una palabra con remate">📍 Final</button>
+                        <button type="button" class="pos-chip" data-pos="aislada" title="Letra, número o signo suelto">📍 Aislada</button>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>Nota / Contexto (Opcional)</label>
-                    <input type="text" class="form-input" id="inputNotes" placeholder="ej. x inicial, bucle cerrado, tinta azul" />
+                    <input type="text" class="form-input" id="inputNotes" placeholder="ej. palabra 'mar', bucle cerrado, tinta azul" />
                 </div>
                 <div class="btn-row">
                     <button class="btn" id="btnCancelAssignment">Cancelar (Esc)</button>
@@ -2705,6 +2779,12 @@
             const charInput = document.getElementById('inputChar');
             charInput.value = '';
             document.getElementById('inputNotes').value = '';
+            
+            // Reset position selector to Media por defecto
+            document.querySelectorAll('#positionChipsGroup .pos-chip').forEach(c => c.classList.remove('active'));
+            const defaultPosChip = document.querySelector('#positionChipsGroup .pos-chip[data-pos="media"]');
+            if (defaultPosChip) defaultPosChip.classList.add('active');
+
             charInput.focus();
 
             card._activeRect = rect;
@@ -2721,6 +2801,43 @@
             renderCanvas();
         }
 
+        // Eventos de selección de chips de posición
+        document.querySelectorAll('#positionChipsGroup .pos-chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('#positionChipsGroup .pos-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+            });
+        });
+
+        // Auto-selección de categoría y posición al escribir la letra
+        document.getElementById('inputChar').addEventListener('input', (e) => {
+            const val = e.target.value;
+            if (!val) return;
+            const firstChar = val[0];
+            const catSelect = document.getElementById('selectCategory');
+            
+            document.querySelectorAll('#positionChipsGroup .pos-chip').forEach(c => c.classList.remove('active'));
+
+            if (ABC_MAY_ALL.includes(firstChar)) {
+                catSelect.value = 'mayuscula';
+                const chip = document.querySelector('#positionChipsGroup .pos-chip[data-pos="inicial"]');
+                if (chip) chip.classList.add('active');
+            } else if (ABC_MIN_ALL.includes(firstChar)) {
+                catSelect.value = 'minuscula';
+                const chip = document.querySelector('#positionChipsGroup .pos-chip[data-pos="media"]');
+                if (chip) chip.classList.add('active');
+            } else if ('0123456789'.includes(firstChar)) {
+                catSelect.value = 'numero';
+                const chip = document.querySelector('#positionChipsGroup .pos-chip[data-pos="aislada"]');
+                if (chip) chip.classList.add('active');
+            } else {
+                catSelect.value = 'signo';
+                const chip = document.querySelector('#positionChipsGroup .pos-chip[data-pos="aislada"]');
+                if (chip) chip.classList.add('active');
+            }
+        });
+
         function confirmAssignment() {
             const card = document.getElementById('assignmentCard');
             const rect = card._activeRect;
@@ -2736,6 +2853,8 @@
             }
 
             const categoryVal = document.getElementById('selectCategory').value;
+            const activePosChip = document.querySelector('#positionChipsGroup .pos-chip.active');
+            const positionVal = activePosChip ? activePosChip.dataset.pos : 'media';
             const notesVal = document.getElementById('inputNotes').value.trim();
             const safeChar = getSafeChar(charVal);
             const glyphIndex = currentBoxes.length + 1;
@@ -2750,6 +2869,7 @@
                 polygon: poly,
                 character: charVal,
                 category: categoryVal,
+                position: positionVal,
                 notes: notesVal,
                 rgbDataUrl: processed ? processed.rgbDataUrl : null,
                 isoDataUrl: processed ? processed.isoDataUrl : null,
@@ -2840,12 +2960,14 @@
                 const catOption = document.querySelector(`#selectCategory option[value="${box.category}"]`);
                 const catLabel = catOption ? catOption.textContent.split(' ')[1] : box.category;
                 const polyTag = (box.polygon && box.polygon.length >= 3) ? ' 📐' : '';
+                const posLabel = box.position || 'media';
 
                 card.innerHTML = `
                 <div class="glyph-info">
                     <div class="glyph-char-row">
                         <span class="glyph-char">${box.character}</span>
                         <span class="category-pill cat-${box.category}">${catLabel}${polyTag}</span>
+                        <span class="pos-pill pos-${posLabel}">📍 ${posLabel}</span>
                     </div>
                     <div class="glyph-notes">${box.notes || `[x:${box.x}, y:${box.y}, ${box.w}×${box.h}px]`}</div>
                 </div>
@@ -2929,6 +3051,7 @@
                 const catLabel = catOption ? catOption.textContent.split(' ')[1] : glyph.category;
                 const polyTag = (glyph.polygon && glyph.polygon.length >= 3) ? ' 📐' : '';
                 const dateStr = glyph.created_at ? new Date(glyph.created_at).toLocaleString('es-CL', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Reciente';
+                const posLabel = glyph.position || 'media';
 
                 const rgbSrc = glyph.crop_url || `./crops/${glyph.crop_file}`;
                 const isoSrc = glyph.crop_iso_url || `./crops_isolated/${glyph.crop_isolated_file}`;
@@ -2938,7 +3061,10 @@
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <div class="review-char-badge">${glyph.character}</div>
                         <div>
-                            <span class="category-pill cat-${glyph.category}">${catLabel}${polyTag}</span>
+                            <div style="display: flex; gap: 4px; align-items: center;">
+                                <span class="category-pill cat-${glyph.category}">${catLabel}${polyTag}</span>
+                                <span class="pos-pill pos-${posLabel}">📍 ${posLabel}</span>
+                            </div>
                             <div style="font-size: 11px; color: var(--accent-blue); font-weight: 600; margin-top: 2px;">
                                 👤 ${glyph.author || 'Anónimo'}
                             </div>
@@ -3020,17 +3146,22 @@
                 const res = await fetch('/api/sync_github', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ author: currentAuthor })
+                    body: JSON.stringify({ author: currentAuthor || 'Wladimir' })
                 });
 
-                if (res.ok) {
-                    const result = await res.json();
-                    showToast(`🚀 ${result.synced_count || stagingGlyphsList.length} glifos sincronizados exitosamente a GitHub!`);
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    showToast(`🚀 ¡Sincronización completada! ${data.synced_count} nuevos glifos en GitHub.`);
                     await fetchStagingGlyphs();
-                    await fetchInitData();
+                    // Recargar dataset local
+                    const dbRes = await fetch('./dataset_glifos_manuales.json?t=' + Date.now());
+                    if (dbRes.ok) {
+                        const newDb = await dbRes.json();
+                        allGlyphs = newDb.glyphs || [];
+                        updateGlobalStats();
+                    }
                 } else {
-                    const err = await res.json();
-                    alert("Aviso de sincronización: " + (err.message || 'Función serverless en configuración'));
+                    alert("Error en la sincronización: " + (data.message || 'Error desconocido'));
                 }
             } catch (err) {
                 console.warn("Sync to GitHub notice:", err);
@@ -3042,22 +3173,26 @@
         }
 
         function setupAdminReviewModal() {
-            const modal = document.getElementById('adminReviewModal');
             const btnOpen = document.getElementById('btnOpenAdminReview');
+            const modal = document.getElementById('adminReviewModal');
             const btnClose = document.getElementById('btnCloseAdminReviewModal');
-            const btnRefresh = document.getElementById('btnRefreshStaging');
             const btnSync = document.getElementById('btnSyncToGitHub');
+            const btnRefresh = document.getElementById('btnRefreshStaging');
 
             if (btnOpen) {
                 btnOpen.addEventListener('click', () => {
-                    fetchStagingGlyphs();
                     modal.classList.add('open');
+                    fetchStagingGlyphs();
                 });
             }
 
             if (btnClose) {
-                btnClose.addEventListener('click', () => {
-                    modal.classList.remove('open');
+                btnClose.addEventListener('click', () => modal.classList.remove('open'));
+            }
+
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.classList.remove('open');
                 });
             }
 
@@ -3116,6 +3251,7 @@
                             page: 'captura_externa',
                             character: box.character,
                             category: box.category,
+                            position: box.position || 'media',
                             notes: box.notes || '',
                             author: currentAuthor || 'Colaborador Anónimo',
                             bbox: [box.x, box.y, box.w, box.h],
@@ -3128,59 +3264,26 @@
                         });
                     }
 
-                    const { error: insertError } = await supabaseClient
+                    const { error: dbError } = await supabaseClient
                         .from('staging_glyphs')
                         .upsert(recordsToInsert);
 
-                    if (insertError) {
-                        console.error("Supabase insert error:", insertError);
-                    } else {
-                        savedSuccess = true;
+                    if (dbError) {
+                        console.error("Supabase DB error:", dbError);
+                        throw dbError;
                     }
+                    savedSuccess = true;
                 }
 
-                // 2. Fallback / Sincronización Local (si corre servidor python local)
-                try {
-                    const payload = {
-                        line_id: currentCaptureId,
-                        page: 'captura_externa',
-                        author: currentAuthor || 'Colaborador Anónimo',
-                        boxes: currentBoxes,
-                        image_data: currentImageDataUrl
-                    };
-                    const res = await fetch('/api/save_line', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (res.ok) {
-                        const result = await res.json();
-                        if (result.status === 'ok') {
-                            allGlyphs = result.db.glyphs;
-                            updateGlobalStats();
-                            savedSuccess = true;
-                        }
-                    }
-                } catch (localErr) {
-                    // Servidor python local no activo, modo 100% web
-                }
+                showToast(`✓ ¡${savedCount} glifos guardados con éxito en la nube!`);
+                currentBoxes = [];
+                renderCanvas();
+                renderSidebarList();
+                fetchStagingGlyphs();
 
-                if (savedSuccess) {
-                    currentBoxes = [];
-                    currentCaptureId = `cap_${Date.now()}`;
-                    renderCanvas();
-                    renderSidebarList();
-                    showToast(`✓ ${savedCount} glifo(s) enviados a revisión exitosamente`);
-
-                    if (isAdminUser(currentAuthor)) {
-                        fetchStagingGlyphs();
-                    }
-                } else {
-                    alert("Ocurrió un inconveniente al guardar. Verifica tu conexión a internet.");
-                }
             } catch (err) {
                 console.error("Error saving glyphs:", err);
-                alert("Error de conexión al guardar los glifos.");
+                alert("Error al guardar en la nube: " + (err.message || err));
             } finally {
                 btn.disabled = false;
                 btn.textContent = '💾 Guardar en Banco de Datos (Ctrl+S)';
@@ -3202,7 +3305,6 @@
         });
         document.getElementById('btnZoomOut').addEventListener('click', () => {
             zoom = Math.max(0.15, zoom * 0.8);
-            updateZoomDisplay();
             renderCanvas();
         });
         document.getElementById('btnResetZoom').addEventListener('click', resetZoom);
@@ -3210,9 +3312,9 @@
         // Catalog & Coverage Modal
         let selectedCatalogChar = null;
 
-        function setupCatalogModal() {
-            const modal = document.getElementById('coverageModal');
+        function setupCoverageModal() {
             const btnOpen = document.getElementById('btnOpenCoverage');
+            const modal = document.getElementById('coverageModal');
             const btnClose = document.getElementById('btnCloseCoverageModal');
 
             btnOpen.addEventListener('click', () => {
@@ -3328,11 +3430,15 @@
 
                 const catOption = document.querySelector(`#selectCategory option[value="${glyph.category}"]`);
                 const catLabel = catOption ? catOption.textContent : glyph.category;
+                const posLabel = glyph.position || 'media';
                 const bbox = glyph.bbox || [0,0,0,0];
 
                 card.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <span class="category-pill cat-${glyph.category}">${catLabel}</span>
+                    <div style="display: flex; gap: 4px; align-items: center;">
+                        <span class="category-pill cat-${glyph.category}">${catLabel}</span>
+                        <span class="pos-pill pos-${posLabel}">📍 ${posLabel}</span>
+                    </div>
                     <button class="btn-icon" title="Eliminar esta muestra" onclick="deleteGlyphSample('${glyph.id}')">🗑️</button>
                 </div>
                 <div class="sample-dual-view">

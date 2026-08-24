@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS staging_glyphs (
     page TEXT DEFAULT 'captura_externa',
     character TEXT NOT NULL,
     category TEXT NOT NULL,
+    position TEXT DEFAULT 'media',
     notes TEXT DEFAULT '',
     author TEXT DEFAULT 'Colaborador',
     bbox JSONB NOT NULL,
@@ -21,6 +22,9 @@ CREATE TABLE IF NOT EXISTS staging_glyphs (
     status TEXT DEFAULT 'pendiente',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Agregar columna position si la tabla ya existía previamente
+ALTER TABLE staging_glyphs ADD COLUMN IF NOT EXISTS position TEXT DEFAULT 'media';
 
 -- 2. Habilitar políticas de seguridad (Row Level Security) para acceso público controlado
 ALTER TABLE staging_glyphs ENABLE ROW LEVEL SECURITY;

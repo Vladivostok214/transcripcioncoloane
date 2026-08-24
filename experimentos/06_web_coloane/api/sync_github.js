@@ -117,6 +117,7 @@ export default async function handler(req, res) {
                     page: g.page || 'captura_externa',
                     character: g.character,
                     category: g.category,
+                    position: g.position || 'media',
                     notes: g.notes || '',
                     author: g.author || 'Colaborador',
                     bbox: Array.isArray(g.bbox) ? g.bbox : [0, 0, 0, 0],
@@ -140,7 +141,7 @@ export default async function handler(req, res) {
 
         // Generar CSV actualizado
         const csvRows = [
-            ["ID", "Capture_ID", "Page", "Character", "Category", "Notes", "BBox_X", "BBox_Y", "BBox_W", "BBox_H", "Polygon", "Crop_File", "Crop_Isolated_File", "Author"]
+            ["ID", "Capture_ID", "Page", "Character", "Category", "Position", "Notes", "BBox_X", "BBox_Y", "BBox_W", "BBox_H", "Polygon", "Crop_File", "Crop_Isolated_File", "Author"]
         ];
         for (const g of currentDb.glyphs) {
             const b = g.bbox || [0, 0, 0, 0];
@@ -151,6 +152,7 @@ export default async function handler(req, res) {
                 g.page || 'captura_externa',
                 g.character,
                 g.category,
+                g.position || 'media',
                 `"${(g.notes || '').replace(/"/g, '""')}"`,
                 b[0], b[1], b[2], b[3],
                 `"${polyStr.replace(/"/g, '""')}"`,
