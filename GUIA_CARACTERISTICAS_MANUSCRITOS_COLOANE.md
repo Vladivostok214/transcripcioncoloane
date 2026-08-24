@@ -1,8 +1,13 @@
 # 📜 Guía de Características Caligráficas y Estrategia de Modelado: Manuscritos de Francisco Coloane
 
 **Proyecto:** Transcripción y Reconocimiento de Manuscritos de Francisco Coloane  
-**Propósito:** Especificación técnica y lingüístico-caligráfica para el diseño, síntesis de datos y entrenamiento de modelos de Inteligencia Artificial especializados (HTR / Vision-Language).  
-**Fecha de Creación:** Checkpoint Agosto 2026  
+**Naturaleza del Documento:** 🧠 **Cuaderno Vivo de Investigación y Lluvia de Ideas (Work in Progress)**  
+**Propósito:** Registrar hallazgos, patrones morfológicos descubiertos y estrategias metodológicas preliminares para la futura fase de entrenamiento de modelos neuronales.  
+**Estado:** Abierto a iteración continua a medida que se catalogan nuevas páginas.
+
+> [!NOTE]
+> **Documento en Evolución Continua:**  
+> Este documento funciona como un laboratorio de ideas vivas. A medida que colaboradores y anotadores utilicen la herramienta web (*Human-in-the-Loop*) e identifiquemos nuevas singularidades caligráficas, agregaremos secciones, hipótesis y refinamientos de arquitectura antes de comenzar la fase de modelado formal.
 
 ---
 
