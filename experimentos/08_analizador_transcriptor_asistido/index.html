@@ -458,6 +458,9 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
+                    <span class="btn" style="cursor: default; opacity: 0.85; border-style: dashed;" title="Presiona Ctrl+V en cualquier lugar para pegar una captura">
+                        📋 Pegar (Ctrl + V)
+                    </span>
                     <label class="btn" style="cursor: pointer;">
                         📁 Subir Imagen
                         <input type="file" id="fileUploadInput" accept="image/*" style="display: none;" />
@@ -783,6 +786,52 @@
                 }
             };
             reader.readAsDataURL(file);
+        });
+
+        // Soporte para pegar capturas de pantalla con Ctrl+V
+        window.addEventListener('paste', async (e) => {
+            // Si el foco está en el textarea y se pegó texto, permitir el comportamiento normal
+            if (document.activeElement === document.getElementById('txtTranscription') ||
+                document.activeElement === document.getElementById('inputUserNotes')) {
+                const text = e.clipboardData.getData('text');
+                if (text) return; // Permitir pegar texto normal en los inputs
+            }
+
+            const items = (e.clipboardData || (e.originalEvent && e.originalEvent.clipboardData))?.items;
+            if (!items) return;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const blob = items[i].getAsFile();
+                    if (!blob) continue;
+
+                    e.preventDefault();
+                    showLoading(true);
+                    currentImageName = `captura_ctrl_v_${Date.now()}.png`;
+
+                    const reader = new FileReader();
+                    reader.onload = async () => {
+                        const base64Str = reader.result;
+                        try {
+                            const res = await fetch('/api/analyze', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ base64_image: base64Str })
+                            });
+                            if (res.ok) {
+                                currentAnalysisResult = await res.json();
+                                renderAnalysisView();
+                            }
+                        } catch (err) {
+                            console.error("Error al analizar captura pegada:", err);
+                        } finally {
+                            showLoading(false);
+                        }
+                    };
+                    reader.readAsDataURL(blob);
+                    break;
+                }
+            }
         });
 
         document.getElementById('btnSaveApproved').addEventListener('click', saveApprovedTranscription);
