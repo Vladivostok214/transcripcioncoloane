@@ -1941,12 +1941,16 @@
             window.addEventListener('resize', resizeCanvas);
             setupToolModeSwitcher();
             setupImageIngestion();
-            setupCatalogModal();
+            setupCoverageModal();
             setupHudDock();
             setupAuthorManager();
             setupAdminReviewModal();
             fetchInitData();
         });
+
+        function setupCatalogModal() {
+            setupCoverageModal();
+        }
 
         function resizeCanvas() {
             const rect = viewport.getBoundingClientRect();
