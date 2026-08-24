@@ -1252,9 +1252,94 @@
             padding-top: 6px;
             border-top: 1px solid var(--border);
         }
+
+        /* Mobile / Small Screen Block Overlay */
+        .mobile-block-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #070a10;
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+            backdrop-filter: blur(16px);
+        }
+        @media (max-width: 900px) {
+            .mobile-block-overlay {
+                display: flex !important;
+            }
+        }
+        .mobile-block-card {
+            background: #0f1522;
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            max-width: 440px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9), var(--shadow-glow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .mobile-icon {
+            font-size: 48px;
+            line-height: 1;
+        }
+        .mobile-block-card h2 {
+            font-size: 20px;
+            color: #fff;
+            font-weight: 700;
+            margin: 0;
+        }
+        .mobile-block-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+        .mobile-block-tip {
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px dashed rgba(56, 189, 248, 0.35);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font-size: 12px;
+            color: #e2e8f0;
+            line-height: 1.4;
+            text-align: left;
+        }
+        .mobile-url-box {
+            background: #080c14;
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-blue);
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Pantalla de Aviso para Dispositivos Móviles -->
+    <div class="mobile-block-overlay" id="mobileBlockOverlay">
+        <div class="mobile-block-card">
+            <div class="mobile-icon">💻</div>
+            <h2>Aplicación Diseñada para Computador</h2>
+            <p>El <strong>Banco de Glifos Coloane</strong> requiere herramientas de selección de precisión (mouse / teclado) y un espacio visual amplio para la catalogación y recorte de manuscritos a alta resolución.</p>
+            <div class="mobile-block-tip">
+                📌 <strong>Por favor abre este enlace desde un PC o Laptop</strong> con navegador Google Chrome, Edge, Firefox o Safari para comenzar a colaborar.
+            </div>
+            <div class="mobile-url-box">
+                coloaneweb.vercel.app
+            </div>
+        </div>
+    </div>
 
     <!-- Header -->
     <header>
