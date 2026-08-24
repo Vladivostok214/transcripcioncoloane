@@ -160,9 +160,12 @@
             padding: 10px 12px;
             color: #fff;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             outline: none;
+            resize: vertical;
+            min-height: 70px;
+            line-height: 1.4;
         }
 
         .phrase-input:focus {
@@ -273,9 +276,9 @@
             position: relative;
             overflow: auto;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 30px;
             background: radial-gradient(circle at center, #0f1523 0%, #060911 100%);
         }
 
@@ -283,7 +286,9 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(56, 189, 248, 0.1);
             border-radius: 8px;
             border: 1px solid var(--border);
-            max-width: 100%;
+            margin: auto;
+            flex-shrink: 0;
+            display: block;
         }
 
         /* Ground Truth Comparison Drawer */
@@ -376,7 +381,7 @@
                 <div class="section-title">
                     <span>1. Frase Manuscrita a Sintetizar</span>
                 </div>
-                <input type="text" class="phrase-input" id="inputPhrase" value="los reyes y aristóteles" placeholder="Escribe cualquier frase aquí..." />
+                <textarea class="phrase-input" id="inputPhrase" rows="3" placeholder="Escribe cualquier frase o renglones aquí...">los reyes y aristóteles</textarea>
                 
                 <div class="slider-header">
                     <span>Frases Rápidas:</span>
@@ -698,29 +703,119 @@
         }
 
         // =========================================================================
-        // MOTOR DE SÍNTESIS CALIGRÁFICA Y TRAZADO DE LIGADURAS
+        // MOTOR DE SÍNTESIS CALIGRÁFICA Y TRAZADO DE LIGADURAS (MULTILÍNEA Y DINÁMICO)
         // =========================================================================
         async function renderSynthesis() {
-            const phrase = document.getElementById('inputPhrase').value;
-            if (!phrase) return;
+            const rawText = document.getElementById('inputPhrase').value;
+            if (!rawText || !rawText.trim()) return;
 
             const charAdvanceSlider = parseFloat(document.getElementById('sliderAdvance').value);
             const wordSpace = parseFloat(document.getElementById('sliderWordSpace').value);
             const tension = parseFloat(document.getElementById('sliderTension').value);
             const jitterAmount = parseFloat(document.getElementById('sliderJitter').value);
 
-            const words = phrase.split(' ');
-            const canvasH = 160;
-            const canvasW = Math.max(700, Math.round(phrase.length * 24 + words.length * wordSpace + 160));
+            // Dividir por saltos de línea explícitos o envolver a 950px
+            const inputLines = rawText.split('\n');
+            const MAX_LINE_WIDTH = 950;
+
+            let layoutLines = [];
+
+            // 1. PASO DE LAYOUT: Medición y división en renglones
+            for (let l = 0; l < inputLines.length; l++) {
+                const words = inputLines[l].trim().split(/\s+/).filter(Boolean);
+                if (words.length === 0) continue;
+
+                let currentLineWords = [];
+                let currentLineWidth = 0;
+
+                for (let w = 0; w < words.length; w++) {
+                    const word = words[w];
+                    let estWordW = 0;
+                    for (let c = 0; c < word.length; c++) {
+                        estWordW += 24 + (charAdvanceSlider - 21);
+                    }
+
+                    if (currentLineWords.length > 0 && (currentLineWidth + estWordW + wordSpace > MAX_LINE_WIDTH)) {
+                        layoutLines.push(currentLineWords);
+                        currentLineWords = [word];
+                        currentLineWidth = estWordW;
+                    } else {
+                        currentLineWords.push(word);
+                        currentLineWidth += estWordW + wordSpace;
+                    }
+                }
+                if (currentLineWords.length > 0) {
+                    layoutLines.push(currentLineWords);
+                }
+            }
+
+            if (layoutLines.length === 0) return;
+
+            // 2. Pre-cargar glifos y medir ancho exacto de cada renglón
+            const lineHeight = 80;
+            const marginTop = 75;
+            const marginBottom = 65;
+            const marginLeft = 50;
+
+            let maxMeasuredLineWidth = 0;
+            let structuredLines = [];
+
+            for (let lIdx = 0; lIdx < layoutLines.length; lIdx++) {
+                const words = layoutLines[lIdx];
+                let lineData = [];
+                let curX = marginLeft;
+
+                for (let wIdx = 0; wIdx < words.length; wIdx++) {
+                    const word = words[wIdx];
+                    let wordData = [];
+                    const wLen = word.length;
+
+                    for (let i = 0; i < wLen; i++) {
+                        const char = word[i];
+                        let posType = 'media';
+                        if (i === 0 && wLen > 1) posType = 'inicial';
+                        else if (i === wLen - 1 && wLen > 1) posType = 'final';
+                        else if (wLen === 1) posType = 'aislada';
+
+                        const glyph = pickGlyph(char, posType);
+                        if (!glyph) {
+                            curX += 20;
+                            continue;
+                        }
+
+                        const gData = await getProcessedGlyphData(glyph, char);
+                        if (!gData) {
+                            curX += 20;
+                            continue;
+                        }
+
+                        wordData.push({
+                            char,
+                            gData,
+                            x: curX
+                        });
+
+                        curX += gData.w + 3 + (charAdvanceSlider - 21);
+                    }
+
+                    lineData.push(wordData);
+                    curX += wordSpace;
+                }
+
+                if (curX > maxMeasuredLineWidth) maxMeasuredLineWidth = curX;
+                structuredLines.push(lineData);
+            }
+
+            const canvasW = Math.max(750, Math.round(maxMeasuredLineWidth + 80));
+            const canvasH = Math.max(160, Math.round(marginTop + structuredLines.length * lineHeight + marginBottom - lineHeight));
 
             canvas.width = canvasW;
             canvas.height = canvasH;
 
-            // 1. Dibujar Fondo
+            // 3. Dibujar Fondo
             if (bgMode === 'paper') {
                 ctx.fillStyle = '#f4ede2';
                 ctx.fillRect(0, 0, canvasW, canvasH);
-                // Textura sutil
                 const imgData = ctx.getImageData(0, 0, canvasW, canvasH);
                 const d = imgData.data;
                 for (let i = 0; i < d.length; i += 4) {
@@ -737,91 +832,73 @@
                 ctx.clearRect(0, 0, canvasW, canvasH);
             }
 
-            let cursorX = 50;
-            const baselineY = 90;
             const activeInk = INK_COLORS[inkTone];
 
-            for (let wIdx = 0; wIdx < words.length; wIdx++) {
-                const word = words[wIdx];
-                if (!word) continue;
-                const wLen = word.length;
-                let lastExit = null;
+            // 4. Renderizar cada renglón
+            for (let lIdx = 0; lIdx < structuredLines.length; lIdx++) {
+                const words = structuredLines[lIdx];
+                const baselineY = marginTop + lIdx * lineHeight;
 
-                for (let i = 0; i < wLen; i++) {
-                    const char = word[i];
-                    let posType = 'media';
-                    if (i === 0 && wLen > 1) posType = 'inicial';
-                    else if (i === wLen - 1 && wLen > 1) posType = 'final';
-                    else if (wLen === 1) posType = 'aislada';
+                for (let wIdx = 0; wIdx < words.length; wIdx++) {
+                    const wordGlyphs = words[wIdx];
+                    let lastExit = null;
 
-                    const glyph = pickGlyph(char, posType);
-                    if (!glyph) {
-                        cursorX += 20;
-                        continue;
+                    for (let gIdx = 0; gIdx < wordGlyphs.length; gIdx++) {
+                        const item = wordGlyphs[gIdx];
+                        const gData = item.gData;
+                        const gw = gData.w;
+
+                        const jX = (Math.random() - 0.5) * jitterAmount * 1.5;
+                        const jY = (Math.random() - 0.5) * jitterAmount * 2;
+
+                        const px = Math.round(item.x + jX);
+                        const py = Math.round(baselineY - gData.baselineRelY + jY);
+
+                        const entryPt = { x: px + gData.entryPt.x, y: py + gData.entryPt.y };
+                        const exitPt = { x: px + gData.exitPt.x, y: py + gData.exitPt.y };
+
+                        // Ligadura Bézier continua
+                        if (lastExit) {
+                            const p0 = lastExit;
+                            const p3 = entryPt;
+                            const dx = p3.x - p0.x;
+                            const p1 = { x: p0.x + dx * tension, y: p0.y + 1.5 };
+                            const p2 = { x: p3.x - dx * tension, y: p3.y + 1.5 };
+
+                            ctx.save();
+                            ctx.strokeStyle = `rgba(${activeInk.r}, ${activeInk.g}, ${activeInk.b}, 0.92)`;
+                            ctx.lineWidth = 2.0;
+                            ctx.lineCap = 'round';
+                            ctx.lineJoin = 'round';
+                            ctx.beginPath();
+                            ctx.moveTo(p0.x, p0.y);
+                            ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+                            ctx.stroke();
+                            ctx.restore();
+                        }
+
+                        // Dibujar glifo
+                        drawTintedCanvas(gData.normCanvas, px, py, activeInk);
+
+                        // Tilde si corresponde
+                        if (gData.hasAccent) {
+                            ctx.save();
+                            ctx.strokeStyle = `rgba(${activeInk.r}, ${activeInk.g}, ${activeInk.b}, 0.95)`;
+                            ctx.lineWidth = 2.2;
+                            ctx.lineCap = 'round';
+                            ctx.beginPath();
+                            ctx.moveTo(px + gw * 0.3, py - 6);
+                            ctx.lineTo(px + gw * 0.7, py - 13);
+                            ctx.stroke();
+                            ctx.restore();
+                        }
+
+                        lastExit = exitPt;
                     }
-
-                    const gData = await getProcessedGlyphData(glyph, char);
-                    if (!gData) {
-                        cursorX += 20;
-                        continue;
-                    }
-
-                    const gw = gData.w;
-                    const gh = gData.h;
-
-                    const jX = (Math.random() - 0.5) * jitterAmount * 1.5;
-                    const jY = (Math.random() - 0.5) * jitterAmount * 2;
-
-                    const px = Math.round(cursorX + jX);
-                    const py = Math.round(baselineY - gData.baselineRelY + jY);
-
-                    const entryPt = { x: px + gData.entryPt.x, y: py + gData.entryPt.y };
-                    const exitPt = { x: px + gData.exitPt.x, y: py + gData.exitPt.y };
-
-                    // Dibujar ligadura Bézier con la letra anterior dentro de la misma palabra
-                    if (lastExit) {
-                        const p0 = lastExit;
-                        const p3 = entryPt;
-                        const dx = p3.x - p0.x;
-                        const p1 = { x: p0.x + dx * tension, y: p0.y + 1.5 };
-                        const p2 = { x: p3.x - dx * tension, y: p3.y + 1.5 };
-
-                        ctx.save();
-                        ctx.strokeStyle = `rgba(${activeInk.r}, ${activeInk.g}, ${activeInk.b}, 0.92)`;
-                        ctx.lineWidth = 2.0;
-                        ctx.lineCap = 'round';
-                        ctx.lineJoin = 'round';
-                        ctx.beginPath();
-                        ctx.moveTo(p0.x, p0.y);
-                        ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
-                        ctx.stroke();
-                        ctx.restore();
-                    }
-
-                    // Dibujar glifo teñido
-                    drawTintedCanvas(gData.normCanvas, px, py, activeInk);
-
-                    // Si la letra lleva tilde (ej. 'ó'), dibujar acento sobre la vocal
-                    if (gData.hasAccent) {
-                        ctx.save();
-                        ctx.strokeStyle = `rgba(${activeInk.r}, ${activeInk.g}, ${activeInk.b}, 0.95)`;
-                        ctx.lineWidth = 2.2;
-                        ctx.lineCap = 'round';
-                        ctx.beginPath();
-                        ctx.moveTo(px + gw * 0.3, py - 6);
-                        ctx.lineTo(px + gw * 0.7, py - 13);
-                        ctx.stroke();
-                        ctx.restore();
-                    }
-
-                    lastExit = exitPt;
-                    cursorX += gw + 3 + (charAdvanceSlider - 21);
                 }
-
-                cursorX += wordSpace;
             }
 
-            document.getElementById('canvasStats').textContent = `Frase: «${phrase}» (${canvasW}×${canvasH}px) · ${words.length} palabras`;
+            document.getElementById('canvasStats').textContent = `Lienzo dinámico: ${canvasW}×${canvasH}px · ${structuredLines.length} renglón(es)`;
         }
 
         function pickGlyph(char, posType) {
