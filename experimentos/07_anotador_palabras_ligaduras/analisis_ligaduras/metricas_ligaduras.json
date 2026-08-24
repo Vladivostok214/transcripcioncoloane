@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w_cap_1787545299532_01_reyes",
+    "word": "reyes",
+    "character_count": 5,
+    "category": "sustantivo",
+    "width_px": 105,
+    "height_px": 53,
+    "avg_char_width_px": 21.0,
+    "stroke_pixels": 209,
+    "endpoints_count": 4,
+    "branchpoints_count": 8,
+    "entry_anchor": [
+      14,
+      25
+    ],
+    "exit_anchor": [
+      91,
+      18
+    ]
+  },
+  {
+    "id": "w_cap_1787545299532_02_los",
+    "word": "los",
+    "character_count": 3,
+    "category": "conector",
+    "width_px": 51,
+    "height_px": 39,
+    "avg_char_width_px": 17.0,
+    "stroke_pixels": 83,
+    "endpoints_count": 5,
+    "branchpoints_count": 3,
+    "entry_anchor": [
+      6,
+      29
+    ],
+    "exit_anchor": [
+      45,
+      28
+    ]
+  },
+  {
+    "id": "w_cap_1787545299532_03_de",
+    "word": "de",
+    "character_count": 2,
+    "category": "conector",
+    "width_px": 48,
+    "height_px": 42,
+    "avg_char_width_px": 24.0,
+    "stroke_pixels": 75,
+    "endpoints_count": 3,
+    "branchpoints_count": 3,
+    "entry_anchor": [
+      4,
+      29
+    ],
+    "exit_anchor": [
+      34,
+      24
+    ]
+  },
+  {
+    "id": "w_cap_1787545598385_01_Como",
+    "word": "Como",
+    "character_count": 4,
+    "category": "conector",
+    "width_px": 116,
+    "height_px": 52,
+    "avg_char_width_px": 29.0,
+    "stroke_pixels": 315,
+    "endpoints_count": 10,
+    "branchpoints_count": 10,
+    "entry_anchor": [
+      1,
+      28
+    ],
+    "exit_anchor": [
+      114,
+      7
+    ]
+  },
+  {
+    "id": "w_cap_1787545598385_02_dice",
+    "word": "dice",
+    "character_count": 4,
+    "category": "verbo",
+    "width_px": 81,
+    "height_px": 44,
+    "avg_char_width_px": 20.2,
+    "stroke_pixels": 170,
+    "endpoints_count": 8,
+    "branchpoints_count": 6,
+    "entry_anchor": [
+      3,
+      32
+    ],
+    "exit_anchor": [
+      73,
+      23
+    ]
+  },
+  {
+    "id": "w_cap_1787545598385_03_Aristóteles",
+    "word": "Aristóteles",
+    "character_count": 11,
+    "category": "sustantivo",
+    "width_px": 216,
+    "height_px": 51,
+    "avg_char_width_px": 19.6,
+    "stroke_pixels": 598,
+    "endpoints_count": 22,
+    "branchpoints_count": 30,
+    "entry_anchor": [
+      4,
+      44
+    ],
+    "exit_anchor": [
+      215,
+      8
+    ]
+  },
+  {
+    "id": "w_cap_1787545710719_01_Schakespeare",
+    "word": "Schakespeare",
+    "character_count": 12,
+    "category": "sustantivo",
+    "width_px": 250,
+    "height_px": 72,
+    "avg_char_width_px": 20.8,
+    "stroke_pixels": 630,
+    "endpoints_count": 20,
+    "branchpoints_count": 22,
+    "entry_anchor": [
+      15,
+      46
+    ],
+    "exit_anchor": [
+      238,
+      15
+    ]
+  },
+  {
+    "id": "w_cap_1787545710719_02_y",
+    "word": "y",
+    "character_count": 1,
+    "category": "general",
+    "width_px": 33,
+    "height_px": 45,
+    "avg_char_width_px": 33.0,
+    "stroke_pixels": 91,
+    "endpoints_count": 2,
+    "branchpoints_count": 2,
+    "entry_anchor": [
+      6,
+      39
+    ],
+    "exit_anchor": [
+      27,
+      7
+    ]
+  },
+  {
+    "id": "w_cap_1787545710719_03_la",
+    "word": "la",
+    "character_count": 2,
+    "category": "conector",
+    "width_px": 46,
+    "height_px": 49,
+    "avg_char_width_px": 23.0,
+    "stroke_pixels": 103,
+    "endpoints_count": 4,
+    "branchpoints_count": 4,
+    "entry_anchor": [
+      0,
+      21
+    ],
+    "exit_anchor": [
+      39,
+      37
+    ]
+  },
+  {
+    "id": "w_cap_1787545710719_04_problemas",
+    "word": "problemas",
+    "character_count": 9,
+    "category": "general",
+    "width_px": 182,
+    "height_px": 63,
+    "avg_char_width_px": 20.2,
+    "stroke_pixels": 426,
+    "endpoints_count": 19,
+    "branchpoints_count": 17,
+    "entry_anchor": [
+      14,
+      53
+    ],
+    "exit_anchor": [
+      175,
+      26
+    ]
+  },
+  {
+    "id": "w_cap_1787546089418_01_griega",
+    "word": "griega",
+    "character_count": 6,
+    "category": "sustantivo",
+    "width_px": 118,
+    "height_px": 64,
+    "avg_char_width_px": 19.7,
+    "stroke_pixels": 319,
+    "endpoints_count": 12,
+    "branchpoints_count": 16,
+    "entry_anchor": [
+      1,
+      57
+    ],
+    "exit_anchor": [
+      116,
+      12
+    ]
+  },
+  {
+    "id": "w_cap_1787546089418_02_sociales",
+    "word": "sociales",
+    "character_count": 8,
+    "category": "sustantivo",
+    "width_px": 145,
+    "height_px": 53,
+    "avg_char_width_px": 18.1,
+    "stroke_pixels": 339,
+    "endpoints_count": 15,
+    "branchpoints_count": 11,
+    "entry_anchor": [
+      6,
+      37
+    ],
+    "exit_anchor": [
+      137,
+      28
+    ]
+  }
+]
