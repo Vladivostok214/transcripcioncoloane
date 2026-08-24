@@ -30,11 +30,14 @@ class SynthesizerHandler(http.server.SimpleHTTPRequestHandler):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
 
     def do_GET(self):
+        import urllib.parse
         parsed = urlparse(self.path)
-        if parsed.path == '/' or parsed.path == '/index.html':
+        clean_path = urllib.parse.unquote(parsed.path)
+
+        if clean_path == '/' or clean_path == '/index.html':
             self.path = '/index.html'
             return super().do_GET()
-        elif parsed.path == '/api/init_glyphs':
+        elif clean_path == '/api/init_glyphs':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.end_headers()
@@ -45,7 +48,7 @@ class SynthesizerHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(json.dumps({"glyphs": []}).encode('utf-8'))
             return
-        elif parsed.path == '/api/init_words':
+        elif clean_path == '/api/init_words':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.end_headers()
@@ -56,9 +59,9 @@ class SynthesizerHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(json.dumps({"words": []}).encode('utf-8'))
             return
-        elif parsed.path.startswith('/crops_isolated/'):
+        elif clean_path.startswith('/crops_isolated/'):
             # Servir directamente desde Exp 06
-            file_name = parsed.path.replace('/crops_isolated/', '')
+            file_name = clean_path.replace('/crops_isolated/', '')
             target = os.path.join(EXP06_DIR, 'crops_isolated', file_name)
             if os.path.exists(target):
                 self.send_response(200)
@@ -71,9 +74,9 @@ class SynthesizerHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_response(404)
                 self.end_headers()
                 return
-        elif parsed.path.startswith('/crops_palabras_isolated/'):
+        elif clean_path.startswith('/crops_palabras_isolated/'):
             # Servir desde Exp 07
-            file_name = parsed.path.replace('/crops_palabras_isolated/', '')
+            file_name = clean_path.replace('/crops_palabras_isolated/', '')
             target = os.path.join(EXP07_DIR, 'crops_palabras_isolated', file_name)
             if os.path.exists(target):
                 self.send_response(200)

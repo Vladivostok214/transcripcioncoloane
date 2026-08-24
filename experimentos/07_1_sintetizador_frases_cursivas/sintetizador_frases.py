@@ -1,8 +1,8 @@
 """
 Motor de Síntesis Caligráfica de Frases Cursivas (Francisco Coloane - Exp 07.1)
 ==============================================================================
-Ensambla glifos del Exp 06 aplicando métricas de ligadura y curvatura Bézier
-para generar frases sintéticas completas con apariencia manuscrita natural.
+Ensambla glifos normalizados por x-height, alineación precisa de línea base,
+recorte de márgenes transparentes (tight bounding box) y ligaduras Bézier C1.
 """
 
 import os
@@ -28,9 +28,19 @@ OUT_DIR = os.path.join(BASE_DIR, 'output')
 
 os.makedirs(OUT_DIR, exist_ok=True)
 
+# Categorías de letras según anatomía tipográfica
+LOWER_X_HEIGHT_CHARS = set('acemnorsuvwxz')
+ASCENDER_CHARS = set('bdfhklßt')
+DESCENDER_CHARS = set('gjpqy')
+UPPER_CHARS = set('ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÜÑ')
+
+TARGET_X_HEIGHT = 28.0  # Altura estándar de una letra minúscula 'x' a 300 DPI
+TARGET_ASCENDER_HEIGHT = 56.0 # Altura estándar de letras altas 'l', 'b', mayúsculas
+
 class ColoaneHandwritingSynthesizer:
     def __init__(self):
         self.glyphs_by_char = {}
+        self.glyph_cache = {}
         self.load_glyph_database()
 
     def load_glyph_database(self):
@@ -46,181 +56,235 @@ class ColoaneHandwritingSynthesizer:
             char = g['character']
             self.glyphs_by_char.setdefault(char, []).append(g)
 
-        print(f"✓ Base de glifos cargada: {len(all_glyphs)} glifos ({len(self.glyphs_by_char)} caracteres únicos)")
+        print(f"Base de glifos cargada: {len(all_glyphs)} glifos ({len(self.glyphs_by_char)} caracteres)")
 
-    def get_best_glyph(self, char, position='media', sample_idx=None):
+    def get_processed_glyph(self, char, position='media', sample_idx=None):
         """
-        Selecciona el mejor glifo considerando la posición (inicial, media, final)
-        y ofreciendo variabilidad natural si hay múltiples muestras.
+        Obtiene y preprocesa el glifo: recorta márgenes transparentes,
+        normaliza la escala a la altura de x (x-height) y halla anclas reales.
         """
-        candidates = self.glyphs_by_char.get(char, [])
-        if not candidates:
-            # Fallback para tildes o mayúsculas/minúsculas
-            if char == 'á': candidates = self.glyphs_by_char.get('a', [])
-            elif char == 'é': candidates = self.glyphs_by_char.get('e', [])
-            elif char == 'í': candidates = self.glyphs_by_char.get('i', [])
-            elif char == 'ó': candidates = self.glyphs_by_char.get('o', [])
-            elif char == 'ú': candidates = self.glyphs_by_char.get('u', [])
-            elif char.lower() in self.glyphs_by_char:
-                candidates = self.glyphs_by_char.get(char.lower(), [])
-            elif char.upper() in self.glyphs_by_char:
-                candidates = self.glyphs_by_char.get(char.upper(), [])
+        # Normalizar tildes
+        has_accent = False
+        base_char = char
+        if char in 'áàäâ': base_char = 'a'; has_accent = True
+        elif char in 'éèëê': base_char = 'e'; has_accent = True
+        elif char in 'íìïî': base_char = 'i'; has_accent = True
+        elif char in 'óòöô': base_char = 'o'; has_accent = True
+        elif char in 'úùüû': base_char = 'u'; has_accent = True
+
+        candidates = self.glyphs_by_char.get(base_char, [])
+        if not candidates and base_char.lower() in self.glyphs_by_char:
+            candidates = self.glyphs_by_char[base_char.lower()]
+        if not candidates and base_char.upper() in self.glyphs_by_char:
+            candidates = self.glyphs_by_char[base_char.upper()]
 
         if not candidates:
             return None
 
-        # Filtrar por posición deseada si es posible
-        pos_candidates = [g for g in candidates if g.get('position') == position]
-        if not pos_candidates:
-            pos_candidates = candidates # Fallback a cualquier posición si no existe específica
+        # Filtrar por posición si existe
+        pos_matches = [g for g in candidates if g.get('position') == position]
+        pool = pos_matches if pos_matches else candidates
+        
+        glyph_meta = pool[sample_idx % len(pool)] if sample_idx is not None else random.choice(pool)
+        glyph_id = glyph_meta['id']
 
-        if sample_idx is not None and 0 <= sample_idx < len(pos_candidates):
-            return pos_candidates[sample_idx]
-        return random.choice(pos_candidates)
+        if glyph_id in self.glyph_cache:
+            res = self.glyph_cache[glyph_id]
+            res_copy = dict(res)
+            res_copy['has_accent'] = has_accent
+            return res_copy
 
-    def synthesize_phrase(self, text, paper_bg=True, draw_ligatures=True, jitter=True):
+        crop_path = os.path.join(CROPS_ISO_DIR, glyph_meta['crop_isolated_file'])
+        if not os.path.exists(crop_path):
+            return None
+
+        img = Image.open(crop_path).convert('RGBA')
+        arr = np.array(img)
+        alpha = arr[:, :, 3]
+
+        non_zero = np.argwhere(alpha > 30)
+        if len(non_zero) == 0:
+            return None
+
+        min_y, min_x = non_zero.min(axis=0)
+        max_y, max_x = non_zero.max(axis=0)
+
+        # Recorte ceñido a la tinta real (Tight crop)
+        tight_alpha = alpha[min_y:max_y+1, min_x:max_x+1]
+        tight_h, tight_w = tight_alpha.shape
+
+        # Normalización de escala según anatomía
+        if base_char in LOWER_X_HEIGHT_CHARS:
+            scale = TARGET_X_HEIGHT / max(10.0, float(tight_h))
+        elif base_char in ASCENDER_CHARS or base_char in UPPER_CHARS:
+            scale = TARGET_ASCENDER_HEIGHT / max(20.0, float(tight_h))
+        elif base_char in DESCENDER_CHARS:
+            scale = 48.0 / max(20.0, float(tight_h))
+        else:
+            scale = TARGET_X_HEIGHT / max(10.0, float(tight_h))
+
+        # Limitar escala extrema
+        scale = max(0.25, min(1.8, scale))
+        norm_w = max(4, int(round(tight_w * scale)))
+        norm_h = max(4, int(round(tight_h * scale)))
+
+        resized_alpha = np.array(Image.fromarray(tight_alpha).resize((norm_w, norm_h), Image.Resampling.BILINEAR))
+
+        # Encontrar anclas reales de entrada (leftmost) y salida (rightmost)
+        nz_scaled = np.argwhere(resized_alpha > 40)
+        if len(nz_scaled) > 0:
+            # Entrada: píxel más a la izquierda
+            left_col = nz_scaled[:, 1].min()
+            left_pixels = nz_scaled[nz_scaled[:, 1] == left_col]
+            entry_y = int(np.mean(left_pixels[:, 0]))
+            entry_pt = (0, entry_y)
+
+            # Salida: píxel más a la derecha
+            right_col = nz_scaled[:, 1].max()
+            right_pixels = nz_scaled[nz_scaled[:, 1] == right_col]
+            exit_y = int(np.mean(right_pixels[:, 0]))
+            exit_pt = (norm_w - 1, exit_y)
+        else:
+            entry_pt = (0, norm_h // 2)
+            exit_pt = (norm_w - 1, norm_h // 2)
+
+        # Baseline offset relativo
+        # En una letra 'x' o 'a', el fondo de la letra descansa sobre la baseline (y_rel = norm_h)
+        if base_char in DESCENDER_CHARS:
+            baseline_rel_y = int(norm_h * 0.45) # La mitad superior sobre la baseline, la cola cuelga
+        elif base_char in ASCENDER_CHARS or base_char in UPPER_CHARS:
+            baseline_rel_y = norm_h - 2 # Descansa sobre la baseline
+        else:
+            baseline_rel_y = norm_h - 1
+
+        processed = {
+            "glyph_id": glyph_id,
+            "char": base_char,
+            "has_accent": has_accent,
+            "alpha": resized_alpha,
+            "w": norm_w,
+            "h": norm_h,
+            "entry_pt": entry_pt,
+            "exit_pt": exit_pt,
+            "baseline_rel_y": baseline_rel_y
+        }
+
+        self.glyph_cache[glyph_id] = processed
+        return dict(processed)
+
+    def synthesize_phrase(self, text, paper_bg=True, draw_ligatures=True, jitter_amt=0.8):
         """
-        Ensambla la frase completa y dibuja los puentes de ligadura Bézier.
+        Sintetiza la frase con alineación estricta de baseline y ligaduras Bézier C1.
         """
         words = text.split(' ')
-        
-        # Calcular dimensiones del lienzo
-        char_advance = 22.0  # Constante media descubierta en Exp 07 (20-24px)
-        space_width = 38.0   # Separación entre palabras
-        canvas_height = 140
-        canvas_width = int(len(text) * char_advance + len(words) * space_width + 120)
+        canvas_h = 160
+        baseline_y = 90.0
 
-        # Crear lienzo
+        # Estimar ancho necesario
+        approx_w = int(len(text) * 22 + len(words) * 35 + 160)
+        canvas_w = max(700, approx_w)
+
+        # Color de papel o transparente
         if paper_bg:
-            # Color de papel libreta antiguo de Coloane (#f4ede2 con sutil grano)
-            canvas = Image.new('RGBA', (canvas_width, canvas_height), (244, 237, 226, 255))
-            draw = ImageDraw.Draw(canvas)
-            # Textura de papel sutil
-            noise = np.random.normal(0, 3, (canvas_height, canvas_width, 3)).astype(np.int16)
+            canvas = Image.new('RGBA', (canvas_w, canvas_h), (244, 237, 226, 255))
+            # Textura de papel
+            noise = np.random.normal(0, 2.5, (canvas_h, canvas_w, 3)).astype(np.int16)
             base_arr = np.array(canvas.convert('RGB'), dtype=np.int16)
             noisy_arr = np.clip(base_arr + noise, 0, 255).astype(np.uint8)
             canvas = Image.fromarray(noisy_arr).convert('RGBA')
-            draw = ImageDraw.Draw(canvas)
         else:
-            canvas = Image.new('RGBA', (canvas_width, canvas_height), (0, 0, 0, 0))
-            draw = ImageDraw.Draw(canvas)
+            canvas = Image.new('RGBA', (canvas_w, canvas_h), (0, 0, 0, 0))
 
-        cursor_x = 40.0
-        baseline_y = 75.0
-        placed_glyphs = []
+        draw = ImageDraw.Draw(canvas)
+        ink_rgba = (24, 34, 52, 235) # Azul noche caligráfico de Coloane
 
-        ink_color = (25, 30, 45, 235) # Tinta azul oscuro/negra caligráfica
+        cursor_x = 45.0
+        word_space = 36.0
 
         for w_idx, word in enumerate(words):
             if not word:
                 continue
 
             word_len = len(word)
-            last_exit_point = None
+            last_exit_abs = None
 
             for i, char in enumerate(word):
-                # Determinar posición caligráfica
-                if i == 0 and word_len > 1:
-                    pos = 'inicial'
-                elif i == word_len - 1 and word_len > 1:
-                    pos = 'final'
-                elif word_len == 1:
-                    pos = 'aislada'
-                else:
-                    pos = 'media'
+                if i == 0 and word_len > 1: pos = 'inicial'
+                elif i == word_len - 1 and word_len > 1: pos = 'final'
+                elif word_len == 1: pos = 'aislada'
+                else: pos = 'media'
 
-                glyph = self.get_best_glyph(char, position=pos)
-                if not glyph:
-                    cursor_x += char_advance
+                g = self.get_processed_glyph(char, position=pos)
+                if not g:
+                    cursor_x += 20.0
                     continue
 
-                crop_iso_file = os.path.join(CROPS_ISO_DIR, glyph.get('crop_isolated_file', ''))
-                if not os.path.exists(crop_iso_file):
-                    cursor_x += char_advance
-                    continue
+                alpha = g['alpha']
+                gw, gh = g['w'], g['h']
 
-                glyph_img = Image.open(crop_iso_file).convert('RGBA')
-                gw, gh = glyph_img.size
+                # Calcular posición Y alineada exactamente a la línea base
+                jy = random.uniform(-jitter_amt, jitter_amt)
+                jx = random.uniform(-jitter_amt * 0.5, jitter_amt * 0.5)
 
-                # Ajustar baseline según proporciones del glifo
-                # Glifos descendentes (p, g, y, j, q) se alinean más abajo
-                # Glifos ascendentes (t, l, d, b, h) se alinean más arriba
-                y_offset = -gh * 0.65
-                if char in 'gyjpq':
-                    y_offset = -gh * 0.40
-                elif char in 'ldbhkft':
-                    y_offset = -gh * 0.75
-                elif char.isupper():
-                    y_offset = -gh * 0.80
+                pos_x = int(round(cursor_x + jx))
+                pos_y = int(round(baseline_y - g['baseline_rel_y'] + jy))
 
-                # Jitter natural de la mano humana
-                j_x = random.uniform(-1.0, 1.0) if jitter else 0.0
-                j_y = random.uniform(-1.5, 1.5) if jitter else 0.0
+                entry_abs = (pos_x + g['entry_pt'][0], pos_y + g['entry_pt'][1])
+                exit_abs = (pos_x + g['exit_pt'][0], pos_y + g['exit_pt'][1])
 
-                pos_x = int(cursor_x + j_x)
-                pos_y = int(baseline_y + y_offset + j_y)
+                # Dibujar ligadura Bézier con la letra previa
+                if draw_ligatures and last_exit_abs is not None:
+                    p0 = np.array(last_exit_abs, dtype=float)
+                    p3 = np.array(entry_abs, dtype=float)
 
-                # Colorear tinta del glifo al color de tinta manuscrita
-                alpha = np.array(glyph_img)[:, :, 3]
-                colored_glyph = Image.new('RGBA', (gw, gh), ink_color)
-                colored_glyph.putalpha(Image.fromarray(alpha))
-
-                # Estimar anclas de entrada y salida
-                entry_point = (pos_x + int(gw * 0.15), pos_y + int(gh * 0.70))
-                exit_point = (pos_x + int(gw * 0.85), pos_y + int(gh * 0.70))
-
-                # Dibujar ligadura continua con la letra anterior dentro de la misma palabra
-                if draw_ligatures and last_exit_point is not None:
-                    # Curva Bézier C1 suave
-                    p0 = np.array(last_exit_point, dtype=float)
-                    p3 = np.array(entry_point, dtype=float)
-                    
                     dx = p3[0] - p0[0]
-                    p1 = p0 + np.array([dx * 0.4, -random.uniform(0, 3)])
-                    p2 = p3 - np.array([dx * 0.4, -random.uniform(0, 3)])
+                    # Control points para curva Bézier natural ascendente
+                    p1 = p0 + np.array([dx * 0.45, 1.5])
+                    p2 = p3 - np.array([dx * 0.45, 1.5])
 
                     bezier_pts = []
-                    for t in np.linspace(0, 1, 15):
+                    for t in np.linspace(0, 1, 16):
                         pt = (1-t)**3 * p0 + 3*(1-t)**2*t * p1 + 3*(1-t)*t**2 * p2 + t**3 * p3
-                        bezier_pts.append((int(pt[0]), int(pt[1])))
+                        bezier_pts.append((int(round(pt[0])), int(round(pt[1]))))
 
                     for k in range(len(bezier_pts) - 1):
-                        draw.line([bezier_pts[k], bezier_pts[k+1]], fill=ink_color, width=2)
+                        draw.line([bezier_pts[k], bezier_pts[k+1]], fill=ink_rgba, width=2)
 
-                # Estampar glifo sobre el lienzo
+                # Estampar glifo teñido
+                colored_glyph = Image.new('RGBA', (gw, gh), ink_rgba)
+                colored_glyph.putalpha(Image.fromarray(alpha))
                 canvas.paste(colored_glyph, (pos_x, pos_y), colored_glyph)
 
-                last_exit_point = exit_point
-                cursor_x += max(14.0, gw * 0.60 + random.uniform(2, 6))
+                # Si tiene tilde (ej. 'ó'), dibujar trazo de tilde
+                if g.get('has_accent'):
+                    accent_x0 = pos_x + int(gw * 0.3)
+                    accent_y0 = pos_y - 8
+                    accent_x1 = pos_x + int(gw * 0.7)
+                    accent_y1 = pos_y - 14
+                    draw.line([(accent_x0, accent_y0), (accent_x1, accent_y1)], fill=ink_rgba, width=2)
 
-                placed_glyphs.append({
-                    "char": char,
-                    "glyph_id": glyph['id'],
-                    "pos_x": pos_x,
-                    "pos_y": pos_y,
-                    "w": gw,
-                    "h": gh
-                })
+                last_exit_abs = exit_abs
+                # Avance horizontal: ancho de la letra + pequeño puente inter-glifo
+                cursor_x += gw + random.uniform(2, 6)
 
-            # Espacio entre palabras
-            cursor_x += space_width + random.uniform(-2, 4)
+            cursor_x += word_space
 
-        return canvas, placed_glyphs
+        return canvas
 
 def main():
     synthesizer = ColoaneHandwritingSynthesizer()
     target_phrase = "los reyes y aristóteles"
 
-    print(f"\nSintetizando frase manuscrita: «{target_phrase}»...")
-    
-    # 1. Renderizar sobre papel antiguo
-    img_paper, info = synthesizer.synthesize_phrase(target_phrase, paper_bg=True, draw_ligatures=True)
+    print(f"\nSintetizando frase manuscrita con alineación x-height: «{target_phrase}»...")
+
+    # 1. Sobre papel antiguo
+    img_paper = synthesizer.synthesize_phrase(target_phrase, paper_bg=True, draw_ligatures=True)
     out_paper = os.path.join(OUT_DIR, "frase_los_reyes_y_aristoteles.png")
     img_paper.save(out_paper, "PNG")
-    print(f"✓ Guardado sobre papel: {out_paper}")
+    print(f"✓ Guardado papel: {out_paper}")
 
-    # 2. Renderizar con fondo transparente RGBA
-    img_trans, _ = synthesizer.synthesize_phrase(target_phrase, paper_bg=False, draw_ligatures=True)
+    # 2. Transparente
+    img_trans = synthesizer.synthesize_phrase(target_phrase, paper_bg=False, draw_ligatures=True)
     out_trans = os.path.join(OUT_DIR, "frase_los_reyes_y_aristoteles_transparente.png")
     img_trans.save(out_trans, "PNG")
     print(f"✓ Guardado transparente: {out_trans}")
