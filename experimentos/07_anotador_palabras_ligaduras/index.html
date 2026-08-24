@@ -1104,6 +1104,21 @@
                     e.preventDefault();
                     saveWordsToDatabase();
                 }
+                if (e.key === 'Escape') {
+                    if (polygonPoints.length > 0) {
+                        polygonPoints = [];
+                        renderCanvas();
+                        showToast("Polígono cancelado");
+                    }
+                }
+                if (e.key === 'Backspace' && toolMode === 'poly' && polygonPoints.length > 0) {
+                    polygonPoints.pop();
+                    renderCanvas();
+                }
+                if (e.key === 'Enter' && toolMode === 'poly' && polygonPoints.length >= 3) {
+                    const rect = viewport.getBoundingClientRect();
+                    finishPolygonSelection(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                }
             });
         }
 
@@ -1154,6 +1169,11 @@
 
         viewport.addEventListener('mousedown', (e) => {
             if (!currentImage) return;
+
+            // Si el popover de asignación está abierto, no registrar clicks en el canvas
+            const card = document.getElementById('assignmentCard');
+            if (card && card.style.display === 'flex') return;
+
             const rect = viewport.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
@@ -1179,7 +1199,7 @@
                     if (polygonPoints.length >= 3) {
                         const first = polygonPoints[0];
                         const dist = Math.hypot(imgX - first.x, imgY - first.y);
-                        if (dist < 15 / zoom) {
+                        if (dist < 18 / zoom) {
                             finishPolygonSelection(e.clientX, e.clientY);
                             return;
                         }
@@ -1187,6 +1207,14 @@
                     polygonPoints.push({ x: imgX, y: imgY });
                     renderCanvas();
                 }
+            }
+        });
+
+        // Doble click para cerrar polígono
+        viewport.addEventListener('dblclick', (e) => {
+            if (toolMode === 'poly' && polygonPoints.length >= 3) {
+                e.preventDefault();
+                finishPolygonSelection(e.clientX, e.clientY);
             }
         });
 
@@ -1232,16 +1260,19 @@
 
         function finishPolygonSelection(clientX, clientY) {
             if (polygonPoints.length < 3) return;
+            const pointsToSave = [...polygonPoints];
+            polygonPoints = [];
+            renderCanvas(); // Limpiar el trazo activo de inmediato
+
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-            polygonPoints.forEach(p => {
+            pointsToSave.forEach(p => {
                 minX = Math.min(minX, p.x);
                 minY = Math.min(minY, p.y);
                 maxX = Math.max(maxX, p.x);
                 maxY = Math.max(maxY, p.y);
             });
             const rect = { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
-            openWordModal(rect, [...polygonPoints], clientX, clientY);
-            polygonPoints = [];
+            openWordModal(rect, pointsToSave, clientX, clientY);
         }
 
         // =========================================================================
