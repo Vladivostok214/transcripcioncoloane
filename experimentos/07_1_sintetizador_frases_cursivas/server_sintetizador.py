@@ -25,6 +25,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 EXP06_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', '06_web_coloane'))
 EXP07_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', '07_anotador_palabras_ligaduras'))
 
+EXP04_2_DIR = os.path.abspath(os.path.join(BASE_DIR, '..', '04.2_vectorizacion_glifos'))
+
 class SynthesizerHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
@@ -48,6 +50,17 @@ class SynthesizerHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(json.dumps({"glyphs": []}).encode('utf-8'))
             return
+        elif clean_path == '/api/init_vector_glyphs':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.end_headers()
+            db_path = os.path.join(EXP04_2_DIR, 'dataset_glifos_vectoriales.json')
+            if os.path.exists(db_path):
+                with open(db_path, 'r', encoding='utf-8') as f:
+                    self.wfile.write(f.read().encode('utf-8'))
+            else:
+                self.wfile.write(json.dumps({"glyphs": []}).encode('utf-8'))
+            return
         elif clean_path == '/api/init_words':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
@@ -59,6 +72,21 @@ class SynthesizerHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(json.dumps({"words": []}).encode('utf-8'))
             return
+        elif clean_path.startswith('/svg/'):
+            # Servir glifos vectoriales SVG desde Exp 04.2
+            file_name = clean_path.replace('/svg/', '')
+            target = os.path.join(EXP04_2_DIR, 'svg', file_name)
+            if os.path.exists(target):
+                self.send_response(200)
+                self.send_header('Content-Type', 'image/svg+xml')
+                self.end_headers()
+                with open(target, 'rb') as f:
+                    self.wfile.write(f.read())
+                return
+            else:
+                self.send_response(404)
+                self.end_headers()
+                return
         elif clean_path.startswith('/crops_isolated/'):
             # Servir directamente desde Exp 06
             file_name = clean_path.replace('/crops_isolated/', '')

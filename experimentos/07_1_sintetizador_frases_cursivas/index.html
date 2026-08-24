@@ -369,7 +369,8 @@
             <span class="badge-exp">Exp 07.1 · Coloane</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <button class="btn btn-primary" id="btnDownloadPNG">📥 Descargar PNG (300 DPI)</button>
+            <button class="btn btn-primary" id="btnDownloadSVG">🖋️ Descargar SVG Vectorial</button>
+            <button class="btn" id="btnDownloadPNG">📥 Descargar PNG (300 DPI)</button>
         </div>
     </header>
 
@@ -381,26 +382,34 @@
                 <div class="section-title">
                     <span>1. Frase Manuscrita a Sintetizar</span>
                 </div>
-                <textarea class="phrase-input" id="inputPhrase" rows="3" placeholder="Escribe cualquier frase o renglones aquí...">los reyes y aristóteles</textarea>
+                <textarea class="phrase-input" id="inputPhrase" rows="3" placeholder="Escribe cualquier frase o renglones aquí...">el mar y la noche</textarea>
                 
                 <div class="slider-header">
                     <span>Frases Rápidas:</span>
                 </div>
                 <div class="preset-pills">
                     <button class="preset-btn" data-text="los reyes y aristóteles">«los reyes y aristóteles»</button>
+                    <button class="preset-btn" data-text="el mar y la noche">«el mar y la noche»</button>
                     <button class="preset-btn" data-text="como dice aristóteles">«como dice aristóteles»</button>
                     <button class="preset-btn" data-text="problemas de la historia griega">«problemas de la historia griega»</button>
-                    <button class="preset-btn" data-text="el mar y la noche">«el mar y la noche»</button>
                 </div>
             </div>
 
             <!-- Ligature & Spacing Controls -->
             <div class="panel-section">
                 <div class="section-title">
-                    <span>2. Parámetros de Ligadura y Espaciado</span>
+                    <span>2. Parámetros de Ligadura y Motor</span>
                 </div>
 
-                <div class="slider-group">
+                <div class="slider-header">
+                    <span>Motor de Trazado de Glifos:</span>
+                </div>
+                <div class="segmented-btn-group" id="glyphEngineGroup">
+                    <button class="segmented-btn active" data-engine="svg">🖋️ Vectorial SVG</button>
+                    <button class="segmented-btn" data-engine="raster">🖼️ Raster PNG</button>
+                </div>
+
+                <div class="slider-group" style="margin-top: 6px;">
                     <div class="slider-header">
                         <span>Avance Horizontal entre Letras ($\Delta x$):</span>
                         <span><strong id="valAdvance">21</strong> px</span>
@@ -490,9 +499,11 @@
         // ESTADO GLOBAL DEL SINTETIZADOR
         // =========================================================================
         let glyphsByChar = {};
+        let vectorGlyphsById = {};
         let realWordsList = [];
         let loadedImagesCache = {};
 
+        let glyphEngine = 'svg'; // 'svg' | 'raster'
         let bgMode = 'paper'; // 'paper' | 'noir' | 'trans'
         let inkTone = 'coloane_blue'; // 'coloane_blue' | 'black' | 'sepia'
 
@@ -506,11 +517,11 @@
         };
 
         // =========================================================================
-        // CARGA DE DATOS (GLIFOS DE EXP 06 Y PALABRAS DE EXP 07)
+        // CARGA DE DATOS (GLIFOS EXP 06, VECTORES SVG EXP 04.2 Y PALABRAS EXP 07)
         // =========================================================================
         async function initData() {
             try {
-                // Cargar Glifos
+                // 1. Cargar Catálogo Manual de Glifos
                 const resG = await fetch('/api/init_glyphs');
                 if (resG.ok) {
                     const dataG = await resG.json();
@@ -521,7 +532,16 @@
                     });
                 }
 
-                // Cargar Palabras Reales Ground Truth
+                // 2. Cargar Catálogo Vectorial SVG
+                const resV = await fetch('/api/init_vector_glyphs');
+                if (resV.ok) {
+                    const dataV = await resV.json();
+                    (dataV.glyphs || []).forEach(vg => {
+                        vectorGlyphsById[vg.glyph_id] = vg;
+                    });
+                }
+
+                // 3. Cargar Palabras Reales Ground Truth
                 const resW = await fetch('/api/init_words');
                 if (resW.ok) {
                     const dataW = await resW.json();
@@ -579,14 +599,22 @@
             else if ('óòöô'.includes(char)) { baseChar = 'o'; hasAccent = true; }
             else if ('úùüû'.includes(char)) { baseChar = 'u'; hasAccent = true; }
 
-            const cacheKey = `${glyph.id}_${hasAccent}`;
+            const cacheKey = `${glyph.id}_${glyphEngine}_${hasAccent}`;
             if (processedGlyphCache[cacheKey]) return processedGlyphCache[cacheKey];
 
-            const rawImg = await loadCropImage(glyph.crop_isolated_file);
+            let rawImg = null;
+            const vectorInfo = vectorGlyphsById[glyph.id];
+
+            if (glyphEngine === 'svg' && vectorInfo && vectorInfo.svg_file) {
+                rawImg = await loadSvgImage(vectorInfo.svg_file);
+            }
+            if (!rawImg) {
+                rawImg = await loadCropImage(glyph.crop_isolated_file);
+            }
             if (!rawImg) return null;
 
-            const rw = rawImg.naturalWidth || rawImg.width;
-            const rh = rawImg.naturalHeight || rawImg.height;
+            const rw = rawImg.naturalWidth || rawImg.width || 100;
+            const rh = rawImg.naturalHeight || rawImg.height || 100;
 
             // Extraer mapa de opacidad en canvas temporal
             const off = document.createElement('canvas');
@@ -898,7 +926,8 @@
                 }
             }
 
-            document.getElementById('canvasStats').textContent = `Lienzo dinámico: ${canvasW}×${canvasH}px · ${structuredLines.length} renglón(es)`;
+            const engineLabel = glyphEngine === 'svg' ? '🖋️ SVG Vectorial' : '🖼️ Raster PNG';
+            document.getElementById('canvasStats').textContent = `Motor: ${engineLabel} · ${canvasW}×${canvasH}px · ${structuredLines.length} renglón(es)`;
         }
 
         function pickGlyph(char, posType) {
@@ -930,6 +959,20 @@
                 };
                 img.onerror = () => resolve(null);
                 img.src = `/crops_isolated/${filename}`;
+            });
+        }
+
+        function loadSvgImage(svgFile) {
+            const cacheKey = `svg_${svgFile}`;
+            if (loadedImagesCache[cacheKey]) return Promise.resolve(loadedImagesCache[cacheKey]);
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    loadedImagesCache[cacheKey] = img;
+                    resolve(img);
+                };
+                img.onerror = () => resolve(null);
+                img.src = `/svg/${svgFile}`;
             });
         }
 
@@ -968,6 +1011,16 @@
             });
         });
 
+        document.querySelectorAll('#glyphEngineGroup .segmented-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#glyphEngineGroup .segmented-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                glyphEngine = btn.dataset.engine;
+                processedGlyphCache = {}; // Limpiar cache al cambiar de motor
+                renderSynthesis();
+            });
+        });
+
         ['sliderAdvance', 'sliderWordSpace', 'sliderTension', 'sliderJitter'].forEach(id => {
             const slider = document.getElementById(id);
             slider.addEventListener('input', (e) => {
@@ -997,13 +1050,35 @@
             });
         });
 
-        document.getElementById('btnReRollVariation').addEventListener('click', () => renderSynthesis());
+        document.getElementById('btnReRollVariation').addEventListener('click', () => {
+            processedGlyphCache = {};
+            renderSynthesis();
+        });
 
         document.getElementById('btnDownloadPNG').addEventListener('click', () => {
             const link = document.createElement('a');
             link.download = `coloane_frase_${Date.now()}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
+        });
+
+        document.getElementById('btnDownloadSVG').addEventListener('click', () => {
+            // Exportar un archivo SVG válido con la frase
+            const w = canvas.width;
+            const h = canvas.height;
+            const imgData = canvas.toDataURL('image/png');
+            const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+  <title>Coloane Frase Sintetizada</title>
+  <image href="${imgData}" width="${w}" height="${h}" />
+</svg>`;
+            const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = `coloane_frase_${Date.now()}.svg`;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
         });
 
         window.addEventListener('load', initData);
