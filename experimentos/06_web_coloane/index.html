@@ -3268,9 +3268,25 @@
                         });
                     }
 
-                    const { error: dbError } = await supabaseClient
+                    let { error: dbError } = await supabaseClient
                         .from('staging_glyphs')
                         .upsert(recordsToInsert);
+
+                    if (dbError && dbError.message && dbError.message.includes('position')) {
+                        console.warn("Supabase schema cache doesn't have 'position' yet, using fallback:", dbError.message);
+                        const fallbackRecords = recordsToInsert.map(r => {
+                            const copy = { ...r };
+                            if (copy.position && !copy.notes.includes(copy.position)) {
+                                copy.notes = (copy.notes ? copy.notes + ' ' : '') + `[pos: ${copy.position}]`;
+                            }
+                            delete copy.position;
+                            return copy;
+                        });
+                        const fallbackRes = await supabaseClient
+                            .from('staging_glyphs')
+                            .upsert(fallbackRecords);
+                        dbError = fallbackRes.error;
+                    }
 
                     if (dbError) {
                         console.error("Supabase DB error:", dbError);
