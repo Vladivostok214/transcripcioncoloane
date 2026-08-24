@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "total_glyphs": 106,
-    "captures_count": 31,
-    "last_updated": "Wladimir",
-    "last_sync": "2026-08-24T00:48:16.287Z"
+    "total_glyphs": 114,
+    "captures_count": 36,
+    "last_updated": "wladimir",
+    "last_sync": "2026-08-24T04:02:24.328Z"
   },
   "glyphs": [
     {
@@ -2013,6 +2013,221 @@
       "crop_file": "g_cap_1787532417888_01_a.png",
       "crop_isolated_file": "g_cap_1787532417888_01_a_iso.png",
       "position": "media"
+    },
+    {
+      "id": "g_cap_1787533534878_01_M",
+      "line_id": "cap_1787533534878",
+      "page": "captura_externa",
+      "character": "M",
+      "category": "mayuscula",
+      "position": "media",
+      "notes": "M inicial",
+      "author": "Anonimo",
+      "bbox": [
+        16,
+        100,
+        53,
+        35
+      ],
+      "polygon": [],
+      "crop_file": "g_cap_1787533534878_01_M.png",
+      "crop_isolated_file": "g_cap_1787533534878_01_M_iso.png"
+    },
+    {
+      "id": "g_cap_1787533570829_01_n",
+      "line_id": "cap_1787533570829",
+      "page": "captura_externa",
+      "character": "n",
+      "category": "minuscula",
+      "position": "media",
+      "notes": "n final",
+      "author": "Anonimo",
+      "bbox": [
+        244,
+        84,
+        35,
+        16
+      ],
+      "polygon": [],
+      "crop_file": "g_cap_1787533570829_01_n.png",
+      "crop_isolated_file": "g_cap_1787533570829_01_n_iso.png"
+    },
+    {
+      "id": "g_cap_1787533715688_01_a",
+      "line_id": "cap_1787533715688",
+      "page": "captura_externa",
+      "character": "a",
+      "category": "minuscula",
+      "position": "media",
+      "notes": "",
+      "author": "juan",
+      "bbox": [
+        78,
+        157,
+        43,
+        28
+      ],
+      "polygon": [],
+      "crop_file": "g_cap_1787533715688_01_a.png",
+      "crop_isolated_file": "g_cap_1787533715688_01_a_iso.png"
+    },
+    {
+      "id": "g_cap_1787533746621_01_j",
+      "line_id": "cap_1787533746621",
+      "page": "captura_externa",
+      "character": "j",
+      "category": "minuscula",
+      "position": "media",
+      "notes": "",
+      "author": "juan",
+      "bbox": [
+        291,
+        97,
+        66,
+        59
+      ],
+      "polygon": [
+        [
+          335,
+          98
+        ],
+        [
+          326,
+          122
+        ],
+        [
+          291,
+          136
+        ],
+        [
+          300,
+          156
+        ],
+        [
+          332,
+          136
+        ],
+        [
+          342,
+          112
+        ],
+        [
+          357,
+          97
+        ]
+      ],
+      "crop_file": "g_cap_1787533746621_01_j.png",
+      "crop_isolated_file": "g_cap_1787533746621_01_j_iso.png"
+    },
+    {
+      "id": "g_cap_1787543522665_01_i",
+      "line_id": "cap_1787543522665",
+      "page": "captura_externa",
+      "character": "i",
+      "category": "minuscula",
+      "position": "media",
+      "notes": "",
+      "author": "wladimir",
+      "bbox": [
+        338,
+        168,
+        36,
+        40
+      ],
+      "polygon": [
+        [
+          374,
+          173
+        ],
+        [
+          350,
+          208
+        ],
+        [
+          338,
+          204
+        ],
+        [
+          364,
+          168
+        ]
+      ],
+      "crop_file": "g_cap_1787543522665_01_i.png",
+      "crop_isolated_file": "g_cap_1787543522665_01_i_iso.png"
+    },
+    {
+      "id": "g_cap_1787543522665_02_e",
+      "line_id": "cap_1787543522665",
+      "page": "captura_externa",
+      "character": "e",
+      "category": "minuscula",
+      "position": "inicial",
+      "notes": "",
+      "author": "wladimir",
+      "bbox": [
+        171,
+        215,
+        30,
+        25
+      ],
+      "polygon": [],
+      "crop_file": "g_cap_1787543522665_02_e.png",
+      "crop_isolated_file": "g_cap_1787543522665_02_e_iso.png"
+    },
+    {
+      "id": "g_cap_1787543522665_03_m",
+      "line_id": "cap_1787543522665",
+      "page": "captura_externa",
+      "character": "m",
+      "category": "minuscula",
+      "position": "inicial",
+      "notes": "",
+      "author": "wladimir",
+      "bbox": [
+        192,
+        249,
+        51,
+        28
+      ],
+      "polygon": [],
+      "crop_file": "g_cap_1787543522665_03_m.png",
+      "crop_isolated_file": "g_cap_1787543522665_03_m_iso.png"
+    },
+    {
+      "id": "g_cap_1787543522665_04_h",
+      "line_id": "cap_1787543522665",
+      "page": "captura_externa",
+      "character": "h",
+      "category": "minuscula",
+      "position": "inicial",
+      "notes": "",
+      "author": "wladimir",
+      "bbox": [
+        207,
+        274,
+        74,
+        51
+      ],
+      "polygon": [
+        [
+          281,
+          275
+        ],
+        [
+          258,
+          274
+        ],
+        [
+          207,
+          321
+        ],
+        [
+          250,
+          325
+        ]
+      ],
+      "crop_file": "g_cap_1787543522665_04_h.png",
+      "crop_isolated_file": "g_cap_1787543522665_04_h_iso.png"
     }
   ]
 }
