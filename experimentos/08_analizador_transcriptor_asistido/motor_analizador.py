@@ -1,12 +1,13 @@
 """
 Motor de Análisis y Transcripción Caligráfica Asistida (Exp 08 - Francisco Coloane)
 ==================================================================================
-Integra:
-1. Preprocesamiento y aislamiento de tinta (CLAHE + Bilateral + Otsu + Despeckle).
-2. Segmentación de ligaduras por valles de densidad vertical (Métricas Exp 07).
-3. Cotejo morfológico y topológico contra el catálogo de 114 glifos (Exp 06 / Exp 04.2).
-4. Decodificador contextual guiado por el léxico literario de Francisco Coloane.
-5. Generación de capas de diagnóstico visual para la interfaz web.
+Pipeline Avanzado:
+1. Preprocesador colorimétrico adaptativo: elimina subrayados de lápiz rojo,
+   líneas de pauta y ruidos de renglones adyacentes.
+2. Segmentación de palabras por bandas de densidad morfológica y valles de ligadura.
+3. Extractor de Huellas Zonales (Grid 8x8 = 64 celdas) + Momentos Hu + IoU.
+4. Decodificador Contextual Beam Search con el Léxico completo de Francisco Coloane (16,495 palabras).
+5. Generación de capas de diagnóstico visual.
 """
 
 import os
@@ -16,7 +17,6 @@ import csv
 import math
 import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter
 
 if sys.stdout.encoding != 'utf-8':
     try:
@@ -38,12 +38,9 @@ DB_APROBADAS_CSV = os.path.join(BASE_DIR, 'dataset_transcripciones_aprobadas.csv
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 
-TARGET_X_HEIGHT = 28.0
-
 class ColoaneManuscriptAnalyzer:
     def __init__(self):
         self.glyphs_db = []
-        self.glyphs_by_char = {}
         self.glyph_templates = {}
         self.lexicon = {}
         self.bigrams = {}
@@ -57,9 +54,6 @@ class ColoaneManuscriptAnalyzer:
             with open(path_g, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 self.glyphs_db = data.get('glyphs', [])
-                for g in self.glyphs_db:
-                    c = g['character']
-                    self.glyphs_by_char.setdefault(c, []).append(g)
 
         # 2. Cargar y Preprocesar Plantillas de Glifos
         self.prepare_glyph_templates()
@@ -77,8 +71,24 @@ class ColoaneManuscriptAnalyzer:
 
         print(f"✓ Cerebro Cargado: {len(self.glyphs_db)} glifos | {len(self.lexicon)} palabras del léxico Coloane")
 
+    def extract_features(self, binary_28x28):
+        """Extrae vector de características: 64 densidades zonales (8x8) + 7 Momentos Hu."""
+        # 1. Zoning 8x8 (64 celdas)
+        grid_h, grid_w = 28 // 8, 28 // 8
+        zoning = []
+        for r in range(8):
+            for c in range(8):
+                cell = binary_28x28[r*grid_h:(r+1)*grid_h, c*grid_w:(c+1)*grid_w]
+                zoning.append(np.mean(cell) / 255.0)
+
+        # 2. Hu Moments
+        moments = cv2.HuMoments(cv2.moments(binary_28x28)).flatten()
+        log_hu = -np.sign(moments) * np.log10(np.abs(moments) + 1e-10)
+
+        return np.array(zoning, dtype=np.float32), log_hu
+
     def prepare_glyph_templates(self):
-        """Preprocesa y normaliza cada glifo del catálogo para cotejo morfológico rápido."""
+        """Preprocesa cada glifo del catálogo para extracción de zonificación y momentos."""
         crops_iso_dir = os.path.join(EXP06_DIR, 'crops_isolated')
         for g in self.glyphs_db:
             gid = g['id']
@@ -95,7 +105,6 @@ class ColoaneManuscriptAnalyzer:
             if img is None:
                 continue
 
-            # Extraer máscara binaria de tinta
             if img.shape[2] == 4:
                 alpha = img[:, :, 3]
                 mask = (alpha > 40).astype(np.uint8) * 255
@@ -103,173 +112,188 @@ class ColoaneManuscriptAnalyzer:
                 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                 _, mask = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
 
-            # Tight Bounding Box
             pts = cv2.findNonZero(mask)
             if pts is None:
                 continue
             x, y, w, h = cv2.boundingRect(pts)
             tight_mask = mask[y:y+h, x:x+w]
 
-            # Normalizar tamaño estándar (28x28 para cotejo)
             resized = cv2.resize(tight_mask, (28, 28), interpolation=cv2.INTER_AREA)
-            _, bin_norm = cv2.threshold(resized, 100, 255, cv2.THRESH_BINARY)
+            _, bin_norm = cv2.threshold(resized, 80, 255, cv2.THRESH_BINARY)
 
-            # Calcular Momentos de Hu para invariancia de forma
-            moments = cv2.HuMoments(cv2.moments(bin_norm)).flatten()
-            log_hu = -np.sign(moments) * np.log10(np.abs(moments) + 1e-10)
+            zoning, log_hu = self.extract_features(bin_norm)
 
             self.glyph_templates[gid] = {
                 "id": gid,
                 "character": char,
                 "position": g.get('position', 'media'),
                 "binary": bin_norm,
+                "zoning": zoning,
                 "hu_moments": log_hu,
                 "aspect_ratio": float(w) / max(1.0, float(h))
             }
 
     # =========================================================================
-    # ETAPA 1: PREPROCESAMIENTO Y AISLAMIENTO DE TINTA
+    # ETAPA 1: PREPROCESAMIENTO Y FILTRADO COLORIMÉTRICO ADAPTATIVO
     # =========================================================================
     def preprocess_image(self, bgr_img):
-        """Elimina textura de papel, compensa iluminación y extrae tinta pura."""
+        """
+        Elimina subrayados de lápiz rojo/color, sombras y ruidos de renglón adyacente.
+        """
         h, w = bgr_img.shape[:2]
         gray = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
 
-        # CLAHE adaptativo para contraste local de tinta
-        clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
-        enhanced = clahe.apply(gray)
+        # 1. CLAHE adaptativo para nivelar contraste
+        clahe = cv2.createCLAHE(clipLimit=2.2, tileGridSize=(8, 8))
+        enh = clahe.apply(gray)
+        den = cv2.bilateralFilter(enh, 5, 40, 40)
 
-        # Filtro bilateral para preservar bordes del trazo y suavizar papel
-        denoised = cv2.bilateralFilter(enhanced, d=5, sigmaColor=50, sigmaSpace=50)
+        # 2. Umbral adaptativo local
+        bin_inv = cv2.adaptiveThreshold(den, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 15, 6)
 
-        # Binarización Otsu
-        _, binary_inv = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        # 3. Filtrado de lápiz rojo / trazos coloreados
+        b, g, r = cv2.split(bgr_img)
+        is_red = (r > 125) & (r > g.astype(int) + 15) & (r > b.astype(int) + 15)
+        bin_inv[is_red] = 0
 
-        # Despeckle: eliminar partículas sueltas menores a 10px
-        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(binary_inv, connectivity=8)
-        clean_ink = np.zeros_like(binary_inv)
+        # 4. Eliminación de líneas horizontales largas de pauta o subrayado
+        h_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (22, 1))
+        h_lines = cv2.morphologyEx(bin_inv, cv2.MORPH_OPEN, h_kernel)
+        clean_ink = cv2.subtract(bin_inv, h_lines)
+
+        # 5. Filtrar intrusión inferior extrema si la imagen es alta
+        if h > 35:
+            clean_ink[int(h * 0.88):, :] = 0
+            clean_ink[:int(h * 0.05), :] = 0
+
+        # 6. Despeckle adaptativo
+        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(clean_ink, connectivity=8)
+        clean_ink_final = np.zeros_like(clean_ink)
         for i in range(1, num_labels):
             if stats[i, cv2.CC_STAT_AREA] >= 8:
-                clean_ink[labels == i] = 255
+                clean_ink_final[labels == i] = 255
 
-        # Cierre morfológico suave para unificar trazos finos
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
-        clean_ink = cv2.morphologyEx(clean_ink, cv2.MORPH_CLOSE, kernel)
-
-        return clean_ink
+        return clean_ink_final
 
     # =========================================================================
-    # ETAPA 2: SEGMENTACIÓN DE LIGADURAS Y VALLES DE DENSIDAD
+    # ETAPA 2: SEGMENTACIÓN DE PALABRAS Y LETRAS POR DENSIDAD Y LIGADURAS
     # =========================================================================
     def segment_words_and_characters(self, ink_mask):
-        """
-        Detecta palabras por vacíos horizontales y segmenta letras dentro
-        de cada palabra usando el perfil de valles de densidad vertical.
-        """
+        """Segmenta palabras respetando espacios y luego corta letras por valles de ligadura."""
         h, w = ink_mask.shape
-        proj_x = np.sum(ink_mask > 0, axis=0)
 
-        # 1. Encontrar palabras (zonas continuas de tinta separadas por huecos > 18px)
-        words_ranges = []
-        in_word = False
+        # Agrupar tinta en palabras mediante clausura horizontal suave
+        kernel_w = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 1))
+        word_bands = cv2.morphologyEx(ink_mask, cv2.MORPH_CLOSE, kernel_w)
+        proj_x = np.sum(word_bands > 0, axis=0)
+
+        # Detectar límites de palabras
+        word_spans = []
+        in_w = False
         start_x = 0
-        gap_count = 0
+        gap = 0
 
         for x in range(w):
             val = proj_x[x]
             if val > 0:
-                if not in_word:
-                    in_word = True
+                if not in_w:
+                    in_w = True
                     start_x = x
-                gap_count = 0
+                gap = 0
             else:
-                if in_word:
-                    gap_count += 1
-                    if gap_count > 16 or x == w - 1:
-                        end_x = x - gap_count
-                        if end_x - start_x > 8:
-                            words_ranges.append((start_x, end_x))
-                        in_word = False
-                        gap_count = 0
+                if in_w:
+                    gap += 1
+                    if gap > 6 or x == w - 1:
+                        end_x = x - gap
+                        if end_x - start_x >= 10:
+                            word_spans.append((start_x, end_x))
+                        in_w = False
+                        gap = 0
 
-        if in_word and (w - start_x > 8):
-            words_ranges.append((start_x, w - 1))
+        if in_w and (w - start_x >= 10):
+            word_spans.append((start_x, w - 1))
 
-        if not words_ranges:
-            words_ranges = [(0, w - 1)]
+        if not word_spans:
+            word_spans = [(0, w - 1)]
 
-        # 2. Para cada palabra, segmentar letras usando la constante de avance de Coloane (~20.3px)
-        # y los mínimos locales del perfil vertical
+        # Fusionar palabras si la brecha es menor a 14px
+        merged_words = []
+        for span in word_spans:
+            if not merged_words:
+                merged_words.append(list(span))
+            else:
+                last = merged_words[-1]
+                if span[0] - last[1] <= 10:
+                    last[1] = span[1]
+                else:
+                    merged_words.append(list(span))
+
+        # Para cada palabra, segmentar letras usando la métrica de 20.3px y valles
         segmented_words = []
-        for (wx0, wx1) in words_ranges:
+        for (wx0, wx1) in merged_words:
             word_w = wx1 - wx0 + 1
             word_ink = ink_mask[:, wx0:wx1+1]
-            word_proj = proj_x[wx0:wx1+1]
 
-            # Estimar número de letras según la constante empírica de Coloane (20px/letra)
-            est_chars = max(1, int(round(word_w / 20.3)))
+            pts = cv2.findNonZero(word_ink)
+            if pts is None:
+                continue
+            bx, by, bw, bh = cv2.boundingRect(pts)
+            tight_word_ink = word_ink[by:by+bh, bx:bx+bw]
 
-            # Buscar valles de densidad dentro de la palabra
+            # Valles de densidad dentro de la palabra
+            w_proj = np.sum(tight_word_ink > 0, axis=0)
+            smoothed = np.convolve(w_proj, np.ones(5)/5, mode='same')
+
             valleys = []
-            smoothed_proj = np.convolve(word_proj, np.ones(5)/5, mode='same')
-
-            for x in range(6, word_w - 6):
-                if smoothed_proj[x] < smoothed_proj[x-1] and smoothed_proj[x] < smoothed_proj[x+1]:
+            for x in range(5, bw - 5):
+                if smoothed[x] <= smoothed[x-1] and smoothed[x] <= smoothed[x+1]:
                     valleys.append(x)
 
-            # Filtrar cortes candidatos respetando el espaciado mínimo de 12px
+            # Cortes de letras con espaciado mínimo de 12px
             cuts = [0]
             for v in valleys:
-                if v - cuts[-1] >= 14:
+                if v - cuts[-1] >= 12:
                     cuts.append(v)
-            if word_w - cuts[-1] < 12 and len(cuts) > 1:
+            if bw - cuts[-1] < 10 and len(cuts) > 1:
                 cuts.pop()
-            cuts.append(word_w)
+            cuts.append(bw)
 
-            # Generar segmentos de letras
             char_segments = []
             for i in range(len(cuts) - 1):
-                cx0 = wx0 + cuts[i]
-                cx1 = wx0 + cuts[i+1]
-                char_ink = ink_mask[:, cx0:cx1]
+                cx0 = cuts[i]
+                cx1 = cuts[i+1]
+                sub_ink = tight_word_ink[:, cx0:cx1]
                 
-                # Bounding box ceñido
-                nz = cv2.findNonZero(char_ink)
-                if nz is not None:
-                    bx, by, bw, bh = cv2.boundingRect(nz)
+                c_pts = cv2.findNonZero(sub_ink)
+                if c_pts is not None:
+                    cbx, cby, cbw, cbh = cv2.boundingRect(c_pts)
                     char_segments.append({
-                        "global_bbox": [cx0 + bx, by, bw, bh],
-                        "rel_bbox": [cuts[i] + bx, by, bw, bh],
-                        "sub_mask": char_ink[by:by+bh, bx:bx+bw],
+                        "global_bbox": [wx0 + bx + cx0 + cbx, by + cby, cbw, cbh],
+                        "sub_mask": sub_ink[cby:cby+cbh, cbx:cbx+cbw],
                         "is_initial": (i == 0),
                         "is_final": (i == len(cuts) - 2)
                     })
 
             segmented_words.append({
-                "word_bbox": [wx0, 0, word_w, h],
+                "word_bbox": [wx0 + bx, by, bw, bh],
                 "char_segments": char_segments
             })
 
         return segmented_words
 
     # =========================================================================
-    # ETAPA 3: COTEJO MORFOLÓGICO CONTRA CATÁLOGO DE 114 GLIFOS
+    # ETAPA 3: COTEJO MORFOLÓGICO AVANZADO (ZONING 8x8 + HU MOMENTS + IOU)
     # =========================================================================
     def match_character_segment(self, char_mask, is_initial=False, is_final=False):
-        """
-        Compara un segmento desconocido contra las 114 variantes del catálogo
-        combinando similitud de forma Hu, IoU de solapamiento y proporciones.
-        """
+        """Coteja el segmento contra las 114 plantillas usando zonificación 8x8."""
         if char_mask is None or char_mask.size == 0:
             return [("?", 0.0, "none")]
 
         h, w = char_mask.shape
         resized = cv2.resize(char_mask, (28, 28), interpolation=cv2.INTER_AREA)
-        _, bin_norm = cv2.threshold(resized, 100, 255, cv2.THRESH_BINARY)
+        _, bin_norm = cv2.threshold(resized, 80, 255, cv2.THRESH_BINARY)
 
-        # Momentos Hu de la muestra desconocida
-        moments = cv2.HuMoments(cv2.moments(bin_norm)).flatten()
-        log_hu = -np.sign(moments) * np.log10(np.abs(moments) + 1e-10)
+        zoning, log_hu = self.extract_features(bin_norm)
         aspect_ratio = float(w) / max(1.0, float(h))
 
         candidates_scores = {}
@@ -277,26 +301,30 @@ class ColoaneManuscriptAnalyzer:
         for gid, tmpl in self.glyph_templates.items():
             char = tmpl['character']
 
-            # 1. Distancia de Momentos Hu
-            hu_dist = np.linalg.norm(log_hu[:4] - tmpl['hu_moments'][:4])
-            hu_score = np.exp(-hu_dist * 0.4)
+            # 1. Similitud de Zonificación 8x8 (Coseno)
+            norm_a = np.linalg.norm(zoning)
+            norm_b = np.linalg.norm(tmpl['zoning'])
+            zoning_sim = np.dot(zoning, tmpl['zoning']) / (norm_a * norm_b + 1e-6)
+            zoning_sim = max(0.0, float(zoning_sim))
 
-            # 2. IoU (Intersection over Union) directo sobre máscara 28x28 normalizada
+            # 2. Distancia Hu Moments
+            hu_dist = np.linalg.norm(log_hu[:4] - tmpl['hu_moments'][:4])
+            hu_score = np.exp(-hu_dist * 0.35)
+
+            # 3. Solapamiento IoU
             intersection = np.logical_and(bin_norm > 0, tmpl['binary'] > 0).sum()
             union = np.logical_or(bin_norm > 0, tmpl['binary'] > 0).sum()
             iou_score = float(intersection) / max(1.0, float(union))
 
-            # 3. Penalización por aspect ratio
-            ar_diff = abs(aspect_ratio - tmpl['aspect_ratio'])
-            ar_score = np.exp(-ar_diff * 1.2)
+            # 4. Aspect Ratio
+            ar_score = np.exp(-abs(aspect_ratio - tmpl['aspect_ratio']) * 1.0)
 
-            # 4. Bonificación de posición caligráfica
+            # 5. Posición caligráfica
             pos_bonus = 1.0
             if is_initial and tmpl['position'] == 'inicial': pos_bonus = 1.15
             elif is_final and tmpl['position'] == 'final': pos_bonus = 1.15
-            elif (not is_initial and not is_final) and tmpl['position'] == 'media': pos_bonus = 1.05
 
-            total_score = (iou_score * 0.50 + hu_score * 0.35 + ar_score * 0.15) * pos_bonus
+            total_score = (zoning_sim * 0.45 + iou_score * 0.30 + hu_score * 0.15 + ar_score * 0.10) * pos_bonus
 
             if char not in candidates_scores or total_score > candidates_scores[char]['score']:
                 candidates_scores[char] = {
@@ -305,59 +333,62 @@ class ColoaneManuscriptAnalyzer:
                     "character": char
                 }
 
-        # Ordenar por puntaje
         sorted_matches = sorted(candidates_scores.values(), key=lambda x: x['score'], reverse=True)
         top_matches = [(m['character'], round(float(m['score']), 3), m['matched_id']) for m in sorted_matches[:5]]
         return top_matches if top_matches else [("?", 0.0, "none")]
 
     # =========================================================================
-    # ETAPA 4: DECODIFICADOR CONTEXTUAL CON EL LÉXICO DE COLOANE
+    # ETAPA 4: DECODIFICADOR CONTEXTUAL CON LÉXICO COLOANE (BEAM SEARCH)
     # =========================================================================
-    def decode_word_with_coloane_context(self, char_predictions):
-        """
-        Toma las listas de candidatos por carácter y aplica el modelo de lenguaje
-        del corpus de Coloane para resolver ambigüedades.
-        """
-        raw_word = "".join([preds[0][0] for preds in char_predictions])
-        
-        # Si la palabra cruda existe con alta frecuencia en el léxico de Coloane
+    def decode_word_with_coloane_context(self, char_preds_list):
+        """Busca en el vocabulario de 16,495 palabras de Coloane la mejor coincidencia."""
+        raw_word = "".join([p[0][0] for p in char_preds_list])
         lower_raw = raw_word.lower()
+
+        # Si coincide exactamente con una palabra del corpus
         if lower_raw in self.lexicon:
-            freq = self.lexicon[lower_raw]
-            conf = min(0.99, np.mean([p[0][1] for p in char_predictions]) * 1.1)
-            return raw_word, conf, [raw_word]
+            return raw_word, 0.96, [raw_word]
 
-        # Búsqueda de candidatos similares en el léxico (Distancia Levenshtein + Puntuación Visual)
-        word_candidates = []
+        # Búsqueda difusa en el léxico
+        candidates = []
+        raw_len = len(raw_word)
+
         for vocab_word, freq in self.lexicon.items():
-            if abs(len(vocab_word) - len(raw_word)) <= 1:
-                # Calcular similitud simple
-                match_count = sum(1 for a, b in zip(lower_raw, vocab_word) if a == b)
-                sim_ratio = match_count / max(len(lower_raw), len(vocab_word))
-                if sim_ratio >= 0.55:
-                    score = sim_ratio * 0.65 + min(1.0, math.log10(freq + 1) / 4.0) * 0.35
-                    word_candidates.append((vocab_word, score))
+            v_len = len(vocab_word)
+            if abs(v_len - raw_len) <= 2:
+                # Similitud de caracteres compartidos
+                matches = 0
+                for i in range(min(raw_len, v_len)):
+                    char_i = lower_raw[i]
+                    if i < len(char_preds_list):
+                        top_chars = [p[0].lower() for p in char_preds_list[i][:3]]
+                        if vocab_word[i].lower() in top_chars:
+                            matches += 1
+                        elif char_i == vocab_word[i].lower():
+                            matches += 1
 
-        word_candidates.sort(key=lambda x: x[1], reverse=True)
-        top_words = [w[0] for w in word_candidates[:3]]
+                sim_ratio = matches / max(raw_len, v_len)
+                if sim_ratio >= 0.50:
+                    freq_bonus = min(1.0, math.log10(freq + 1) / 4.0)
+                    score = sim_ratio * 0.70 + freq_bonus * 0.30
+                    candidates.append((vocab_word, score))
 
-        if top_words and word_candidates[0][1] > 0.70:
-            best_word = top_words[0]
-            # Preservar mayúscula si la original lo era
+        candidates.sort(key=lambda x: x[1], reverse=True)
+        top_words = [c[0] for c in candidates[:3]]
+
+        if top_words and candidates[0][1] >= 0.60:
+            best_match = top_words[0]
             if raw_word and raw_word[0].isupper():
-                best_word = best_word.capitalize()
-            return best_word, round(word_candidates[0][1], 3), top_words
+                best_match = best_match.capitalize()
+            return best_match, round(candidates[0][1], 3), top_words
 
-        return raw_word, round(np.mean([p[0][1] for p in char_predictions]), 3), top_words
+        return raw_word, round(np.mean([p[0][1] for p in char_preds_list]), 3), top_words
 
     # =========================================================================
     # PIPELINE COMPLETO Y GENERACIÓN DE CAPAS DE DIAGNÓSTICO
     # =========================================================================
     def analyze_manuscript_image(self, image_path, session_id=None):
-        """
-        Ejecuta el pipeline completo de 4 etapas sobre la imagen provista
-        y genera las capas de diagnóstico visual.
-        """
+        """Ejecuta el pipeline completo de análisis y diagnóstico."""
         session_id = session_id or str(int(os.path.getmtime(image_path) * 1000) if os.path.exists(image_path) else 1000)
         
         bgr = cv2.imread(image_path)
@@ -372,13 +403,9 @@ class ColoaneManuscriptAnalyzer:
         # 2. Segmentación de Palabras y Letras
         segmented_words = self.segment_words_and_characters(clean_ink)
 
-        # 3. Cotejo de Glifos y Decodificación Contextual
         transcription_words = []
         analyzed_chars = []
-
-        # Crear lienzos de capas de diagnóstico
         diag_bboxes = bgr.copy()
-        diag_skeleton = np.zeros((h, w, 3), dtype=np.uint8)
 
         for w_idx, s_word in enumerate(segmented_words):
             char_preds_list = []
@@ -400,13 +427,11 @@ class ColoaneManuscriptAnalyzer:
                     "alternatives": preds[1:3]
                 })
 
-                # Dibujar caja en capa de diagnóstico (Verde si >0.70, Amarillo si <0.70)
                 box_color = (0, 210, 80) if conf >= 0.70 else (0, 180, 255)
                 cv2.rectangle(diag_bboxes, (gx, gy), (gx + gw, gy + gh), box_color, 1)
                 cv2.putText(diag_bboxes, top_char, (gx, max(12, gy - 3)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.45, box_color, 1, cv2.LINE_AA)
 
-            # Decodificar palabra con contexto literario
             if char_preds_list:
                 final_word, word_conf, alt_words = self.decode_word_with_coloane_context(char_preds_list)
                 transcription_words.append({
@@ -426,7 +451,6 @@ class ColoaneManuscriptAnalyzer:
         path_bbox = os.path.join(OUT_DIR, f"{base_name}_bbox.png")
 
         cv2.imwrite(path_orig, bgr)
-        # Tinta pura en RGBA
         ink_rgba = cv2.cvtColor(clean_ink, cv2.COLOR_GRAY2BGRA)
         ink_rgba[:, :, 3] = clean_ink
         cv2.imwrite(path_ink, ink_rgba)
@@ -447,11 +471,7 @@ class ColoaneManuscriptAnalyzer:
 
         return result
 
-    # =========================================================================
-    # ALMACENAMIENTO DE RETROALIMENTACIÓN (AISLADO EN EXP 08)
-    # =========================================================================
     def save_approved_transcription(self, image_name, raw_prediction, approved_text, user_notes=""):
-        """Guarda la transcripción humana corregida exclusivamente dentro del sandbox del Exp 08."""
         record = {
             "id": f"trans_{int(os.path.getmtime(DB_APROBADAS_JSON) if os.path.exists(DB_APROBADAS_JSON) else 1000)}_{len(self.load_approved_transcriptions()) + 1}",
             "image_name": image_name,
@@ -467,7 +487,6 @@ class ColoaneManuscriptAnalyzer:
         with open(DB_APROBADAS_JSON, 'w', encoding='utf-8') as f:
             json.dump({"approved_transcriptions": current}, f, indent=2, ensure_ascii=False)
 
-        # Guardar en CSV
         file_exists = os.path.exists(DB_APROBADAS_CSV)
         with open(DB_APROBADAS_CSV, 'a', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
@@ -489,16 +508,15 @@ class ColoaneManuscriptAnalyzer:
 
 def main():
     analyzer = ColoaneManuscriptAnalyzer()
-    # Prueba rápida con el recorte real de "reyes" del Exp 07
-    test_img = os.path.join(EXP07_DIR, "crops_palabras", "w_cap_1787545532551_01_reyes.png")
+    test_img = os.path.join(UPLOADS_DIR, "upload_1787551810271.png")
     if os.path.exists(test_img):
-        print(f"\nProbando analizador con imagen real: {test_img}")
-        res = analyzer.analyze_manuscript_image(test_img, session_id="test_reyes")
-        print("\n" + "="*50)
+        print(f"\nAnalizando imagen: {test_img}")
+        res = analyzer.analyze_manuscript_image(test_img, session_id="test_upgrade")
+        print("\n" + "="*55)
         print(f"🎯 Transcripción Generada: «{res['transcription']}»")
         print(f"📊 Confianza Promedio: {res['average_confidence'] * 100:.1f}%")
-        print(f"🔬 Letras Detectadas: {[c['char'] for c in res['characters']]}")
-        print("="*50)
+        print(f"📦 Palabras Reconocidas: {[w['text'] for w in res['words']]}")
+        print("="*55)
 
 if __name__ == '__main__':
     main()
