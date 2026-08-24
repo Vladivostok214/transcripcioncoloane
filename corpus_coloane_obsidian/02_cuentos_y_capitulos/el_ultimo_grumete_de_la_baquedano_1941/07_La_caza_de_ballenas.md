@@ -1,0 +1,64 @@
+---
+titulo: "La caza de ballenas"
+libro: "El último grumete de la Baquedano"
+ano: 1941
+genero: "Novela"
+numero_orden: 7
+total_palabras: 2241
+tags:
+  - coloane
+  - novela
+  - literatura_chilena
+---
+
+# La caza de ballenas
+*Parte de [[El último grumete de la Baquedano]] (1941)*
+
+**Métricas:** 2,241 palabras | **Género:** Novela
+
+---
+
+Amaneció un día espléndido. La bahía de Puerto Refugio es un rincón rodeado de grandes cordilleras que lo defienden de todos los vientos. Musgos y algunos robles raquíticos e la única vegetación de esos cerros. La tempestad se había disipado, y como recuerdo de ella, sólo algunas nubes blancas y algodonosas pasaban de vez en cuando desgarrándose en los altos picos. En el centro de la bahía, La Baquedano descansaba como un perro mojado o como un caballo sudado que hubiera galopado leguas y leguas. Las velas colgaban de los mástiles, mojadas, inertes, como brazos caídos; en la proa se secaban los foques, semejando esos pañuelos que les ponen en la frente a los enfermos enfebrecidos. La pobre nave, alicaída, mostraba todos los rastros del horrendo temporal que había corrido la noche anterior. En cubierta, oficiales y tripulación recorrían las dependencias arreglando los destrozos de la tempestad.
+
+—¡La Chancha parece una boya, por lo buen a para la mar! —dijo Alejandro, mientras ayudaba a un compañero a extender una vela del trinquete en el castillo.
+
+—¡Y casi lo es! —respondió aquél, y continuó—: Tiene triple fondo, primero el casco de fierro, luego una gruesa capa de madera especial, impermeable, dura y liviana como un corcho, y, por último, encima de todo, una revestidura de planchas de cobre para que no penetre la broma. Esta no se hunde sino a pedazos —terminó el grumete.
+
+—¡No saldremos hasta reparar los desperfectos; tal vez hasta pasado mañana! — comentó otro. Un toque de clarín vino a interrumpir esta conversación; se llamaba a formación para la lectura de la Orden del Día y pasar lista. Toda la tripulación, de comandante a grumete, se puso en correcta formación en la cubierta. Un cabo escribiente fue nombrando uno por uno a los tripulantes, que contestaban, cuadrándose, con la voz de “¡Firme!”. Había nombrado ya más de la mitad de la tripulación, cuando dijo:
+
+—¡Marinero primero, Juan Bautista Cárcamo! Un breve silencio, y luego se oyó una voz fuerte, pausada y grave:
+
+—¡Muerto en actos del servicio! Algo extraño recorrió los rostros de esos trescientos hombres, algunas pupilas tristes se elevaron para mirar la bandera tricolor que flameaba a media asta en el palo de mesana y otras cabezas se agacharon tocadas por algo hondo en el corazón. Alejandro revivió la visión del marinero que se perdió entre la noche y el mar con el cuchillo reluciente apretado entre los dientes, y algo nuevo sintió en su interior: un sentimiento de solidaridad, de unión con esos doscientos noventa y nueve hombres y ese barco. Todos eran una sola cosa. El cabo escribiente continuó pasando lista. Una vez que hubo terminado, empezó la lectura de la Orden del Día. Después de leer las disposiciones de las faenas y maniobras diarias, llegó al siguiente acápite, breve, con ese laconismo que caracteriza a los mensajes de los hombres de mar. “Marinero Primero, Juan Bautista Cárcamo. A las 4.45 de la madrugada, en circunstancias que este tripulante, en un acto de arrojo, subió a cortar unas jarcias que entrababan a la yerga del mayor, haciéndo peligrar el barco, después de haberlo conseguido, cayó al mar, pereciendo. Murió cumpliendo con su deber.” El comandante, interrumpiendo la lectura de la Orden, habló:
+
+—¡Vamos a guardar un minuto de silencio en memoria de ese valiente hombre de mar!
+
+—¡Atención, firmes! —ordenó el segundo comandante—. ¡Corneta, toque silencio! El lastimero toque de silencio resonó por los ámbitos de la bahía; la tercera nota, alta, prolongada, se fue extinguiendo como un lamento, y los trescientos hombres permanecieron firmes, cuadrados, hieráticos, con los ojos perdidos en la lejanía oceánica. Algunos grumetes no pudieron contener las gruesas lágrimas que rodaban por sus mejillas adolescentes. Todos tenían la cabeza alta, menos uno, el viejo sargento carpintero Escobedo, que allá en un extremo, con la cabeza ladeada, contemplaba con intensa tristeza al mar, como quien contempla una tumba abierta. Recordaba que en esa misma posición había estado otras veces, en otros mares y latitudes, a bordo de ese mismo barco, despidiendo a muchos compañeros desaparecidos. El día y el personal se distribuyeron en arreglo de destrozos, en pesca de choros, en botes, y una comisión de cadetes y grumetes, al mando de un oficial, fue invitada por los cazadores de ballenas a presenciar una cacería. Pasaron primero a saludar al capitán del buque insignia, Indus 1, donde se descuartizaban las ballenas y se derretían en grandes calderos para obtener el aceite, y luego se distribuyeron en dos cazadores de los cuatro que esa mañana se hacían a la mar: el Chile y el Noruega. Los marinos noruegos y chilenos que tripulaban la flota les obsequiaron con boquillas de ámbar de ballena y otros hermosos objetos de marfil, elaborados durante sus ratos de ocio. A Alejandro, que iba en la comisión, le correspondió subir al Noruega, pequeño y extraño vaporcito que comandaba un noruego macizo y ancho como un hipopótamo. Mientras montaba la borda, vió cómo sobre las enormes ballenas que rodeaban al buque madre, andaban hombres con zapatos que tenían grandes clavos en la suela para sostenerse en la resbaladiza piel y amarrar los cetáceos que eran izados a cubierta para descuartizarlos y derretirlos en los tachos hirvientes de aceite de ballena. Cuatro sirenas a un tiempo resonaron en la paz de Puerto Refugio. Contestó, más potente y gruesa, la del buque-madre, y los cuatro pequeños, gráciles y esbeltos balleneros tomaron rumbo mar afuera, a dieciséis millas por hora. Se abrieron en abanico. Dos de ellos llevaban una comisión de tres o cuatro días, y el Noruega y el Chile sólo de un día, para dar oportunidad a los estudiantes de La Baquedano de presenciar una cacería.
+
+—Lo importante es que encontremos ballenas! —habló un piloto del Noruega, y explicándoles a los cadetes y grumetes, continuó—: Los cazadores salen a alta mar en busca de ballenas, por tres o cuatro días. Primero se dedican exclusivamente a cazarlas. A cada ballena cazada se le coloca en el lomo una bandera que lleva el nombre del barco, se la deja flotando a la deriva, porque sería imposible continuar persiguiendo a las otras con uno o dos de estos pesados cetáceos a remolque. “Generalmente, cada cazador trae de dos a cuatro ballenas, a veces logra cazarlas en un día, y otros demoran cuatro para obtener una. Difícil es que regrese uno sin ballenas al puerto, donde nos espera el buque-industria o insignia, y si así sucede, se tapa la cara de vergüenza antes de entrar”, terminó, sonriendo, el piloto. Mientras el Noruega navegaba a toda máquina, visitaron, además, el cañón de proa donde se coloca el arpón y se dispara con una carga de pólvora igual que un proyectil.
+
+—El arpón es un hierro aguzado de más o menos un metro de largo y dos pulgadas de diámetro —siguió explicando el piloto—, que en su punta lleva recogidos tres o cuatro fierros más pequeños que se abren en la forma en que se abren los rayos de un paraguas cuando el arpón ha penetrado en el cuerpo de la ballena y el cable a que va adherido lo contiene; eso se llama espoleta. La ballena, herida, se lanza a toda velocidad y el cable empieza a desenrollarse desde un tambor que hay en el fondo de la bodega y que tiene, además, un gran resorte de acero, para amortiguar los tirones de los últimos estertores. Habrían navegado más de dos horas. El Noruega empezó a dar grandes círculos, mientras en la cofa un vigía escudriñaba las lejanías.
+
+—¡El grumete Silva debía estar allí! —dijo uno, y todos rieron con cordialidad recordando la equivocación del niño cuando hizo su primera guardia de "tope" y no supo distinguir las ballenas. El mar, con una ola un poco gruesa, parecía un inmenso potrero arado. En la lejanía se divisaba al Chile, rondando también como un curioso centinela de esos mares. Se sirvió un almuerzo frugal a bordo.
+
+—Nuestras amigas ballenas parece que les tienen miedo a ustedes! —dijo en la pequeña cámara el grueso capitán noruego. A la media tarde se oyó, de pronto, la voz del vigía, que lanzó el tradicional grito de:
+
+—¡Ballena a proa! La tripulación corrió a sus puestos. El capitán noruego tomó personalmente la rueda del timón; el piloto chileno, que era el cazador, se fue a proa junto al cañón que estaba cargado con el arpón y los visitantes se acomodaron de la mejor manera para presenciar la cacería. En el horizonte, de súbito, varios chorros de agua se levantaron hacia el cielo.
+
+—¡Vienen arrancando del Chile! —profirió el capitán. Luego los chorros desaparecieron. El capitán ordenó a toda máquina, viró rápidamente a su buque y lo dirigió a un determinado punto, lejos del lugar donde habían aparecido los chorros. El viejo lobo de los mares nórdicos de Europa conocía muy bien su profesión. Vió que las ballenas se zambulleron, y como sabía la dirección en que iban a nadar bajo el mar, se dirigió calculando el punto preciso en que suponía que debían asomar de nuevo a la superficie. El Noruegacorría a más de dieciséis millas por hora. Todo el mundo estaba anhelante en sus puestos. Sólo el mar, impasible, parecía no darse cuenta de que le iban a arrancar a uno de sus más hermosos y grandes hijos. De pronto se ordenó parar las máquinas; ni un ruido se oía a bordo, y el capitán, en la caña de timón, con la viada del andar, empezó a zigzaguear cautelosamente. De súbito, el mar se levantó como impulsado por una extraña corriente y algo como una ola más negra brotó en la superficie; luego otra más pequeña emergió a su lado y cuatro chorros de agua se levantaron a gran altura. Eran una ballena grande y otra pequeña. El barco giró como lo hace un caballo sobre sus patas traseras cuando el huaso le aplica un golpe de riendas y de espuelas. Una detonación dominó el ruido de aguas y el animal se sumergió rápidamente. El cable se desenrolló sólo un poco. El capitán, en tono airado, gritó:
+
+—¡No dió en blanco, piloto!
+
+—¡Sí, capitán; el arpón le entró en pleno costado! —respondió el piloto, con seguridad. Los segundos que pasaban eran de expectación. De pronto, e pequeño barco cazador se estremeció y una cola gigante emergió en uno de sus costados, pasó más arriba de la borda y se azotó contra las casetas del barco. La gente arrancó despavorida hacia el otro costado, y cadetes y grumetes se mojaron como si hubiera entrado una ola. La ballena, embravecida, siguió dando terribles coletazos en el costado del pequeño cazador.
+
+—¡Adelante, a toda máquina! —ordenó el capitán, y el Noruega se desprendió de su enemiga. La ballena se sumergió de nuevo y esta vez el cable empezó a desenrollarse vertiginosamente. El Noruega navegaba a toda máquina en la misma dirección; sobre la superficie una gruesa estela de sangre indicaba el postrer camino del cetáceo. Al poco rato, el carretel de la bodega dió todo el calle que enrollaba y sólo quedó el resorte que amortiguaba los fuertes tirones que en los últimos estertores, desde la lejanía. producía la ballena ahondando su herida con el arpón y su espoleta abierta como cuatro anzuelos en sus entrañas.
+
+—Rara vez sucede esto; generalmente, apenas se sienten heridas, arrancan sumergidas —dijo el piloto a los grumetes. El buque empezó a recoger el cable a medida que avanzaba, disminuyendo su andar proporcionalmente. Al acercarse, se vió algo que rondaba alrededor del cetáceo muerto; dos chorros de agua se levantaron de nuevo y desaparecieron de la superficie.
+
+—¡Es un ballenato, la ballena es hembra! —dijo el capitán, y continuó—: Para muestra, basta por hoy; remolquemos con el mismo cable la ballena hasta Puerto Refugio. Al iniciar el remolque, el Noruega con su ballena al costado, surgió en la superficie nuevamente el pequeño y hermoso ballenato al lado de su madre muerta. El pequeño cetáceo, de unos ocho metros de largo, rondó más alrededor del inerte cadáver, lo rozó con el hocico, como tratando de despertarla de su extraño sueño, y luego se perdió lentamente bajo las aguas, para reaparecer una y otra vez como tratando de comprender lo que sucedía.
+
+—¿Por qué no le disparan? —preguntó alguien.
+
+—¡Está prohibido matar un ballenato! —respondió uno del buque. En la proa, junto al arpón, el cazador agachó la cabeza como si la luz venía del cielo le molestara.
+
+---
+*Volver al libro: [[El último grumete de la Baquedano]] | [[00_INDICE_GENERAL|Índice General]]*
