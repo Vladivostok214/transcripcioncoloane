@@ -13,7 +13,7 @@ if sys.stdout.encoding != 'utf-8':
 
 PORT = 8002
 BASE_DIR = r"C:\Users\WLADI\Desktop\COLOANE\TRANSCRIPCIONES COLOANE"
-EXP_04_1_DIR = os.path.join(BASE_DIR, "experimentos", "04.1_abecedario_glifos_manual")
+EXP_04_1_DIR = os.path.join(BASE_DIR, "experimentos", "06_web_coloane")
 EXP_04_2_DIR = os.path.join(BASE_DIR, "experimentos", "04.2_vectorizacion_glifos")
 
 CROPS_DIR = os.path.join(EXP_04_1_DIR, "crops")

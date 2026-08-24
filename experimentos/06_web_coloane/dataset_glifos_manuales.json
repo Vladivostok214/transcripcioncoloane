@@ -1,0 +1,1893 @@
+{
+  "metadata": {
+    "total_glyphs": 105,
+    "captures_count": 30,
+    "last_updated": "WLADI"
+  },
+  "glyphs": [
+    {
+      "id": "g_p03_l01_titulo_top_01_T",
+      "line_id": "p03_l01_titulo_top",
+      "page": 3,
+      "character": "T",
+      "category": "mayuscula",
+      "notes": "T inicial",
+      "bbox": [
+        69,
+        10,
+        166,
+        170
+      ],
+      "crop_file": "g_p03_l01_titulo_top_01_T.png",
+      "crop_isolated_file": "g_p03_l01_titulo_top_01_T_iso.png"
+    },
+    {
+      "id": "g_p03_l01_titulo_top_02_r",
+      "line_id": "p03_l01_titulo_top",
+      "page": 3,
+      "character": "r",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        233,
+        74,
+        103,
+        95
+      ],
+      "crop_file": "g_p03_l01_titulo_top_02_r.png",
+      "crop_isolated_file": "g_p03_l01_titulo_top_02_r_iso.png"
+    },
+    {
+      "id": "g_p03_l01_titulo_top_03_a",
+      "line_id": "p03_l01_titulo_top",
+      "page": 3,
+      "character": "a",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        341,
+        91,
+        97,
+        80
+      ],
+      "crop_file": "g_p03_l01_titulo_top_03_a.png",
+      "crop_isolated_file": "g_p03_l01_titulo_top_03_a_iso.png"
+    },
+    {
+      "id": "g_p03_l01_titulo_top_04_v",
+      "line_id": "p03_l01_titulo_top",
+      "page": 3,
+      "character": "v",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        442,
+        100,
+        97,
+        74
+      ],
+      "crop_file": "g_p03_l01_titulo_top_04_v.png",
+      "crop_isolated_file": "g_p03_l01_titulo_top_04_v_iso.png"
+    },
+    {
+      "id": "g_p03_l01_titulo_top_05_e",
+      "line_id": "p03_l01_titulo_top",
+      "page": 3,
+      "character": "e",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        534,
+        97,
+        70,
+        86
+      ],
+      "crop_file": "g_p03_l01_titulo_top_05_e.png",
+      "crop_isolated_file": "g_p03_l01_titulo_top_05_e_iso.png"
+    },
+    {
+      "id": "g_p03_l01_titulo_top_06_s",
+      "line_id": "p03_l01_titulo_top",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        604,
+        93,
+        99,
+        92
+      ],
+      "crop_file": "g_p03_l01_titulo_top_06_s.png",
+      "crop_isolated_file": "g_p03_l01_titulo_top_06_s_iso.png"
+    },
+    {
+      "id": "g_p03_l02_verso1_01_d",
+      "line_id": "p03_l02_verso1",
+      "page": 3,
+      "character": "d",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        678,
+        56,
+        114,
+        104
+      ],
+      "crop_file": "g_p03_l02_verso1_01_d.png",
+      "crop_isolated_file": "g_p03_l02_verso1_01_d_iso.png"
+    },
+    {
+      "id": "g_p03_l02_verso1_02_e",
+      "line_id": "p03_l02_verso1",
+      "page": 3,
+      "character": "e",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        781,
+        96,
+        56,
+        57
+      ],
+      "crop_file": "g_p03_l02_verso1_02_e.png",
+      "crop_isolated_file": "g_p03_l02_verso1_02_e_iso.png"
+    },
+    {
+      "id": "g_p03_l02_verso1_03_l",
+      "line_id": "p03_l02_verso1",
+      "page": 3,
+      "character": "l",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        832,
+        58,
+        87,
+        95
+      ],
+      "crop_file": "g_p03_l02_verso1_03_l.png",
+      "crop_isolated_file": "g_p03_l02_verso1_03_l_iso.png"
+    },
+    {
+      "id": "g_p03_l02_verso1_04_o",
+      "line_id": "p03_l02_verso1",
+      "page": 3,
+      "character": "o",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        950,
+        89,
+        97,
+        78
+      ],
+      "crop_file": "g_p03_l02_verso1_04_o.png",
+      "crop_isolated_file": "g_p03_l02_verso1_04_o_iso.png"
+    },
+    {
+      "id": "g_p03_l02_verso1_05_e",
+      "line_id": "p03_l02_verso1",
+      "page": 3,
+      "character": "e",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1033,
+        84,
+        74,
+        63
+      ],
+      "crop_file": "g_p03_l02_verso1_05_e.png",
+      "crop_isolated_file": "g_p03_l02_verso1_05_e_iso.png"
+    },
+    {
+      "id": "g_p03_l02_verso1_06_s",
+      "line_id": "p03_l02_verso1",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1098,
+        97,
+        69,
+        56
+      ],
+      "crop_file": "g_p03_l02_verso1_06_s.png",
+      "crop_isolated_file": "g_p03_l02_verso1_06_s_iso.png"
+    },
+    {
+      "id": "g_p03_l02_verso1_07_n",
+      "line_id": "p03_l02_verso1",
+      "page": 3,
+      "character": "n",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        375,
+        97,
+        78,
+        73
+      ],
+      "crop_file": "g_p03_l02_verso1_07_n.png",
+      "crop_isolated_file": "g_p03_l02_verso1_07_n_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_01_i",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "i",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        181,
+        15,
+        57,
+        70
+      ],
+      "crop_file": "g_p03_l03_verso2_01_i.png",
+      "crop_isolated_file": "g_p03_l03_verso2_01_i_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_02_c",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "c",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        542,
+        27,
+        94,
+        90
+      ],
+      "crop_file": "g_p03_l03_verso2_02_c.png",
+      "crop_isolated_file": "g_p03_l03_verso2_02_c_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_03_V",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "V",
+      "category": "mayuscula",
+      "notes": "V inicial",
+      "bbox": [
+        81,
+        0,
+        95,
+        111
+      ],
+      "crop_file": "g_p03_l03_verso2_03_V.png",
+      "crop_isolated_file": "g_p03_l03_verso2_03_V_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_04_g",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "g",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        736,
+        38,
+        104,
+        141
+      ],
+      "crop_file": "g_p03_l03_verso2_04_g.png",
+      "crop_isolated_file": "g_p03_l03_verso2_04_g_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_05_o",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "o",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1882,
+        68,
+        102,
+        70
+      ],
+      "crop_file": "g_p03_l03_verso2_05_o.png",
+      "crop_isolated_file": "g_p03_l03_verso2_05_o_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_06_s",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "s final de una palabra",
+      "bbox": [
+        1027,
+        42,
+        94,
+        81
+      ],
+      "crop_file": "g_p03_l03_verso2_06_s.png",
+      "crop_isolated_file": "g_p03_l03_verso2_06_s_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_07_a",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "a",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1665,
+        57,
+        83,
+        73
+      ],
+      "crop_file": "g_p03_l03_verso2_07_a.png",
+      "crop_isolated_file": "g_p03_l03_verso2_07_a_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_08_o",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "o",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1233,
+        45,
+        68,
+        76
+      ],
+      "crop_file": "g_p03_l03_verso2_08_o.png",
+      "crop_isolated_file": "g_p03_l03_verso2_08_o_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_09_n",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "n",
+      "category": "minuscula",
+      "notes": "n final de una palabra",
+      "bbox": [
+        1299,
+        61,
+        109,
+        62
+      ],
+      "crop_file": "g_p03_l03_verso2_09_n.png",
+      "crop_isolated_file": "g_p03_l03_verso2_09_n_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_10_n",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "n",
+      "category": "minuscula",
+      "notes": "n final de una palabra",
+      "bbox": [
+        419,
+        42,
+        102,
+        68
+      ],
+      "crop_file": "g_p03_l03_verso2_10_n.png",
+      "crop_isolated_file": "g_p03_l03_verso2_10_n_iso.png"
+    },
+    {
+      "id": "g_p03_l03_verso2_11_n",
+      "line_id": "p03_l03_verso2",
+      "page": 3,
+      "character": "n",
+      "category": "minuscula",
+      "notes": "n intermedia de una palabra",
+      "bbox": [
+        296,
+        40,
+        74,
+        60
+      ],
+      "crop_file": "g_p03_l03_verso2_11_n.png",
+      "crop_isolated_file": "g_p03_l03_verso2_11_n_iso.png"
+    },
+    {
+      "id": "g_p03_l04_verso3_01_a",
+      "line_id": "p03_l04_verso3",
+      "page": 3,
+      "character": "a",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1807,
+        5,
+        70,
+        70
+      ],
+      "crop_file": "g_p03_l04_verso3_01_a.png",
+      "crop_isolated_file": "g_p03_l04_verso3_01_a_iso.png"
+    },
+    {
+      "id": "g_p03_l04_verso3_02_s",
+      "line_id": "p03_l04_verso3",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "s final alargada",
+      "bbox": [
+        2120,
+        9,
+        141,
+        91
+      ],
+      "crop_file": "g_p03_l04_verso3_02_s.png",
+      "crop_isolated_file": "g_p03_l04_verso3_02_s_iso.png"
+    },
+    {
+      "id": "g_p03_l04_verso3_03_s",
+      "line_id": "p03_l04_verso3",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "s final normal",
+      "bbox": [
+        1505,
+        11,
+        87,
+        74
+      ],
+      "crop_file": "g_p03_l04_verso3_03_s.png",
+      "crop_isolated_file": "g_p03_l04_verso3_03_s_iso.png"
+    },
+    {
+      "id": "g_p03_l04_verso3_04_s",
+      "line_id": "p03_l04_verso3",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "s inicial",
+      "bbox": [
+        925,
+        81,
+        93,
+        68
+      ],
+      "crop_file": "g_p03_l04_verso3_04_s.png",
+      "crop_isolated_file": "g_p03_l04_verso3_04_s_iso.png"
+    },
+    {
+      "id": "g_p03_l04_verso3_05_o",
+      "line_id": "p03_l04_verso3",
+      "page": 3,
+      "character": "o",
+      "category": "minuscula",
+      "notes": "o inicial",
+      "bbox": [
+        1628,
+        0,
+        78,
+        59
+      ],
+      "crop_file": "g_p03_l04_verso3_05_o.png",
+      "crop_isolated_file": "g_p03_l04_verso3_05_o_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_01_y",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "y",
+      "category": "minuscula",
+      "notes": "y sola",
+      "bbox": [
+        43,
+        33,
+        119,
+        167
+      ],
+      "crop_file": "g_p03_l07_verso6_01_y.png",
+      "crop_isolated_file": "g_p03_l07_verso6_01_y_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_02_h",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "h",
+      "category": "minuscula",
+      "notes": "h inicial",
+      "bbox": [
+        844,
+        6,
+        181,
+        156
+      ],
+      "crop_file": "g_p03_l07_verso6_02_h.png",
+      "crop_isolated_file": "g_p03_l07_verso6_02_h_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_03_i",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "i",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1000,
+        46,
+        104,
+        118
+      ],
+      "crop_file": "g_p03_l07_verso6_03_i.png",
+      "crop_isolated_file": "g_p03_l07_verso6_03_i_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_04_j",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "j",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1099,
+        9,
+        107,
+        191
+      ],
+      "crop_file": "g_p03_l07_verso6_04_j.png",
+      "crop_isolated_file": "g_p03_l07_verso6_04_j_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_44_u002c",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": ",",
+      "category": "signo",
+      "notes": "",
+      "bbox": [
+        1330,
+        137,
+        72,
+        63
+      ],
+      "crop_file": "g_p03_l07_verso6_44_u002c.png",
+      "crop_isolated_file": "g_p03_l07_verso6_44_u002c_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_06_u",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "u",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        610,
+        77,
+        98,
+        78
+      ],
+      "crop_file": "g_p03_l07_verso6_06_u.png",
+      "crop_isolated_file": "g_p03_l07_verso6_06_u_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_07_s",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        716,
+        83,
+        95,
+        81
+      ],
+      "crop_file": "g_p03_l07_verso6_07_s.png",
+      "crop_isolated_file": "g_p03_l07_verso6_07_s_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_08_s",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "s inicial",
+      "bbox": [
+        496,
+        51,
+        103,
+        128
+      ],
+      "crop_file": "g_p03_l07_verso6_08_s.png",
+      "crop_isolated_file": "g_p03_l07_verso6_08_s_iso.png"
+    },
+    {
+      "id": "g_p03_l07_verso6_09_e",
+      "line_id": "p03_l07_verso6",
+      "page": 3,
+      "character": "e",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        334,
+        84,
+        65,
+        90
+      ],
+      "crop_file": "g_p03_l07_verso6_09_e.png",
+      "crop_isolated_file": "g_p03_l07_verso6_09_e_iso.png"
+    },
+    {
+      "id": "g_p03_l08_verso7_01_p",
+      "line_id": "p03_l08_verso7",
+      "page": 3,
+      "character": "p",
+      "category": "minuscula",
+      "notes": "p inicial",
+      "bbox": [
+        66,
+        46,
+        97,
+        148
+      ],
+      "crop_file": "g_p03_l08_verso7_01_p.png",
+      "crop_isolated_file": "g_p03_l08_verso7_01_p_iso.png"
+    },
+    {
+      "id": "g_p03_l08_verso7_02_r",
+      "line_id": "p03_l08_verso7",
+      "page": 3,
+      "character": "r",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        169,
+        63,
+        80,
+        81
+      ],
+      "crop_file": "g_p03_l08_verso7_02_r.png",
+      "crop_isolated_file": "g_p03_l08_verso7_02_r_iso.png"
+    },
+    {
+      "id": "g_p03_l08_verso7_03_e",
+      "line_id": "p03_l08_verso7",
+      "page": 3,
+      "character": "e",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        362,
+        73,
+        67,
+        72
+      ],
+      "crop_file": "g_p03_l08_verso7_03_e.png",
+      "crop_isolated_file": "g_p03_l08_verso7_03_e_iso.png"
+    },
+    {
+      "id": "g_p03_l08_verso7_04_g",
+      "line_id": "p03_l08_verso7",
+      "page": 3,
+      "character": "g",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        418,
+        76,
+        92,
+        124
+      ],
+      "crop_file": "g_p03_l08_verso7_04_g.png",
+      "crop_isolated_file": "g_p03_l08_verso7_04_g_iso.png"
+    },
+    {
+      "id": "g_p03_l08_verso7_05_s",
+      "line_id": "p03_l08_verso7",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "s final",
+      "bbox": [
+        752,
+        72,
+        104,
+        92
+      ],
+      "crop_file": "g_p03_l08_verso7_05_s.png",
+      "crop_isolated_file": "g_p03_l08_verso7_05_s_iso.png"
+    },
+    {
+      "id": "g_p03_l08_verso7_44_u002c",
+      "line_id": "p03_l08_verso7",
+      "page": 3,
+      "character": ",",
+      "category": "signo",
+      "notes": "",
+      "bbox": [
+        815,
+        137,
+        75,
+        63
+      ],
+      "crop_file": "g_p03_l08_verso7_44_u002c.png",
+      "crop_isolated_file": "g_p03_l08_verso7_44_u002c_iso.png"
+    },
+    {
+      "id": "g_p03_l09_verso8_01_v",
+      "line_id": "p03_l09_verso8",
+      "page": 3,
+      "character": "v",
+      "category": "minuscula",
+      "notes": "v inicial",
+      "bbox": [
+        745,
+        27,
+        124,
+        128
+      ],
+      "crop_file": "g_p03_l09_verso8_01_v.png",
+      "crop_isolated_file": "g_p03_l09_verso8_01_v_iso.png"
+    },
+    {
+      "id": "g_p03_l09_verso8_02_q",
+      "line_id": "p03_l09_verso8",
+      "page": 3,
+      "character": "q",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        239,
+        37,
+        67,
+        149
+      ],
+      "crop_file": "g_p03_l09_verso8_02_q.png",
+      "crop_isolated_file": "g_p03_l09_verso8_02_q_iso.png"
+    },
+    {
+      "id": "g_p03_l09_verso8_03_r",
+      "line_id": "p03_l09_verso8",
+      "page": 3,
+      "character": "r",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        929,
+        74,
+        76,
+        69
+      ],
+      "crop_file": "g_p03_l09_verso8_03_r.png",
+      "crop_isolated_file": "g_p03_l09_verso8_03_r_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_01_L",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "L",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        408,
+        7,
+        121,
+        140
+      ],
+      "crop_file": "g_p03_l10_verso9_01_L.png",
+      "crop_isolated_file": "g_p03_l10_verso9_01_L_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_02_A",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "A",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        542,
+        0,
+        122,
+        140
+      ],
+      "crop_file": "g_p03_l10_verso9_02_A.png",
+      "crop_isolated_file": "g_p03_l10_verso9_02_A_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_03_S",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "S",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        274,
+        0,
+        109,
+        145
+      ],
+      "crop_file": "g_p03_l10_verso9_03_S.png",
+      "crop_isolated_file": "g_p03_l10_verso9_03_S_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_04_I",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "I",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        147,
+        0,
+        115,
+        143
+      ],
+      "crop_file": "g_p03_l10_verso9_04_I.png",
+      "crop_isolated_file": "g_p03_l10_verso9_04_I_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_05_S",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "S",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        706,
+        0,
+        117,
+        165
+      ],
+      "crop_file": "g_p03_l10_verso9_05_S.png",
+      "crop_isolated_file": "g_p03_l10_verso9_05_S_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_06_D",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "D",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        950,
+        9,
+        130,
+        138
+      ],
+      "crop_file": "g_p03_l10_verso9_06_D.png",
+      "crop_isolated_file": "g_p03_l10_verso9_06_D_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_07_E",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "E",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        1121,
+        11,
+        134,
+        160
+      ],
+      "crop_file": "g_p03_l10_verso9_07_E.png",
+      "crop_isolated_file": "g_p03_l10_verso9_07_E_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_08_T",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "T",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        1314,
+        7,
+        149,
+        174
+      ],
+      "crop_file": "g_p03_l10_verso9_08_T.png",
+      "crop_isolated_file": "g_p03_l10_verso9_08_T_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_09_R",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "R",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        1505,
+        7,
+        145,
+        174
+      ],
+      "crop_file": "g_p03_l10_verso9_09_R.png",
+      "crop_isolated_file": "g_p03_l10_verso9_09_R_iso.png"
+    },
+    {
+      "id": "g_p03_l10_verso9_10_A",
+      "line_id": "p03_l10_verso9",
+      "page": 3,
+      "character": "A",
+      "category": "mayuscula",
+      "notes": "tinta verde",
+      "bbox": [
+        1680,
+        14,
+        138,
+        167
+      ],
+      "crop_file": "g_p03_l10_verso9_10_A.png",
+      "crop_isolated_file": "g_p03_l10_verso9_10_A_iso.png"
+    },
+    {
+      "id": "g_p03_l13_rojo1_01_m",
+      "line_id": "p03_l13_rojo1",
+      "page": 3,
+      "character": "m",
+      "category": "minuscula",
+      "notes": "m inicial, tinta roja",
+      "bbox": [
+        553,
+        16,
+        199,
+        120
+      ],
+      "crop_file": "g_p03_l13_rojo1_01_m.png",
+      "crop_isolated_file": "g_p03_l13_rojo1_01_m_iso.png"
+    },
+    {
+      "id": "g_p03_l13_rojo1_02_e",
+      "line_id": "p03_l13_rojo1",
+      "page": 3,
+      "character": "e",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1026,
+        43,
+        101,
+        93
+      ],
+      "crop_file": "g_p03_l13_rojo1_02_e.png",
+      "crop_isolated_file": "g_p03_l13_rojo1_02_e_iso.png"
+    },
+    {
+      "id": "g_p03_l13_rojo1_03_s",
+      "line_id": "p03_l13_rojo1",
+      "page": 3,
+      "character": "s",
+      "category": "minuscula",
+      "notes": "s inicial",
+      "bbox": [
+        1216,
+        7,
+        156,
+        138
+      ],
+      "crop_file": "g_p03_l13_rojo1_03_s.png",
+      "crop_isolated_file": "g_p03_l13_rojo1_03_s_iso.png"
+    },
+    {
+      "id": "g_p03_l13_rojo1_46_u002e",
+      "line_id": "p03_l13_rojo1",
+      "page": 3,
+      "character": ".",
+      "category": "signo",
+      "notes": "puntos suspensivos",
+      "bbox": [
+        2023,
+        45,
+        209,
+        83
+      ],
+      "crop_file": "g_p03_l13_rojo1_46_u002e.png",
+      "crop_isolated_file": "g_p03_l13_rojo1_46_u002e_iso.png"
+    },
+    {
+      "id": "g_p03_l14_rojo2_01_y",
+      "line_id": "p03_l14_rojo2",
+      "page": 3,
+      "character": "y",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1539,
+        29,
+        177,
+        164
+      ],
+      "crop_file": "g_p03_l14_rojo2_01_y.png",
+      "crop_isolated_file": "g_p03_l14_rojo2_01_y_iso.png"
+    },
+    {
+      "id": "g_p03_l14_rojo2_02_U",
+      "line_id": "p03_l14_rojo2",
+      "page": 3,
+      "character": "U",
+      "category": "mayuscula",
+      "notes": "U inicial",
+      "bbox": [
+        49,
+        0,
+        150,
+        133
+      ],
+      "crop_file": "g_p03_l14_rojo2_02_U.png",
+      "crop_isolated_file": "g_p03_l14_rojo2_02_U_iso.png"
+    },
+    {
+      "id": "g_p03_l15_rojo3_01_p",
+      "line_id": "p03_l15_rojo3",
+      "page": 3,
+      "character": "p",
+      "category": "minuscula",
+      "notes": "p inicial",
+      "bbox": [
+        330,
+        0,
+        199,
+        197
+      ],
+      "crop_file": "g_p03_l15_rojo3_01_p.png",
+      "crop_isolated_file": "g_p03_l15_rojo3_01_p_iso.png"
+    },
+    {
+      "id": "g_p03_l15_rojo3_02_u",
+      "line_id": "p03_l15_rojo3",
+      "page": 3,
+      "character": "u",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        163,
+        9,
+        145,
+        91
+      ],
+      "crop_file": "g_p03_l15_rojo3_02_u.png",
+      "crop_isolated_file": "g_p03_l15_rojo3_02_u_iso.png"
+    },
+    {
+      "id": "g_p03_l16_bloque_01_P",
+      "line_id": "p03_l16_bloque",
+      "page": 3,
+      "character": "P",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        429,
+        14,
+        107,
+        109
+      ],
+      "crop_file": "g_p03_l16_bloque_01_P.png",
+      "crop_isolated_file": "g_p03_l16_bloque_01_P_iso.png"
+    },
+    {
+      "id": "g_p02_l01_encabezado_01_c",
+      "line_id": "p02_l01_encabezado",
+      "page": 2,
+      "character": "c",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        969,
+        62,
+        88,
+        75
+      ],
+      "crop_file": "g_p02_l01_encabezado_01_c.png",
+      "crop_isolated_file": "g_p02_l01_encabezado_01_c_iso.png"
+    },
+    {
+      "id": "g_p02_l01_encabezado_02_a",
+      "line_id": "p02_l01_encabezado",
+      "page": 2,
+      "character": "a",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1048,
+        67,
+        85,
+        75
+      ],
+      "crop_file": "g_p02_l01_encabezado_02_a.png",
+      "crop_isolated_file": "g_p02_l01_encabezado_02_a_iso.png"
+    },
+    {
+      "id": "g_p02_l01_encabezado_03_o",
+      "line_id": "p02_l01_encabezado",
+      "page": 2,
+      "character": "o",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1247,
+        64,
+        53,
+        73
+      ],
+      "crop_file": "g_p02_l01_encabezado_03_o.png",
+      "crop_isolated_file": "g_p02_l01_encabezado_03_o_iso.png"
+    },
+    {
+      "id": "g_p02_l01_encabezado_04_n",
+      "line_id": "p02_l01_encabezado",
+      "page": 2,
+      "character": "n",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        717,
+        70,
+        98,
+        69
+      ],
+      "crop_file": "g_p02_l01_encabezado_04_n.png",
+      "crop_isolated_file": "g_p02_l01_encabezado_04_n_iso.png"
+    },
+    {
+      "id": "g_p02_l01_encabezado_58_u003a",
+      "line_id": "p02_l01_encabezado",
+      "page": 2,
+      "character": ":",
+      "category": "signo",
+      "notes": "dos puntos",
+      "bbox": [
+        1497,
+        64,
+        62,
+        83
+      ],
+      "crop_file": "g_p02_l01_encabezado_58_u003a.png",
+      "crop_isolated_file": "g_p02_l01_encabezado_58_u003a_iso.png"
+    },
+    {
+      "id": "g_p02_l03_ezra2_01_x",
+      "line_id": "p02_l03_ezra2",
+      "page": 2,
+      "character": "x",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1053,
+        86,
+        62,
+        62
+      ],
+      "crop_file": "g_p02_l03_ezra2_01_x.png",
+      "crop_isolated_file": "g_p02_l03_ezra2_01_x_iso.png"
+    },
+    {
+      "id": "g_p02_l03_ezra2_34_u0022",
+      "line_id": "p02_l03_ezra2",
+      "page": 2,
+      "character": "\"",
+      "category": "signo",
+      "notes": "cierre de comillas",
+      "bbox": [
+        1422,
+        61,
+        93,
+        67
+      ],
+      "crop_file": "g_p02_l03_ezra2_34_u0022.png",
+      "crop_isolated_file": "g_p02_l03_ezra2_34_u0022_iso.png"
+    },
+    {
+      "id": "g_p02_l04_ezra3_01_t",
+      "line_id": "p02_l04_ezra3",
+      "page": 2,
+      "character": "t",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        896,
+        35,
+        74,
+        110
+      ],
+      "crop_file": "g_p02_l04_ezra3_01_t.png",
+      "crop_isolated_file": "g_p02_l04_ezra3_01_t_iso.png"
+    },
+    {
+      "id": "g_p02_l04_ezra3_02_u",
+      "line_id": "p02_l04_ezra3",
+      "page": 2,
+      "character": "u",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1295,
+        76,
+        92,
+        74
+      ],
+      "crop_file": "g_p02_l04_ezra3_02_u.png",
+      "crop_isolated_file": "g_p02_l04_ezra3_02_u_iso.png"
+    },
+    {
+      "id": "g_p02_l04_ezra3_03_r",
+      "line_id": "p02_l04_ezra3",
+      "page": 2,
+      "character": "r",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1533,
+        81,
+        74,
+        69
+      ],
+      "crop_file": "g_p02_l04_ezra3_03_r.png",
+      "crop_isolated_file": "g_p02_l04_ezra3_03_r_iso.png"
+    },
+    {
+      "id": "g_p02_l05_ezra4_01_z",
+      "line_id": "p02_l05_ezra4",
+      "page": 2,
+      "character": "z",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        792,
+        47,
+        109,
+        82
+      ],
+      "crop_file": "g_p02_l05_ezra4_01_z.png",
+      "crop_isolated_file": "g_p02_l05_ezra4_01_z_iso.png"
+    },
+    {
+      "id": "g_p02_l05_ezra4_02_d",
+      "line_id": "p02_l05_ezra4",
+      "page": 2,
+      "character": "d",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1472,
+        26,
+        111,
+        110
+      ],
+      "crop_file": "g_p02_l05_ezra4_02_d.png",
+      "crop_isolated_file": "g_p02_l05_ezra4_02_d_iso.png"
+    },
+    {
+      "id": "g_p02_l06_babel_01_B",
+      "line_id": "p02_l06_babel",
+      "page": 2,
+      "character": "B",
+      "category": "mayuscula",
+      "notes": "B inicial",
+      "bbox": [
+        1797,
+        2,
+        112,
+        102
+      ],
+      "crop_file": "g_p02_l06_babel_01_B.png",
+      "crop_isolated_file": "g_p02_l06_babel_01_B_iso.png"
+    },
+    {
+      "id": "g_p02_l06_babel_02_b",
+      "line_id": "p02_l06_babel",
+      "page": 2,
+      "character": "b",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        1986,
+        0,
+        95,
+        107
+      ],
+      "crop_file": "g_p02_l06_babel_02_b.png",
+      "crop_isolated_file": "g_p02_l06_babel_02_b_iso.png"
+    },
+    {
+      "id": "g_p02_l06_babel_03_1",
+      "line_id": "p02_l06_babel",
+      "page": 2,
+      "character": "1",
+      "category": "numero",
+      "notes": "",
+      "bbox": [
+        2541,
+        22,
+        64,
+        87
+      ],
+      "crop_file": "g_p02_l06_babel_03_1.png",
+      "crop_isolated_file": "g_p02_l06_babel_03_1_iso.png"
+    },
+    {
+      "id": "g_p02_l06_babel_04_1",
+      "line_id": "p02_l06_babel",
+      "page": 2,
+      "character": "1",
+      "category": "numero",
+      "notes": "",
+      "bbox": [
+        2605,
+        20,
+        41,
+        79
+      ],
+      "crop_file": "g_p02_l06_babel_04_1.png",
+      "crop_isolated_file": "g_p02_l06_babel_04_1_iso.png"
+    },
+    {
+      "id": "g_p02_l07_todoel_01_m",
+      "line_id": "p02_l07_todoel",
+      "page": 2,
+      "character": "m",
+      "category": "minuscula",
+      "notes": "m inicial",
+      "bbox": [
+        1674,
+        4,
+        128,
+        67
+      ],
+      "crop_file": "g_p02_l07_todoel_01_m.png",
+      "crop_isolated_file": "g_p02_l07_todoel_01_m_iso.png"
+    },
+    {
+      "id": "g_p02_l07_todoel_02_m",
+      "line_id": "p02_l07_todoel",
+      "page": 2,
+      "character": "m",
+      "category": "minuscula",
+      "notes": "m inicial",
+      "bbox": [
+        696,
+        7,
+        115,
+        79
+      ],
+      "crop_file": "g_p02_l07_todoel_02_m.png",
+      "crop_isolated_file": "g_p02_l07_todoel_02_m_iso.png"
+    },
+    {
+      "id": "g_custom_1787375326385_01_E",
+      "line_id": "custom_1787375326385",
+      "page": "captura_externa",
+      "character": "E",
+      "category": "mayuscula",
+      "notes": "E inicial",
+      "bbox": [
+        33,
+        54,
+        53,
+        55
+      ],
+      "crop_file": "g_custom_1787375326385_01_E.png",
+      "crop_isolated_file": "g_custom_1787375326385_01_E_iso.png",
+      "polygon": [
+        [
+          86,
+          54
+        ],
+        [
+          69,
+          108
+        ],
+        [
+          33,
+          109
+        ],
+        [
+          40,
+          84
+        ]
+      ]
+    },
+    {
+      "id": "g_custom_1787375326385_03_p",
+      "line_id": "custom_1787375326385",
+      "page": "captura_externa",
+      "character": "p",
+      "category": "minuscula",
+      "notes": "p inicial",
+      "bbox": [
+        361,
+        63,
+        44,
+        59
+      ],
+      "crop_file": "g_custom_1787375326385_03_p.png",
+      "crop_isolated_file": "g_custom_1787375326385_03_p_iso.png",
+      "polygon": [
+        [
+          405,
+          67
+        ],
+        [
+          394,
+          122
+        ],
+        [
+          361,
+          122
+        ],
+        [
+          387,
+          63
+        ]
+      ]
+    },
+    {
+      "id": "g_custom_1787375326385_04_u00e9",
+      "line_id": "custom_1787375326385",
+      "page": "captura_externa",
+      "character": "é",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        409,
+        61,
+        26,
+        43
+      ],
+      "crop_file": "g_custom_1787375326385_04_u00e9.png",
+      "crop_isolated_file": "g_custom_1787375326385_04_u00e9_iso.png",
+      "polygon": [
+        [
+          435,
+          61
+        ],
+        [
+          426,
+          104
+        ],
+        [
+          409,
+          104
+        ],
+        [
+          416,
+          61
+        ]
+      ]
+    },
+    {
+      "id": "g_custom_1787375326385_05_t",
+      "line_id": "custom_1787375326385",
+      "page": "captura_externa",
+      "character": "t",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        421,
+        67,
+        32,
+        37
+      ],
+      "crop_file": "g_custom_1787375326385_05_t.png",
+      "crop_isolated_file": "g_custom_1787375326385_05_t_iso.png",
+      "polygon": [
+        [
+          432,
+          67
+        ],
+        [
+          453,
+          74
+        ],
+        [
+          435,
+          104
+        ],
+        [
+          421,
+          102
+        ]
+      ]
+    },
+    {
+      "id": "g_custom_1787375326385_06_t",
+      "line_id": "custom_1787375326385",
+      "page": "captura_externa",
+      "character": "t",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        336,
+        64,
+        35,
+        41
+      ],
+      "crop_file": "g_custom_1787375326385_06_t.png",
+      "crop_isolated_file": "g_custom_1787375326385_06_t_iso.png",
+      "polygon": [
+        [
+          340,
+          64
+        ],
+        [
+          371,
+          71
+        ],
+        [
+          369,
+          82
+        ],
+        [
+          354,
+          87
+        ],
+        [
+          349,
+          105
+        ],
+        [
+          336,
+          104
+        ]
+      ]
+    },
+    {
+      "id": "g_custom_1787375326385_07_v",
+      "line_id": "custom_1787375326385",
+      "page": "captura_externa",
+      "character": "v",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        527,
+        69,
+        22,
+        37
+      ],
+      "crop_file": "g_custom_1787375326385_07_v.png",
+      "crop_isolated_file": "g_custom_1787375326385_07_v_iso.png",
+      "polygon": [
+        [
+          527,
+          72
+        ],
+        [
+          528,
+          106
+        ],
+        [
+          538,
+          100
+        ],
+        [
+          549,
+          69
+        ]
+      ]
+    },
+    {
+      "id": "g_custom_1787375657342_01_u00f1",
+      "line_id": "custom_1787375657342",
+      "page": "captura_externa",
+      "character": "ñ",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        158,
+        81,
+        23,
+        29
+      ],
+      "crop_file": "g_custom_1787375657342_01_u00f1.png",
+      "crop_isolated_file": "g_custom_1787375657342_01_u00f1_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_01_F",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "F",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        75,
+        31,
+        29,
+        38
+      ],
+      "crop_file": "g_cap_1787377048367_01_F.png",
+      "crop_isolated_file": "g_cap_1787377048367_01_F_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_02_C",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "C",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        408,
+        36,
+        28,
+        30
+      ],
+      "crop_file": "g_cap_1787377048367_02_C.png",
+      "crop_isolated_file": "g_cap_1787377048367_02_C_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_03_H",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "H",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        552,
+        32,
+        27,
+        38
+      ],
+      "crop_file": "g_cap_1787377048367_03_H.png",
+      "crop_isolated_file": "g_cap_1787377048367_03_H_iso.png"
+    },
+    {
+      "id": "g_cap_1787377048367_04_R",
+      "line_id": "cap_1787377048367",
+      "page": "captura_externa",
+      "character": "R",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        232,
+        87,
+        31,
+        32
+      ],
+      "crop_file": "g_cap_1787377048367_04_R.png",
+      "crop_isolated_file": "g_cap_1787377048367_04_R_iso.png"
+    },
+    {
+      "id": "g_cap_1787377161791_01_M",
+      "line_id": "cap_1787377161791",
+      "page": "captura_externa",
+      "character": "M",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        250,
+        35,
+        40,
+        38
+      ],
+      "crop_file": "g_cap_1787377161791_01_M.png",
+      "crop_isolated_file": "g_cap_1787377161791_01_M_iso.png"
+    },
+    {
+      "id": "g_cap_1787377161791_02_N",
+      "line_id": "cap_1787377161791",
+      "page": "captura_externa",
+      "character": "N",
+      "category": "mayuscula",
+      "notes": "",
+      "bbox": [
+        132,
+        33,
+        29,
+        34
+      ],
+      "crop_file": "g_cap_1787377161791_02_N.png",
+      "crop_isolated_file": "g_cap_1787377161791_02_N_iso.png"
+    },
+    {
+      "id": "g_cap_1787377598994_01_u00e1",
+      "line_id": "cap_1787377598994",
+      "page": "captura_externa",
+      "character": "á",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        522,
+        19,
+        47,
+        43
+      ],
+      "crop_file": "g_cap_1787377598994_01_u00e1.png",
+      "crop_isolated_file": "g_cap_1787377598994_01_u00e1_iso.png",
+      "polygon": [
+        [
+          543,
+          19
+        ],
+        [
+          569,
+          21
+        ],
+        [
+          550,
+          45
+        ],
+        [
+          543,
+          61
+        ],
+        [
+          522,
+          62
+        ],
+        [
+          532,
+          45
+        ],
+        [
+          543,
+          38
+        ]
+      ]
+    },
+    {
+      "id": "g_cap_1787377648006_01_n",
+      "line_id": "cap_1787377648006",
+      "page": "captura_externa",
+      "character": "n",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        596,
+        41,
+        39,
+        28
+      ],
+      "crop_file": "g_cap_1787377648006_01_n.png",
+      "crop_isolated_file": "g_cap_1787377648006_01_n_iso.png"
+    },
+    {
+      "id": "g_cap_1787377683634_01_u00e1",
+      "line_id": "cap_1787377683634",
+      "page": "captura_externa",
+      "character": "á",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        66,
+        88,
+        36,
+        36
+      ],
+      "crop_file": "g_cap_1787377683634_01_u00e1.png",
+      "crop_isolated_file": "g_cap_1787377683634_01_u00e1_iso.png",
+      "polygon": [
+        [
+          102,
+          88
+        ],
+        [
+          75,
+          103
+        ],
+        [
+          66,
+          124
+        ],
+        [
+          86,
+          124
+        ]
+      ]
+    },
+    {
+      "id": "g_cap_1787379122998_01_f",
+      "line_id": "cap_1787379122998",
+      "page": "captura_externa",
+      "character": "f",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        775,
+        664,
+        81,
+        79
+      ],
+      "crop_file": "g_cap_1787379122998_01_f.png",
+      "crop_isolated_file": "g_cap_1787379122998_01_f_iso.png",
+      "polygon": [
+        [
+          812,
+          672
+        ],
+        [
+          775,
+          735
+        ],
+        [
+          797,
+          743
+        ],
+        [
+          856,
+          664
+        ]
+      ]
+    },
+    {
+      "id": "g_cap_1787379184669_01_l",
+      "line_id": "cap_1787379184669",
+      "page": "captura_externa",
+      "character": "l",
+      "category": "minuscula",
+      "notes": "l final",
+      "bbox": [
+        674,
+        18,
+        54,
+        59
+      ],
+      "crop_file": "g_cap_1787379184669_01_l.png",
+      "crop_isolated_file": "g_cap_1787379184669_01_l_iso.png"
+    },
+    {
+      "id": "g_cap_1787379291083_01_h",
+      "line_id": "cap_1787379291083",
+      "page": "captura_externa",
+      "character": "h",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        4,
+        378,
+        87,
+        83
+      ],
+      "crop_file": "g_cap_1787379291083_01_h.png",
+      "crop_isolated_file": "g_cap_1787379291083_01_h_iso.png",
+      "polygon": [
+        [
+          91,
+          387
+        ],
+        [
+          46,
+          461
+        ],
+        [
+          4,
+          446
+        ],
+        [
+          7,
+          411
+        ],
+        [
+          69,
+          378
+        ]
+      ]
+    },
+    {
+      "id": "g_cap_1787522953850_01_s",
+      "line_id": "cap_1787522953850",
+      "page": "captura_externa",
+      "character": "s",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        131,
+        10,
+        19,
+        25
+      ],
+      "crop_file": "g_cap_1787522953850_01_s.png",
+      "crop_isolated_file": "g_cap_1787522953850_01_s_iso.png"
+    },
+    {
+      "id": "g_cap_1787522976312_01_n",
+      "line_id": "cap_1787522976312",
+      "page": "captura_externa",
+      "character": "n",
+      "category": "minuscula",
+      "notes": "",
+      "bbox": [
+        2,
+        73,
+        34,
+        22
+      ],
+      "crop_file": "g_cap_1787522976312_01_n.png",
+      "crop_isolated_file": "g_cap_1787522976312_01_n_iso.png"
+    }
+  ]
+}

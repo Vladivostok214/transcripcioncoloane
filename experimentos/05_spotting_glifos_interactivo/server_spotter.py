@@ -27,7 +27,7 @@ PORT = 8003
 BASE_DIR = r"C:\Users\WLADI\Desktop\COLOANE\TRANSCRIPCIONES COLOANE"
 EXP_02_DIR = os.path.join(BASE_DIR, "experimentos", "02_segmentacion_lineas")
 EXP_03_DIR = os.path.join(BASE_DIR, "experimentos", "03_dataset_ground_truth")
-EXP_04_1_DIR = os.path.join(BASE_DIR, "experimentos", "04.1_abecedario_glifos_manual")
+EXP_04_1_DIR = os.path.join(BASE_DIR, "experimentos", "06_web_coloane")
 EXP_04_2_DIR = os.path.join(BASE_DIR, "experimentos", "04.2_vectorizacion_glifos")
 EXP_05_DIR = os.path.join(BASE_DIR, "experimentos", "05_spotting_glifos_interactivo")
 

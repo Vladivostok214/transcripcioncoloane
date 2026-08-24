@@ -33,7 +33,7 @@ class GlyphVectorizer:
     def __init__(self, exp04_dir=None, exp04_2_dir=None):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         
-        self.exp04_dir = exp04_dir or os.path.join(base_dir, '04.1_abecedario_glifos_manual')
+        self.exp04_dir = exp04_dir or os.path.join(base_dir, '06_web_coloane')
         self.exp04_2_dir = exp04_2_dir or os.path.join(base_dir, '04.2_vectorizacion_glifos')
         
         self.crops_dir = os.path.join(self.exp04_dir, 'crops')

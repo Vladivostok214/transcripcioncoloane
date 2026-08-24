@@ -1,0 +1,3118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖋️ Banco & Anotador de Glifos - Manuscritos Francisco Coloane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0d14;
+            --bg-secondary: #121824;
+            --bg-card: #182030;
+            --border: #232d42;
+            --border-highlight: #38bdf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-yellow: #fbbf24;
+            --accent-purple: #c084fc;
+            --accent-pink: #f472b6;
+            --accent-orange: #fb923c;
+            --danger: #f87171;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand h1 {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #fff;
+        }
+        .badge-exp {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .btn:hover {
+            background: #222d42;
+            border-color: #475569;
+        }
+        .btn-primary {
+            background: #2563eb;
+            border-color: #3b82f6;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-success {
+            background: #059669;
+            border-color: #10b981;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #047857;
+        }
+        .btn-upload {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        }
+        .btn-upload:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(37, 99, 235, 0.3) 100%);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+        }
+        .btn-coverage {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border: 1px solid #818cf8;
+            color: #fff;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
+        }
+        .btn-coverage:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+        }
+
+        .stats-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-green);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            padding: 5px 12px;
+            border-radius: 6px;
+        }
+
+        /* Workspace Layout */
+        .workspace {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 56px);
+            overflow: hidden;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #080b0f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Integrated Canvas Toolbar */
+        .canvas-toolbar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            z-index: 10;
+        }
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-mode-group {
+            display: flex;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+            gap: 2px;
+        }
+        .tool-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .tool-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .tool-btn.active {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+        }
+
+        .info-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .image-dimensions-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .zoom-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            min-width: 44px;
+            text-align: center;
+        }
+
+        /* Viewport & Empty State Dropzone */
+        .viewport {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            cursor: crosshair;
+            background: radial-gradient(circle at center, #111822 0%, #080b0f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #cropCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .empty-dropzone {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            max-width: 540px;
+            background: rgba(18, 24, 36, 0.7);
+            backdrop-filter: blur(16px);
+            border: 2px dashed rgba(56, 189, 248, 0.35);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 0.2s ease;
+        }
+        .empty-dropzone.dragover {
+            border-color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            transform: scale(1.02);
+        }
+        .dropzone-icon {
+            font-size: 48px;
+            margin-bottom: 14px;
+        }
+        .dropzone-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .dropzone-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .dropzone-tip {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 8px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        /* Bottom Missing Glyphs HUD Quest Dock */
+        .hud-missing-dock {
+            background: #0c1017;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 15;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hud-missing-dock.collapsed .hud-dock-body {
+            display: none;
+        }
+        .hud-dock-header {
+            height: 38px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0f1520;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .hud-dock-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hud-dock-icon {
+            font-size: 14px;
+        }
+        .hud-tab-group {
+            display: flex;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1px;
+            gap: 2px;
+        }
+        .hud-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .hud-tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .hud-tab-btn.active {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+        }
+        .hud-dock-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .hud-progress-mini {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .hud-prog-bar-bg {
+            width: 55px;
+            height: 6px;
+            background: #1e293b;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .hud-prog-bar-fill {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .hud-prog-bar-fill.may {
+            background: var(--accent-blue);
+        }
+
+        .hud-dock-body {
+            padding: 8px 16px;
+            max-height: 56px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            background: #080b11;
+            display: flex;
+            align-items: center;
+        }
+        .hud-chips-scroll {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+        .hud-chip {
+            background: var(--bg-card);
+            border: 1px dashed rgba(244, 63, 94, 0.45);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            padding: 3px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+        }
+        .hud-chip:hover {
+            border-color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .hud-chip .chip-letter {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .hud-chip .chip-tag {
+            font-size: 8px;
+            font-weight: 600;
+            padding: 1px 3px;
+            border-radius: 3px;
+            background: rgba(244, 63, 94, 0.2);
+            color: var(--danger);
+            text-transform: uppercase;
+        }
+        .hud-chip.pocas {
+            border-color: rgba(251, 191, 36, 0.45);
+        }
+        .hud-chip.pocas .chip-tag {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--accent-yellow);
+        }
+        .hud-all-done-banner {
+            color: var(--accent-green);
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Floating Assignment Popover */
+        .assignment-card {
+            position: absolute;
+            background: rgba(24, 32, 44, 0.96);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            width: 330px;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), var(--shadow-glow);
+            z-index: 100;
+        }
+        .assignment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+        .crop-preview-dual-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .crop-preview-half {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .preview-tag {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .crop-preview-box {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            height: 95px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .crop-preview-box.isolated-box {
+            background-color: #0c101a;
+            background-image: linear-gradient(45deg, #131b2c 25%, transparent 25%), 
+                              linear-gradient(-45deg, #131b2c 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #131b2c 75%), 
+                              linear-gradient(-45deg, transparent 75%, #131b2c 75%);
+            background-size: 12px 12px;
+            background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+        #previewCanvas, #previewIsoCanvas {
+            max-width: 90%;
+            max-height: 90%;
+            image-rendering: auto;
+            border-radius: 4px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .form-input, .form-select {
+            background: var(--bg-primary);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 7px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+        }
+        .form-input:focus, .form-select:focus {
+            border-color: var(--border-highlight);
+        }
+        #inputChar {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            color: #fff;
+            background: #0f172a;
+            letter-spacing: 2px;
+        }
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .btn-row .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 360px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sidebar-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sidebar-header h2 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .glyph-count-badge {
+            background: #1e293b;
+            color: var(--accent-blue);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glyph-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .glyph-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.15s ease;
+        }
+        .glyph-card:hover {
+            border-color: #475569;
+            background: #1e293b;
+        }
+        .glyph-thumb {
+            width: 48px;
+            height: 48px;
+            background: #000;
+            border-radius: 4px;
+            border: 1px solid #334155;
+            object-fit: contain;
+            flex-shrink: 0;
+            display: block;
+        }
+        .glyph-info {
+            flex: 1;
+            overflow: hidden;
+        }
+        .glyph-char-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .glyph-char {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            background: #0f172a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+        }
+        .category-pill {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .cat-mayuscula { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+        .cat-minuscula { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+        .cat-numero { background: rgba(251, 191, 36, 0.15); color: var(--accent-yellow); }
+        .cat-signo { background: rgba(192, 132, 252, 0.15); color: var(--accent-purple); }
+        .cat-ligadura { background: rgba(244, 114, 182, 0.15); color: var(--accent-pink); }
+        .cat-simbolo { background: rgba(251, 146, 60, 0.15); color: var(--accent-orange); }
+
+        .glyph-notes {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .glyph-actions {
+            display: flex;
+            gap: 4px;
+        }
+        .btn-icon {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-icon:hover {
+            background: rgba(248, 113, 113, 0.2);
+            color: var(--danger);
+        }
+
+        .sidebar-footer {
+            padding: 14px 18px;
+            border-top: 1px solid var(--border);
+            background: #0f151d;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Coverage & Catalog Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .catalog-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9), var(--shadow-glow);
+            overflow: hidden;
+        }
+        .catalog-header {
+            padding: 16px 24px;
+            background: #0d121a;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .catalog-header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .catalog-header-title h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .catalog-summary-chips {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chip-min { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.3); }
+        .chip-may { background: rgba(56, 189, 248, 0.12); color: var(--accent-blue); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .chip-tot { background: rgba(192, 132, 252, 0.12); color: var(--accent-purple); border: 1px solid rgba(192, 132, 252, 0.3); }
+
+        .catalog-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        .catalog-grid-pane {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+            gap: 20px;
+        }
+        .catalog-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+            gap: 6px;
+        }
+        .letter-tile {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            height: 58px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+        .letter-tile:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+        }
+        .letter-tile.empty {
+            opacity: 0.45;
+            border-style: dashed;
+        }
+        .letter-tile.has-1 {
+            border-color: rgba(251, 191, 36, 0.4);
+            background: rgba(251, 191, 36, 0.06);
+        }
+        .letter-tile.has-many {
+            border-color: rgba(52, 211, 153, 0.5);
+            background: rgba(52, 211, 153, 0.08);
+            box-shadow: 0 0 10px rgba(52, 211, 153, 0.1);
+        }
+        .letter-tile.selected {
+            border-color: var(--accent-blue) !important;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.5) !important;
+            background: rgba(56, 189, 248, 0.15) !important;
+        }
+        .tile-char {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .tile-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 4px;
+            padding: 1px 6px;
+            border-radius: 8px;
+        }
+        .letter-tile.empty .tile-count { background: #1e293b; color: #64748b; }
+        .letter-tile.has-1 .tile-count { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .letter-tile.has-many .tile-count { background: rgba(52, 211, 153, 0.2); color: var(--accent-green); }
+
+        /* Detail / Gallery Pane */
+        .catalog-detail-pane {
+            flex: 0.9;
+            background: var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .detail-pane-header {
+            padding: 16px 20px;
+            background: #0f151e;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .detail-selected-char {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .detail-char-big {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 26px;
+            font-weight: 700;
+            background: #05080c;
+            border: 1px solid var(--border-highlight);
+            color: var(--accent-blue);
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        .gallery-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .sample-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sample-card:hover {
+            border-color: #475569;
+        }
+        .sample-dual-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .sample-img-box {
+            background: #05080d;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 4px;
+        }
+        .sample-img-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .sample-img-label {
+            position: absolute;
+            bottom: 2px;
+            left: 4px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.6);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+        .sample-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 64px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #047857;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            gap: 8px;
+        }
+
+        /* User Profile & Admin Badges */
+        .user-profile-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.15s ease;
+        }
+        .user-profile-badge:hover {
+            background: #222d42;
+            border-color: var(--accent-blue);
+        }
+        .user-name {
+            color: #fff;
+            font-weight: 600;
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-role-tag {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 10px;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Welcome / Author Modal Card */
+        .author-modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 420px;
+            padding: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), var(--shadow-glow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .author-modal-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin: 8px 0 4px 0;
+        }
+        .author-modal-header p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Review & Staging Admin Panel */
+        .review-card {
+            background: #111722;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+        .review-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+        .review-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .review-char-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            background: #182234;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        .review-previews {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .review-img-box {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .review-img-box.iso-bg {
+            background-color: #0c101a;
+            background-image: linear-gradient(45deg, #131b2c 25%, transparent 25%), 
+                              linear-gradient(-45deg, #131b2c 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #131b2c 75%), 
+                              linear-gradient(-45deg, transparent 75%, #131b2c 75%);
+            background-size: 10px 10px;
+            background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+        }
+        .review-img-box img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            image-rendering: auto;
+        }
+        .review-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .review-meta strong {
+            color: #e2e8f0;
+        }
+        .review-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 6px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <h1>🖋️ Banco de Glifos Coloane</h1>
+            <span class="badge-exp">Exp 06 · Web</span>
+        </div>
+        <div class="header-center">
+            <input type="file" id="fileUploadInput" accept="image/*" style="display: none;" />
+            <button class="btn btn-upload" id="btnUploadImage" title="Subir imagen o presiona Ctrl+V para pegar captura">
+                📤 Cargar Imagen / Pegar (Ctrl+V)
+            </button>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button class="btn" id="btnOpenAdminReview" style="display: none; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border-color: #f59e0b; color: #fff; box-shadow: 0 0 12px rgba(245, 158, 11, 0.3); font-weight: 600;">
+                📥 Revisión <span class="badge-count" id="adminPendingCount" style="background: rgba(0,0,0,0.5); padding: 1px 7px; border-radius: 10px; font-size: 11px; margin-left: 4px; font-family: 'JetBrains Mono';">0</span>
+            </button>
+            <div class="user-profile-badge" id="btnChangeUser" title="Haz clic para cambiar de colaborador">
+                <span>👤</span>
+                <span class="user-name" id="displayUserName">Colaborador</span>
+                <span class="user-role-tag" id="displayUserRole" style="display: none;">Admin</span>
+            </div>
+            <button class="btn btn-coverage" id="btnOpenCoverage">📊 Catálogo & Cobertura</button>
+            <div class="stats-badge" id="totalStatsBadge">Total Glifos: 0</div>
+        </div>
+    </header>
+
+    <!-- Workspace -->
+    <div class="workspace">
+        <div class="editor-container">
+            <!-- Integrated Canvas Toolbar -->
+            <div class="canvas-toolbar">
+                <div class="toolbar-left">
+                    <div class="tool-mode-group">
+                        <button class="tool-btn active" id="btnToolRect" title="Modo Rectángulo (Tecla 1)">
+                            ⬛ Rectángulo (1)
+                        </button>
+                        <button class="tool-btn" id="btnToolPoly" title="Modo Polígono por Vértices (Tecla 2)">
+                            📐 Polígono (2)
+                        </button>
+                    </div>
+
+                    <span class="info-hint" id="modeHint">
+                        Modo Rectángulo: Arrastra para encerrar una letra
+                    </span>
+                </div>
+
+                <div class="toolbar-right">
+                    <span class="image-dimensions-pill" id="imageDimensionsPill">0×0 px</span>
+                    <button class="btn" id="btnZoomOut" title="Reducir Zoom">-</button>
+                    <span class="zoom-badge" id="zoomLevelDisplay">100%</span>
+                    <button class="btn" id="btnZoomIn" title="Aumentar Zoom">+</button>
+                    <button class="btn" id="btnResetZoom" title="Ajustar a pantalla (Tecla R)">🔍 Ajustar (R)</button>
+                </div>
+            </div>
+
+            <!-- Viewport & Dropzone -->
+            <div class="viewport" id="viewport">
+                <canvas id="cropCanvas"></canvas>
+
+                <!-- Initial Empty State Dropzone -->
+                <div class="empty-dropzone" id="emptyDropzone">
+                    <div class="dropzone-icon">📋</div>
+                    <h2 class="dropzone-title">Pega una captura del manuscrito (Ctrl + V)</h2>
+                    <p class="dropzone-subtitle">O arrastra y suelta una imagen aquí para recortar y catalogar sus letras caligráficas.</p>
+                    <div class="dropzone-tip">
+                        💡 <strong>Tip:</strong> Usa <code>Win + Shift + S</code> en Windows para recortar cualquier letra del cuaderno y pégala aquí directamente.
+                    </div>
+                    <button class="btn btn-primary" id="btnDropzoneUpload">
+                        📂 Seleccionar Archivo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Missing Glyphs HUD Quest Dock -->
+            <div class="hud-missing-dock" id="hudMissingDock">
+                <div class="hud-dock-header">
+                    <div class="hud-dock-title">
+                        <span class="hud-dock-icon">🎯</span>
+                        <span style="font-weight: 700; color: #fff; font-size: 12px;">Objetivos:</span>
+                        <div class="hud-tab-group">
+                            <button class="hud-tab-btn active" id="tabMissingMin" data-filter="min">🔡 Minúsculas (<span id="countMissingMin">0</span>)</button>
+                            <button class="hud-tab-btn" id="tabMissingMay" data-filter="may">🔠 Mayúsculas (<span id="countMissingMay">0</span>)</button>
+                            <button class="hud-tab-btn" id="tabMissingPocas" data-filter="pocas">🟡 1 Sola Muestra (<span id="countMissingPocas">0</span>)</button>
+                            <button class="hud-tab-btn" id="tabMissingSigns" data-filter="signs">✒️ Signos (<span id="countMissingSigns">0</span>)</button>
+                        </div>
+                    </div>
+                    <div class="hud-dock-right">
+                        <div class="hud-progress-mini">
+                            <span class="hud-prog-label" id="hudProgMinLabel">Min: 0/27 (0%)</span>
+                            <div class="hud-prog-bar-bg"><div class="hud-prog-bar-fill" id="hudProgMinBar" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="hud-progress-mini">
+                            <span class="hud-prog-label" id="hudProgMayLabel">May: 0/27 (0%)</span>
+                            <div class="hud-prog-bar-bg"><div class="hud-prog-bar-fill may" id="hudProgMayBar" style="width: 0%;"></div></div>
+                        </div>
+                        <button class="btn-icon" id="btnToggleHudDock" title="Ocultar / Mostrar Barra de Objetivos" style="padding: 2px 6px;">
+                            <span id="iconToggleHud">▼</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hud-dock-body" id="hudDockBody">
+                    <div class="hud-chips-scroll" id="hudChipsContainer">
+                        <!-- Dynamic Chips -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Assignment Popover -->
+            <div class="assignment-card" id="assignmentCard">
+                <div class="assignment-header">
+                    <span>Clasificar Glifo Seleccionado</span>
+                    <button class="btn-icon" id="btnCloseModal" style="padding: 0 4px;">✕</button>
+                </div>
+                <div class="crop-preview-dual-container">
+                    <div class="crop-preview-half">
+                        <span class="preview-tag">Manuscrito (RGB)</span>
+                        <div class="crop-preview-box">
+                            <canvas id="previewCanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="crop-preview-half">
+                        <span class="preview-tag">Tinta Pura (RGBA)</span>
+                        <div class="crop-preview-box isolated-box">
+                            <canvas id="previewIsoCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Letra / Carácter Exacto *</label>
+                    <input type="text" class="form-input" id="inputChar" maxlength="4" placeholder="ej. T, a, ñ, 7, «" autofocus autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label>Categoría Caligráfica *</label>
+                    <select class="form-select" id="selectCategory">
+                        <option value="minuscula" selected>🔡 Minúscula</option>
+                        <option value="mayuscula">🔠 Mayúscula</option>
+                        <option value="numero">🔢 Número</option>
+                        <option value="signo">✒️ Signo de Puntuación</option>
+                        <option value="ligadura">🔗 Ligadura / Par de letras</option>
+                        <option value="simbolo">🎨 Símbolo / Trazo Especial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nota / Contexto (Opcional)</label>
+                    <input type="text" class="form-input" id="inputNotes" placeholder="ej. x inicial, bucle cerrado, tinta azul" />
+                </div>
+                <div class="btn-row">
+                    <button class="btn" id="btnCancelAssignment">Cancelar (Esc)</button>
+                    <button class="btn btn-primary" id="btnConfirmAssignment">Asignar (Enter)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Inventory -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Glifos de la Captura</h2>
+                <span class="glyph-count-badge" id="captureGlyphCount">0 glifos</span>
+            </div>
+            <div class="glyph-list" id="glyphListContainer">
+                <div class="empty-state">
+                    <p>Pega o carga una imagen y selecciona letras para clasificarlas.</p>
+                </div>
+            </div>
+            <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; padding: 0 4px;">
+                    <span>Aportando como: <strong id="sidebarAuthorName" style="color: var(--accent-blue);">Colaborador</strong></span>
+                    <a href="javascript:void(0)" id="linkChangeAuthor" style="color: var(--text-muted); text-decoration: underline; font-size: 11px; cursor: pointer;">Cambiar</a>
+                </div>
+                <button class="btn btn-success" id="btnSaveGlyphs" style="width: 100%; justify-content: center; padding: 10px;" disabled>
+                    💾 Guardar en Banco de Datos (Ctrl+S)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cobertura y Catálogo de Glifos -->
+    <div class="modal-overlay" id="coverageModal">
+        <div class="catalog-modal">
+            <div class="catalog-header">
+                <div class="catalog-header-title">
+                    <h2>📊 Catálogo de Glifos & Cobertura del Abecedario</h2>
+                </div>
+                <div class="catalog-summary-chips">
+                    <div class="chip chip-min" id="chipMinStats">Minúsculas: 0/27 (0%)</div>
+                    <div class="chip chip-may" id="chipMayStats">Mayúsculas: 0/27 (0%)</div>
+                    <div class="chip chip-tot" id="chipTotStats">Total: 0 glifos</div>
+                    <button class="btn-icon" id="btnCloseCoverageModal" style="font-size: 16px; margin-left: 8px;">✕</button>
+                </div>
+            </div>
+
+            <div class="catalog-body">
+                <!-- Grid de Abecedario -->
+                <div class="catalog-grid-pane">
+                    
+                    <!-- Minúsculas -->
+                    <div>
+                        <div class="catalog-section-title">
+                            <span>🔡 Minúsculas (a - z)</span>
+                            <span id="labelMinProgress">0 de 27</span>
+                        </div>
+                        <div class="letters-grid" id="gridMinusculas"></div>
+                    </div>
+
+                    <!-- Mayúsculas -->
+                    <div>
+                        <div class="catalog-section-title">
+                            <span>🔠 Mayúsculas (A - Z)</span>
+                            <span id="labelMayProgress">0 de 27</span>
+                        </div>
+                        <div class="letters-grid" id="gridMayusculas"></div>
+                    </div>
+
+                    <!-- Números y Signos -->
+                    <div>
+                        <div class="catalog-section-title">
+                            <span>🔢 Números y ✒️ Signos</span>
+                            <span id="labelOthersProgress">0 caracteres</span>
+                        </div>
+                        <div class="letters-grid" id="gridOthers"></div>
+                    </div>
+
+                    <!-- Ligaduras y Símbolos -->
+                    <div>
+                        <div class="catalog-section-title">
+                            <span>🔗 Ligaduras & Símbolos</span>
+                            <span id="labelLigaturesProgress">0 muestras</span>
+                        </div>
+                        <div class="letters-grid" id="gridLigatures"></div>
+                    </div>
+
+                </div>
+
+                <!-- Detalle / Galería de Glifos del Carácter Seleccionado -->
+                <div class="catalog-detail-pane">
+                    <div class="detail-pane-header">
+                        <div class="detail-selected-char">
+                            <div class="detail-char-big" id="detailCharBig">-</div>
+                            <div>
+                                <h3 id="detailCharTitle" style="font-size: 15px; color: #fff;">Selecciona un carácter</h3>
+                                <p id="detailCharSubtitle" style="font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono';">0 muestras guardadas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-container" id="galleryContainer">
+                        <div class="empty-state">
+                            <p>Haz clic en cualquier letra de la izquierda para ver todas sus muestras recortadas y con tinta aislada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Modal de Identificación de Colaborador -->
+    <div class="modal-overlay" id="authorModal">
+        <div class="author-modal-card">
+            <div class="author-modal-header">
+                <div style="font-size: 32px;">🖋️</div>
+                <h2>Banco de Glifos Coloane</h2>
+                <p>Ingresa tu nombre o alias para comenzar a capturar y catalogar glifos manuscritos.</p>
+            </div>
+            <div class="form-group" style="margin: 8px 0; text-align: left;">
+                <label>Tu Nombre o Alias *</label>
+                <input type="text" class="form-input" id="modalInputAuthor" placeholder="ej. Wladimir, Juan Pérez, María..." maxlength="30" autofocus autocomplete="off" style="font-size: 15px; padding: 10px;" />
+            </div>
+            <button class="btn btn-primary" id="btnSaveAuthorModal" style="width: 100%; justify-content: center; padding: 10px; font-size: 14px; font-weight: 600;">
+                Comenzar a Anotar 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Revisión y Curaduría (Admin: Wladimir) -->
+    <div class="modal-overlay" id="adminReviewModal">
+        <div class="catalog-modal" style="max-width: 1250px;">
+            <div class="catalog-header" style="background: #141a24; border-bottom: 1px solid #d97706;">
+                <div class="catalog-header-title">
+                    <h2>📥 Bandeja de Aportes Recientes (Curaduría Admin)</h2>
+                    <span class="user-role-tag" style="font-size: 11px;">Wladimir</span>
+                </div>
+                <div class="catalog-summary-chips">
+                    <div class="chip" id="chipAdminPending" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3);">
+                        Pendientes: 0 glifos
+                    </div>
+                    <button class="btn btn-success" id="btnSyncToGitHub" style="font-weight: 600; box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);">
+                        🚀 Sincronizar Aprobados a GitHub
+                    </button>
+                    <button class="btn-icon" id="btnCloseAdminReviewModal" style="font-size: 16px; margin-left: 8px;">✕</button>
+                </div>
+            </div>
+
+            <div class="review-modal-body" style="padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px;">
+                <div class="review-controls-bar" style="display: flex; justify-content: space-between; align-items: center; background: #0c1017; padding: 12px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <div style="font-size: 13px; color: var(--text-muted);">
+                        💡 Revisa cada muestra. Puedes descartar con ❌ las defectuosas o con ruido. Cuando estés listo, presiona <strong>Sincronizar a GitHub</strong>.
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn" id="btnRefreshStaging" style="font-size: 12px; padding: 6px 12px;">
+                            🔄 Actualizar Lista
+                        </button>
+                    </div>
+                </div>
+
+                <div class="review-grid" id="stagingGlyphsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;">
+                    <div class="empty-state" style="grid-column: 1 / -1; padding: 40px;">
+                        <p>No hay glifos pendientes de revisión en este momento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toastMessage">✓ Guardado</div>
+
+    <script>
+        // =========================================================================
+        // CONFIGURACIÓN SUPABASE (STAGING BUFFER CLOUD)
+        // =========================================================================
+        const SUPABASE_URL = 'https://pqkvxewberkkihiaqizt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxa3Z4ZXdiZXJra2loaWFxaXp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1MjMwNDAsImV4cCI6MjEwMzA5OTA0MH0.2g35E4w4Haw0mlKvZab20yHp43wU8DZ6KVeMB7rV9pk';
+        const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function') 
+            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
+            : null;
+
+        function dataURItoBlob(dataURI) {
+            if (!dataURI) return null;
+            const parts = dataURI.split(',');
+            const byteString = atob(parts[1]);
+            const mimeString = parts[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
+        }
+
+        // State
+        let allGlyphs = [];
+        let currentImage = null; // Image object
+        let currentImageDataUrl = null; // base64
+        let currentCaptureId = null;
+        let currentBoxes = [];
+
+        // Selection Tool Mode: 'rect' or 'polygon'
+        let selectionMode = 'rect';
+        let polygonPoints = []; // [{x, y}, ...]
+        let currentMouseImg = { x: 0, y: 0 };
+        let isNearStartPoint = false;
+
+        // HUD Active Filter: 'min', 'may', 'pocas', 'signs'
+        let hudFilter = 'min';
+
+        // Viewport & Pan/Zoom
+        const viewport = document.getElementById('viewport');
+        const emptyDropzone = document.getElementById('emptyDropzone');
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const previewCtx = previewCanvas.getContext('2d');
+        const previewIsoCanvas = document.getElementById('previewIsoCanvas');
+        const previewIsoCtx = previewIsoCanvas.getContext('2d');
+
+        let zoom = 1.0;
+        let panX = 0;
+        let panY = 0;
+        let isPanning = false;
+        let startPanX = 0;
+        let startPanY = 0;
+
+        // Rectangle Drawing
+        let isDrawing = false;
+        let drawStartImgX = 0;
+        let drawStartImgY = 0;
+        let currentDrawRect = null;
+
+        const CAT_COLORS = {
+            'mayuscula': '#38bdf8',
+            'minuscula': '#34d399',
+            'numero': '#fbbf24',
+            'signo': '#c084fc',
+            'ligadura': '#f472b6',
+            'simbolo': '#fb923c'
+        };
+
+        const ABC_MIN_BASE = 'abcdefghijklmnñopqrstuvwxyz'.split('');
+        const ABC_MIN_ACCENT = 'áéíóú'.split('');
+        const ABC_MIN_ALL = [...ABC_MIN_BASE, ...ABC_MIN_ACCENT];
+
+        const ABC_MAY_BASE = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+        const ABC_MAY_ACCENT = 'ÁÉÍÓÚ'.split('');
+        const ABC_MAY_ALL = [...ABC_MAY_BASE, ...ABC_MAY_ACCENT];
+
+        const COMMON_SIGNS = ['1','2','3','4','5','6','7','8','9','0', '.', ',', ':', ';', '"', '«', '»', '—', '-', '?', '!', '(', ')', '/'];
+
+        // =========================================================================
+        // GESTIÓN DE COLABORADORES Y ROL DE ADMINISTRADOR (Wladimir)
+        // =========================================================================
+        let currentAuthor = localStorage.getItem('coloane_author') || '';
+
+        function isAdminUser(name) {
+            if (!name) return false;
+            const normalized = name.trim().toLowerCase();
+            return normalized === 'wladimir' || normalized === 'wladi';
+        }
+
+        function updateAuthorUI() {
+            const displayName = currentAuthor || 'Colaborador';
+            const displayEl = document.getElementById('displayUserName');
+            if (displayEl) displayEl.textContent = displayName;
+
+            const sidebarAuthorEl = document.getElementById('sidebarAuthorName');
+            if (sidebarAuthorEl) sidebarAuthorEl.textContent = displayName;
+
+            const isAdmin = isAdminUser(currentAuthor);
+            const adminTag = document.getElementById('displayUserRole');
+            const btnAdmin = document.getElementById('btnOpenAdminReview');
+
+            if (isAdmin) {
+                if (adminTag) adminTag.style.display = 'inline-block';
+                if (btnAdmin) btnAdmin.style.display = 'inline-flex';
+                fetchStagingGlyphs();
+            } else {
+                if (adminTag) adminTag.style.display = 'none';
+                if (btnAdmin) btnAdmin.style.display = 'none';
+            }
+        }
+
+        function openAuthorModal() {
+            const modal = document.getElementById('authorModal');
+            const input = document.getElementById('modalInputAuthor');
+            input.value = currentAuthor;
+            modal.classList.add('open');
+            setTimeout(() => input.focus(), 150);
+        }
+
+        function closeAuthorModal() {
+            const modal = document.getElementById('authorModal');
+            modal.classList.remove('open');
+        }
+
+        function saveAuthorFromModal() {
+            const input = document.getElementById('modalInputAuthor');
+            const name = input.value.trim();
+            if (!name) {
+                alert("Por favor escribe tu nombre o alias para continuar.");
+                input.focus();
+                return;
+            }
+            currentAuthor = name;
+            localStorage.setItem('coloane_author', currentAuthor);
+            updateAuthorUI();
+            closeAuthorModal();
+            const roleMsg = isAdminUser(currentAuthor) ? ' (Modo Administrador 👑)' : '';
+            showToast(`👤 Conectado como: ${currentAuthor}${roleMsg}`);
+        }
+
+        function setupAuthorManager() {
+            const btnUser = document.getElementById('btnChangeUser');
+            if (btnUser) btnUser.addEventListener('click', openAuthorModal);
+
+            const linkChange = document.getElementById('linkChangeAuthor');
+            if (linkChange) linkChange.addEventListener('click', openAuthorModal);
+
+            const btnSaveModal = document.getElementById('btnSaveAuthorModal');
+            if (btnSaveModal) btnSaveModal.addEventListener('click', saveAuthorFromModal);
+
+            const inputModal = document.getElementById('modalInputAuthor');
+            if (inputModal) {
+                inputModal.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveAuthorFromModal();
+                    }
+                });
+            }
+
+            if (!currentAuthor) {
+                openAuthorModal();
+            } else {
+                updateAuthorUI();
+            }
+        }
+
+        // Init
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            setupToolModeSwitcher();
+            setupImageIngestion();
+            setupCatalogModal();
+            setupHudDock();
+            setupAuthorManager();
+            setupAdminReviewModal();
+            fetchInitData();
+        });
+
+        function resizeCanvas() {
+            const rect = viewport.getBoundingClientRect();
+            const w = Math.round(rect.width);
+            const h = Math.round(rect.height);
+            if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
+                canvas.width = w;
+                canvas.height = h;
+                renderCanvas();
+            }
+        }
+
+        // Continuous DOM size observer to keep internal canvas buffer 1:1 with displayed size
+        const vpResizeObserver = new ResizeObserver(() => {
+            resizeCanvas();
+        });
+        vpResizeObserver.observe(viewport);
+
+        // Coordinate transforms
+        function screenToImage(clientX, clientY) {
+            const rect = canvas.getBoundingClientRect();
+            if (!rect.width || !rect.height) return { x: 0, y: 0 };
+            
+            // Exact scale factor between display size and internal canvas buffer
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const sx = (clientX - rect.left) * scaleX;
+            const sy = (clientY - rect.top) * scaleY;
+            return {
+                x: (sx - panX) / zoom,
+                y: (sy - panY) / zoom
+            };
+        }
+
+        function imageToScreen(imgX, imgY) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = rect.width / (canvas.width || 1);
+            const scaleY = rect.height / (canvas.height || 1);
+
+            const canvasX = panX + (imgX * zoom);
+            const canvasY = panY + (imgY * zoom);
+
+            return {
+                x: rect.left + (canvasX * scaleX),
+                y: rect.top + (canvasY * scaleY)
+            };
+        }
+
+        // Tool Mode Switcher
+        function setupToolModeSwitcher() {
+            const btnRect = document.getElementById('btnToolRect');
+            const btnPoly = document.getElementById('btnToolPoly');
+            const modeHint = document.getElementById('modeHint');
+
+            function setMode(mode) {
+                selectionMode = mode;
+                polygonPoints = [];
+                isDrawing = false;
+                currentDrawRect = null;
+
+                if (mode === 'rect') {
+                    btnRect.classList.add('active');
+                    btnPoly.classList.remove('active');
+                    modeHint.textContent = 'Modo Rectángulo: Arrastra para encerrar una letra';
+                } else {
+                    btnPoly.classList.add('active');
+                    btnRect.classList.remove('active');
+                    modeHint.textContent = 'Modo Polígono: Clics: Vértices | Doble Clic / Enter: Cerrar | Esc: Cancelar';
+                }
+                renderCanvas();
+            }
+
+            btnRect.addEventListener('click', () => setMode('rect'));
+            btnPoly.addEventListener('click', () => setMode('polygon'));
+
+            window.addEventListener('keydown', (e) => {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
+                if (e.key === '1') setMode('rect');
+                if (e.key === '2') setMode('polygon');
+                if (e.key === 'r' || e.key === 'R') resetZoom();
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    saveGlyphsToDatabase();
+                }
+                if (e.key === 'Escape') {
+                    if (polygonPoints.length > 0) {
+                        polygonPoints = [];
+                        renderCanvas();
+                    } else {
+                        closeModal();
+                    }
+                }
+                if (e.key === 'Backspace' && selectionMode === 'polygon' && polygonPoints.length > 0) {
+                    polygonPoints.pop();
+                    renderCanvas();
+                }
+                if (e.key === 'Enter' && selectionMode === 'polygon' && polygonPoints.length >= 3) {
+                    completePolygonSelection();
+                }
+            });
+        }
+
+        // Image Ingestion: Upload, Drag & Drop, Clipboard Paste
+        function setupImageIngestion() {
+            const fileInput = document.getElementById('fileUploadInput');
+            const btnUpload = document.getElementById('btnUploadImage');
+            const btnDropzone = document.getElementById('btnDropzoneUpload');
+
+            btnUpload.addEventListener('click', () => fileInput.click());
+            btnDropzone.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    handleImageFile(e.target.files[0]);
+                }
+            });
+
+            // Global Clipboard Paste (Ctrl + V)
+            window.addEventListener('paste', (e) => {
+                const items = e.clipboardData && e.clipboardData.items;
+                if (!items) return;
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        const blob = items[i].getAsFile();
+                        handleImageFile(blob, 'Captura Portapapeles');
+                        break;
+                    }
+                }
+            });
+
+            // Drag and Drop support
+            viewport.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                emptyDropzone.classList.add('dragover');
+            });
+            viewport.addEventListener('dragleave', () => {
+                emptyDropzone.classList.remove('dragover');
+            });
+            viewport.addEventListener('drop', (e) => {
+                e.preventDefault();
+                emptyDropzone.classList.remove('dragover');
+                if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    handleImageFile(e.dataTransfer.files[0]);
+                }
+            });
+        }
+
+        function handleImageFile(file, customTitle) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataUrl = event.target.result;
+                const timestamp = Date.now();
+                currentCaptureId = `cap_${timestamp}`;
+                currentImageDataUrl = dataUrl;
+                currentBoxes = [];
+
+                const img = new Image();
+                img.onload = () => {
+                    currentImage = img;
+                    emptyDropzone.style.display = 'none';
+
+                    const dimPill = document.getElementById('imageDimensionsPill');
+                    dimPill.textContent = `${img.naturalWidth}×${img.naturalHeight} px`;
+                    dimPill.style.display = 'inline-block';
+
+                    document.getElementById('btnSaveGlyphs').disabled = false;
+
+                    resetZoom();
+                    renderCanvas();
+                    renderSidebarList();
+                    showToast(`✓ Imagen cargada (${img.naturalWidth}×${img.naturalHeight} px)`);
+                };
+                img.src = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // HUD Quest Dock Logic
+        function setupHudDock() {
+            const tabs = document.querySelectorAll('.hud-tab-btn');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    hudFilter = tab.dataset.filter;
+                    updateHudChips();
+                });
+            });
+
+            const btnToggle = document.getElementById('btnToggleHudDock');
+            const dock = document.getElementById('hudMissingDock');
+            const iconToggle = document.getElementById('iconToggleHud');
+
+            btnToggle.addEventListener('click', () => {
+                dock.classList.toggle('collapsed');
+                iconToggle.textContent = dock.classList.contains('collapsed') ? '▲' : '▼';
+                setTimeout(resizeCanvas, 220);
+            });
+        }
+
+        function updateMissingDock() {
+            const glyphsByChar = {};
+            allGlyphs.forEach(g => {
+                const c = g.character;
+                if (!glyphsByChar[c]) glyphsByChar[c] = [];
+                glyphsByChar[c].push(g);
+            });
+
+            // Calculate missing
+            const missingMin = ABC_MIN_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            const missingMay = ABC_MAY_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            
+            // Few samples (< 2)
+            const pocasSamples = Object.keys(glyphsByChar).filter(c => glyphsByChar[c].length === 1);
+            
+            // Missing signs
+            const missingSigns = COMMON_SIGNS.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+
+            // Base progress
+            const minCoveredBase = ABC_MIN_BASE.filter(c => (glyphsByChar[c] && glyphsByChar[c].length > 0)).length;
+            const mayCoveredBase = ABC_MAY_BASE.filter(c => (glyphsByChar[c] && glyphsByChar[c].length > 0)).length;
+
+            const minPct = Math.round((minCoveredBase / 27) * 100);
+            const mayPct = Math.round((mayCoveredBase / 27) * 100);
+
+            // Update Header counts
+            document.getElementById('countMissingMin').textContent = missingMin.length;
+            document.getElementById('countMissingMay').textContent = missingMay.length;
+            document.getElementById('countMissingPocas').textContent = pocasSamples.length;
+            document.getElementById('countMissingSigns').textContent = missingSigns.length;
+
+            // Mini progress bars
+            document.getElementById('hudProgMinLabel').textContent = `Min: ${minCoveredBase}/27 (${minPct}%)`;
+            document.getElementById('hudProgMinBar').style.width = `${minPct}%`;
+
+            document.getElementById('hudProgMayLabel').textContent = `May: ${mayCoveredBase}/27 (${mayPct}%)`;
+            document.getElementById('hudProgMayBar').style.width = `${mayPct}%`;
+
+            updateHudChips();
+        }
+
+        function updateHudChips() {
+            const container = document.getElementById('hudChipsContainer');
+            container.innerHTML = '';
+
+            const glyphsByChar = {};
+            allGlyphs.forEach(g => {
+                const c = g.character;
+                if (!glyphsByChar[c]) glyphsByChar[c] = [];
+                glyphsByChar[c].push(g);
+            });
+
+            let targetList = [];
+            let isPocasMode = false;
+
+            if (hudFilter === 'min') {
+                targetList = ABC_MIN_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            } else if (hudFilter === 'may') {
+                targetList = ABC_MAY_ALL.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            } else if (hudFilter === 'pocas') {
+                isPocasMode = true;
+                targetList = Object.keys(glyphsByChar).filter(c => glyphsByChar[c].length === 1);
+            } else if (hudFilter === 'signs') {
+                targetList = COMMON_SIGNS.filter(c => !(glyphsByChar[c] && glyphsByChar[c].length > 0));
+            }
+
+            if (targetList.length === 0) {
+                const banner = document.createElement('div');
+                banner.className = 'hud-all-done-banner';
+                banner.innerHTML = `✨ ¡Todo capturado en esta sección! Excelente trabajo.`;
+                container.appendChild(banner);
+                return;
+            }
+
+            targetList.forEach(char => {
+                const chip = document.createElement('div');
+                chip.className = `hud-chip ${isPocasMode ? 'pocas' : ''}`;
+                chip.title = isPocasMode ? `Letra "${char}" tiene solo 1 muestra. ¡Haz clic para usar!` : `Falta capturar la letra "${char}". ¡Haz clic para usar!`;
+                
+                chip.innerHTML = `
+                    <span class="chip-letter">${char}</span>
+                    <span class="chip-tag">${isPocasMode ? '1x' : 'Falta'}</span>
+                `;
+
+                chip.addEventListener('click', () => {
+                    handleChipClick(char);
+                });
+
+                container.appendChild(chip);
+            });
+        }
+
+        function handleChipClick(char) {
+            const card = document.getElementById('assignmentCard');
+            if (card.style.display === 'flex') {
+                // Auto-fill assignment modal!
+                const charInput = document.getElementById('inputChar');
+                const catSelect = document.getElementById('selectCategory');
+                charInput.value = char;
+
+                if (ABC_MAY_ALL.includes(char)) {
+                    catSelect.value = 'mayuscula';
+                } else if (ABC_MIN_ALL.includes(char)) {
+                    catSelect.value = 'minuscula';
+                } else if ('0123456789'.includes(char)) {
+                    catSelect.value = 'numero';
+                } else {
+                    catSelect.value = 'signo';
+                }
+
+                document.getElementById('inputNotes').focus();
+                showToast(`🎯 Letra "${char}" aplicada al recorte actual`);
+            } else {
+                showToast(`🎯 Objetivo: "${char}". Selecciona su trazo en la imagen.`);
+            }
+        }
+
+        // Backend / Static Data Sync
+        async function fetchInitData() {
+            try {
+                let res = await fetch('/api/init_data');
+                if (!res.ok) {
+                    res = await fetch('./dataset_glifos_manuales.json');
+                }
+                const data = await res.json();
+                allGlyphs = data.glyphs ? data.glyphs : (data.db && data.db.glyphs ? data.db.glyphs : []);
+                updateGlobalStats();
+            } catch (err) {
+                try {
+                    const fallbackRes = await fetch('./dataset_glifos_manuales.json');
+                    const data = await fallbackRes.json();
+                    allGlyphs = data.glyphs || [];
+                    updateGlobalStats();
+                } catch (e) {
+                    console.error("Error loading init data:", err, e);
+                }
+            }
+        }
+
+        function updateGlobalStats() {
+            const badge = document.getElementById('totalStatsBadge');
+            badge.textContent = `Total Glifos: ${allGlyphs.length}`;
+            updateCoverageModalData();
+            updateMissingDock();
+        }
+
+        function resetZoom() {
+            if (!currentImage || !currentImage.naturalWidth) return;
+            const vpW = viewport.clientWidth;
+            const vpH = viewport.clientHeight;
+            const fitW = (vpW - 60) / currentImage.naturalWidth;
+            const fitH = (vpH - 60) / currentImage.naturalHeight;
+            zoom = Math.min(fitW, fitH, 1.4);
+            if (zoom < 0.1) zoom = 0.1;
+            
+            panX = Math.max(30, (vpW - currentImage.naturalWidth * zoom) / 2);
+            panY = Math.max(30, (vpH - currentImage.naturalHeight * zoom) / 2);
+            updateZoomDisplay();
+            renderCanvas();
+        }
+
+        function updateZoomDisplay() {
+            document.getElementById('zoomLevelDisplay').textContent = `${Math.round(zoom * 100)}%`;
+        }
+
+        // Canvas Rendering
+        function renderCanvas() {
+            ctx.save();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!currentImage) {
+                ctx.restore();
+                return;
+            }
+
+            ctx.translate(panX, panY);
+            ctx.scale(zoom, zoom);
+
+            if (currentImage.complete && currentImage.naturalWidth > 0) {
+                ctx.drawImage(currentImage, 0, 0);
+            }
+
+            // Render existing classified boxes / polygons
+            currentBoxes.forEach((box) => {
+                const color = CAT_COLORS[box.category] || '#38bdf8';
+                ctx.strokeStyle = color;
+                ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
+                ctx.fillStyle = color + '25';
+                
+                if (box.polygon && box.polygon.length >= 3) {
+                    ctx.beginPath();
+                    box.polygon.forEach((pt, i) => {
+                        if (i === 0) ctx.moveTo(pt[0], pt[1]);
+                        else ctx.lineTo(pt[0], pt[1]);
+                    });
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                } else {
+                    ctx.fillRect(box.x, box.y, box.w, box.h);
+                    ctx.strokeRect(box.x, box.y, box.w, box.h);
+                }
+
+                ctx.fillStyle = color;
+                const fontSize = Math.max(12, Math.min(22, Math.round(box.h * 0.35)));
+                ctx.font = `bold ${fontSize}px 'JetBrains Mono', monospace`;
+                const labelText = box.character;
+                const textWidth = ctx.measureText(labelText).width;
+                
+                ctx.fillRect(box.x, box.y - fontSize - 6, textWidth + 8, fontSize + 6);
+                ctx.fillStyle = '#000000';
+                ctx.fillText(labelText, box.x + 4, box.y - 4);
+            });
+
+            // Active rectangle drawing preview
+            if (selectionMode === 'rect' && isDrawing && currentDrawRect) {
+                ctx.strokeStyle = '#f43f5e';
+                ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
+                ctx.setLineDash([6 / zoom, 4 / zoom]);
+                ctx.fillStyle = 'rgba(244, 63, 94, 0.25)';
+                ctx.fillRect(currentDrawRect.x, currentDrawRect.y, currentDrawRect.w, currentDrawRect.h);
+                ctx.strokeRect(currentDrawRect.x, currentDrawRect.y, currentDrawRect.w, currentDrawRect.h);
+                ctx.setLineDash([]);
+            }
+
+            // Active polygon drawing preview
+            if (selectionMode === 'polygon' && polygonPoints.length > 0) {
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = Math.max(1.5, 2.5 / zoom);
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+
+                ctx.beginPath();
+                polygonPoints.forEach((pt, i) => {
+                    if (i === 0) ctx.moveTo(pt.x, pt.y);
+                    else ctx.lineTo(pt.x, pt.y);
+                });
+                ctx.lineTo(currentMouseImg.x, currentMouseImg.y);
+                ctx.stroke();
+
+                // Draw vertex points
+                polygonPoints.forEach((pt, i) => {
+                    ctx.beginPath();
+                    const radius = (i === 0 && isNearStartPoint) ? 7 / zoom : 4 / zoom;
+                    ctx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
+                    ctx.fillStyle = (i === 0 && isNearStartPoint) ? '#10b981' : '#38bdf8';
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.5 / zoom;
+                    ctx.stroke();
+                });
+            }
+
+            ctx.restore();
+        }
+
+        // Viewport Event Listeners
+        viewport.addEventListener('wheel', (e) => {
+            if (!currentImage) return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / (rect.width || 1);
+            const scaleY = canvas.height / (rect.height || 1);
+
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+
+            const zoomFactor = e.deltaY < 0 ? 1.15 : 0.85;
+            const newZoom = Math.max(0.15, Math.min(6.0, zoom * zoomFactor));
+
+            panX = mouseX - (mouseX - panX) * (newZoom / zoom);
+            panY = mouseY - (mouseY - panY) * (newZoom / zoom);
+            zoom = newZoom;
+
+            updateZoomDisplay();
+            renderCanvas();
+        });
+
+        let origPanX = 0;
+        let origPanY = 0;
+
+        viewport.addEventListener('mousedown', (e) => {
+            if (!currentImage) return;
+            // Right click / Middle click / Shift+click = Pan
+            if (e.button === 1 || e.button === 2 || e.shiftKey || e.altKey) {
+                isPanning = true;
+                startPanX = e.clientX;
+                startPanY = e.clientY;
+                origPanX = panX;
+                origPanY = panY;
+                viewport.style.cursor = 'grab';
+                return;
+            }
+
+            if (e.button === 0) {
+                const imgCoords = screenToImage(e.clientX, e.clientY);
+                if (imgCoords.x < 0 || imgCoords.x > currentImage.naturalWidth ||
+                    imgCoords.y < 0 || imgCoords.y > currentImage.naturalHeight) {
+                    return;
+                }
+
+                if (selectionMode === 'rect') {
+                    isDrawing = true;
+                    drawStartImgX = Math.round(imgCoords.x);
+                    drawStartImgY = Math.round(imgCoords.y);
+                    currentDrawRect = { x: drawStartImgX, y: drawStartImgY, w: 0, h: 0 };
+                } else if (selectionMode === 'polygon') {
+                    // Check if clicked near start point to close polygon
+                    if (polygonPoints.length >= 3 && isNearStartPoint) {
+                        completePolygonSelection();
+                        return;
+                    }
+                    polygonPoints.push({ x: Math.round(imgCoords.x), y: Math.round(imgCoords.y) });
+                    renderCanvas();
+                }
+            }
+        });
+
+        viewport.addEventListener('dblclick', (e) => {
+            if (!currentImage) return;
+            if (selectionMode === 'polygon' && polygonPoints.length >= 3) {
+                completePolygonSelection();
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!currentImage) return;
+            const imgCoords = screenToImage(e.clientX, e.clientY);
+            currentMouseImg = {
+                x: Math.round(Math.max(0, Math.min(currentImage.naturalWidth, imgCoords.x))),
+                y: Math.round(Math.max(0, Math.min(currentImage.naturalHeight, imgCoords.y)))
+            };
+
+            if (isPanning) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / (rect.width || 1);
+                const scaleY = canvas.height / (rect.height || 1);
+                panX = origPanX + (e.clientX - startPanX) * scaleX;
+                panY = origPanY + (e.clientY - startPanY) * scaleY;
+                renderCanvas();
+                return;
+            }
+
+            if (selectionMode === 'rect' && isDrawing) {
+                const currentImgX = Math.round(imgCoords.x);
+                const currentImgY = Math.round(imgCoords.y);
+
+                const x = Math.max(0, Math.min(drawStartImgX, currentImgX));
+                const y = Math.max(0, Math.min(drawStartImgY, currentImgY));
+                const w = Math.min(currentImage.naturalWidth - x, Math.abs(currentImgX - drawStartImgX));
+                const h = Math.min(currentImage.naturalHeight - y, Math.abs(currentImgY - drawStartImgY));
+
+                currentDrawRect = { x, y, w, h };
+                renderCanvas();
+            } else if (selectionMode === 'polygon' && polygonPoints.length > 0) {
+                // Check proximity to first point directly in screen space
+                const p0 = polygonPoints[0];
+                const dx = currentMouseImg.x - p0.x;
+                const dy = currentMouseImg.y - p0.y;
+                const distScreen = Math.hypot(dx * zoom, dy * zoom);
+                isNearStartPoint = (distScreen < 18 && polygonPoints.length >= 3);
+                renderCanvas();
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isPanning) {
+                isPanning = false;
+                viewport.style.cursor = 'crosshair';
+            }
+
+            if (selectionMode === 'rect' && isDrawing) {
+                isDrawing = false;
+                if (currentDrawRect && currentDrawRect.w > 6 && currentDrawRect.h > 6) {
+                    openAssignmentModal(currentDrawRect, null, e.clientX, e.clientY);
+                }
+                currentDrawRect = null;
+                renderCanvas();
+            }
+        });
+
+        viewport.addEventListener('contextmenu', e => e.preventDefault());
+
+        function completePolygonSelection() {
+            if (polygonPoints.length < 3 || !currentImage) return;
+
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            polygonPoints.forEach(p => {
+                if (p.x < minX) minX = p.x;
+                if (p.y < minY) minY = p.y;
+                if (p.x > maxX) maxX = p.x;
+                if (p.y > maxY) maxY = p.y;
+            });
+
+            minX = Math.max(0, minX);
+            minY = Math.max(0, minY);
+            maxX = Math.min(currentImage.naturalWidth, maxX);
+            maxY = Math.min(currentImage.naturalHeight, maxY);
+            const w = maxX - minX;
+            const h = maxY - minY;
+
+            if (w < 4 || h < 4) {
+                polygonPoints = [];
+                renderCanvas();
+                return;
+            }
+
+            const polyArray = polygonPoints.map(p => [p.x, p.y]);
+            const rect = { x: minX, y: minY, w, h };
+            const screenCenter = imageToScreen(minX + w / 2, minY + h / 2);
+
+            openAssignmentModal(rect, polyArray, screenCenter.x, screenCenter.y);
+            polygonPoints = [];
+            renderCanvas();
+        }
+
+        // =========================================================================
+        // MOTOR DE AISLAMIENTO DE TINTA EN JS NATIVO (Equivalente a OpenCV adaptiveThreshold)
+        // =========================================================================
+        function getSafeChar(charStr) {
+            let safe = [];
+            for (let c of charStr) {
+                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+                    safe.push(c);
+                } else {
+                    safe.push('u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+                }
+            }
+            return safe.join('');
+        }
+
+        function extractIsolatedInk(sourceImg, rect, polyArray = null) {
+            const w = Math.max(1, Math.round(rect.w));
+            const h = Math.max(1, Math.round(rect.h));
+
+            // 1. Canvas RGB Original
+            const rgbCanvas = document.createElement('canvas');
+            rgbCanvas.width = w;
+            rgbCanvas.height = h;
+            const rgbCtx = rgbCanvas.getContext('2d', { willReadFrequently: true });
+
+            let polyMask = null;
+            if (polyArray && polyArray.length >= 3) {
+                // Fondo blanco exterior
+                rgbCtx.fillStyle = '#ffffff';
+                rgbCtx.fillRect(0, 0, w, h);
+
+                rgbCtx.save();
+                rgbCtx.beginPath();
+                polyArray.forEach((pt, i) => {
+                    const rx = pt[0] - rect.x;
+                    const ry = pt[1] - rect.y;
+                    if (i === 0) rgbCtx.moveTo(rx, ry);
+                    else rgbCtx.lineTo(rx, ry);
+                });
+                rgbCtx.closePath();
+                rgbCtx.clip();
+                rgbCtx.drawImage(sourceImg, rect.x, rect.y, rect.w, rect.h, 0, 0, w, h);
+                rgbCtx.restore();
+
+                // Construir máscara binaria del polígono
+                const maskCanvas = document.createElement('canvas');
+                maskCanvas.width = w;
+                maskCanvas.height = h;
+                const mCtx = maskCanvas.getContext('2d', { willReadFrequently: true });
+                mCtx.fillStyle = '#000000';
+                mCtx.beginPath();
+                polyArray.forEach((pt, i) => {
+                    const rx = pt[0] - rect.x;
+                    const ry = pt[1] - rect.y;
+                    if (i === 0) mCtx.moveTo(rx, ry);
+                    else mCtx.lineTo(rx, ry);
+                });
+                mCtx.closePath();
+                mCtx.fill();
+                const maskImgData = mCtx.getImageData(0, 0, w, h).data;
+                polyMask = new Uint8Array(w * h);
+                for (let i = 0; i < w * h; i++) {
+                    polyMask[i] = maskImgData[i * 4 + 3] > 0 ? 1 : 0;
+                }
+            } else {
+                rgbCtx.drawImage(sourceImg, rect.x, rect.y, rect.w, rect.h, 0, 0, w, h);
+            }
+
+            const imgData = rgbCtx.getImageData(0, 0, w, h);
+            const pixels = imgData.data;
+
+            // 2. Grayscale (Luminancia)
+            const gray = new Uint8Array(w * h);
+            for (let i = 0; i < w * h; i++) {
+                const r = pixels[i * 4];
+                const g = pixels[i * 4 + 1];
+                const b = pixels[i * 4 + 2];
+                gray[i] = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+            }
+
+            // 3. Umbralización Adaptativa Local usando Integral Image O(1)
+            const minDim = Math.min(w, h);
+            const blockSize = Math.max(3, Math.min(21, Math.floor(minDim / 2) * 2 + 1));
+            const radius = Math.floor(blockSize / 2);
+            const C = 10;
+
+            const integral = new Float64Array((w + 1) * (h + 1));
+            for (let y = 0; y < h; y++) {
+                let rowSum = 0;
+                const rowOffset = (y + 1) * (w + 1);
+                const prevRowOffset = y * (w + 1);
+                const grayOffset = y * w;
+                for (let x = 0; x < w; x++) {
+                    rowSum += gray[grayOffset + x];
+                    integral[rowOffset + x + 1] = integral[prevRowOffset + x + 1] + rowSum;
+                }
+            }
+
+            let binary = new Uint8Array(w * h);
+            for (let y = 0; y < h; y++) {
+                const y0 = Math.max(0, y - radius);
+                const y1 = Math.min(h, y + radius + 1);
+                for (let x = 0; x < w; x++) {
+                    const x0 = Math.max(0, x - radius);
+                    const x1 = Math.min(w, x + radius + 1);
+                    const count = (x1 - x0) * (y1 - y0);
+
+                    const sum = integral[y1 * (w + 1) + x1] 
+                              - integral[y0 * (w + 1) + x1] 
+                              - integral[y1 * (w + 1) + x0] 
+                              + integral[y0 * (w + 1) + x0];
+                    const localMean = sum / count;
+
+                    const idx = y * w + x;
+                    binary[idx] = (gray[idx] < localMean - C) ? 255 : 0;
+                }
+            }
+
+            // 4. Apertura Morfológica (Erosión 2x2 + Dilatación 2x2) si minDim >= 20
+            if (minDim >= 20) {
+                const eroded = new Uint8Array(w * h);
+                for (let y = 0; y < h - 1; y++) {
+                    for (let x = 0; x < w - 1; x++) {
+                        const idx = y * w + x;
+                        if (binary[idx] === 255 &&
+                            binary[idx + 1] === 255 &&
+                            binary[idx + w] === 255 &&
+                            binary[idx + w + 1] === 255) {
+                            eroded[idx] = 255;
+                        }
+                    }
+                }
+
+                const dilated = new Uint8Array(w * h);
+                for (let y = 0; y < h; y++) {
+                    for (let x = 0; x < w; x++) {
+                        const idx = y * w + x;
+                        if (eroded[idx] === 255) {
+                            dilated[idx] = 255;
+                            if (x + 1 < w) dilated[idx + 1] = 255;
+                            if (y + 1 < h) dilated[idx + w] = 255;
+                            if (x + 1 < w && y + 1 < h) dilated[idx + w + 1] = 255;
+                        }
+                    }
+                }
+                binary = dilated;
+            }
+
+            // Aplicar máscara de polígono
+            if (polyMask) {
+                for (let i = 0; i < w * h; i++) {
+                    if (polyMask[i] === 0) binary[i] = 0;
+                }
+            }
+
+            // 5. Canvas RGBA de Tinta Pura (#F0F0F0 + canal alfa de la máscara)
+            const isoCanvas = document.createElement('canvas');
+            isoCanvas.width = w;
+            isoCanvas.height = h;
+            const isoCtx = isoCanvas.getContext('2d');
+            const isoImgData = isoCtx.createImageData(w, h);
+            const isoData = isoImgData.data;
+
+            for (let i = 0; i < w * h; i++) {
+                isoData[i * 4] = 240;       // R
+                isoData[i * 4 + 1] = 240;   // G
+                isoData[i * 4 + 2] = 240;   // B
+                isoData[i * 4 + 3] = binary[i]; // Alpha (0 o 255)
+            }
+            isoCtx.putImageData(isoImgData, 0, 0);
+
+            return {
+                rgbCanvas,
+                isoCanvas,
+                rgbDataUrl: rgbCanvas.toDataURL('image/png'),
+                isoDataUrl: isoCanvas.toDataURL('image/png'),
+                w,
+                h
+            };
+        }
+
+        // Assignment Popover
+        function openAssignmentModal(rect, polyArray, clientX, clientY) {
+            const card = document.getElementById('assignmentCard');
+            
+            // Extraer y procesar tinta en tiempo real
+            const processed = extractIsolatedInk(currentImage, rect, polyArray);
+
+            // Renderizar RGB en previewCanvas
+            previewCanvas.width = processed.w;
+            previewCanvas.height = processed.h;
+            previewCtx.clearRect(0, 0, processed.w, processed.h);
+            previewCtx.drawImage(processed.rgbCanvas, 0, 0);
+
+            // Renderizar Tinta Pura en previewIsoCanvas
+            previewIsoCanvas.width = processed.w;
+            previewIsoCanvas.height = processed.h;
+            previewIsoCtx.clearRect(0, 0, processed.w, processed.h);
+            previewIsoCtx.drawImage(processed.isoCanvas, 0, 0);
+
+            const vpRect = viewport.getBoundingClientRect();
+            let popX = clientX - vpRect.left + 20;
+            let popY = clientY - vpRect.top - 60;
+
+            if (popX + 360 > vpRect.width) popX = vpRect.width - 370;
+            if (popY + 400 > vpRect.height) popY = vpRect.height - 410;
+            if (popX < 15) popX = 15;
+            if (popY < 15) popY = 15;
+
+            card.style.left = `${popX}px`;
+            card.style.top = `${popY}px`;
+            card.style.display = 'flex';
+
+            const charInput = document.getElementById('inputChar');
+            charInput.value = '';
+            document.getElementById('inputNotes').value = '';
+            charInput.focus();
+
+            card._activeRect = rect;
+            card._activePoly = polyArray || null;
+            card._activeProcessed = processed;
+        }
+
+        function closeModal() {
+            const card = document.getElementById('assignmentCard');
+            card.style.display = 'none';
+            card._activeRect = null;
+            card._activePoly = null;
+            card._activeProcessed = null;
+            renderCanvas();
+        }
+
+        function confirmAssignment() {
+            const card = document.getElementById('assignmentCard');
+            const rect = card._activeRect;
+            const poly = card._activePoly;
+            const processed = card._activeProcessed;
+            if (!rect) return;
+
+            const charVal = document.getElementById('inputChar').value.trim();
+            if (!charVal) {
+                alert("Por favor ingresa la letra o carácter correspondiente.");
+                document.getElementById('inputChar').focus();
+                return;
+            }
+
+            const categoryVal = document.getElementById('selectCategory').value;
+            const notesVal = document.getElementById('inputNotes').value.trim();
+            const safeChar = getSafeChar(charVal);
+            const glyphIndex = currentBoxes.length + 1;
+            const glyphId = `g_${currentCaptureId}_${glyphIndex < 10 ? '0' + glyphIndex : glyphIndex}_${safeChar}`;
+
+            const newBox = {
+                id: glyphId,
+                x: rect.x,
+                y: rect.y,
+                w: rect.w,
+                h: rect.h,
+                polygon: poly,
+                character: charVal,
+                category: categoryVal,
+                notes: notesVal,
+                rgbDataUrl: processed ? processed.rgbDataUrl : null,
+                isoDataUrl: processed ? processed.isoDataUrl : null,
+                crop_file: `${glyphId}.png`,
+                crop_isolated_file: `${glyphId}_iso.png`
+            };
+
+            currentBoxes.push(newBox);
+            closeModal();
+            renderCanvas();
+            renderSidebarList();
+        }
+
+        document.getElementById('btnConfirmAssignment').addEventListener('click', confirmAssignment);
+        document.getElementById('btnCancelAssignment').addEventListener('click', closeModal);
+        document.getElementById('btnCloseModal').addEventListener('click', closeModal);
+
+        document.getElementById('inputChar').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                confirmAssignment();
+            } else if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Sidebar List
+        function renderSidebarList() {
+            const container = document.getElementById('glyphListContainer');
+            const badge = document.getElementById('captureGlyphCount');
+            badge.textContent = `${currentBoxes.length} glifo${currentBoxes.length === 1 ? '' : 's'}`;
+
+            if (currentBoxes.length === 0) {
+                container.innerHTML = `
+                <div class="empty-state">
+                    <p>Usa la herramienta de selección para clasificar letras y caracteres de la captura.</p>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            currentBoxes.forEach((box, idx) => {
+                const card = document.createElement('div');
+                card.className = 'glyph-card';
+
+                const thumbImg = document.createElement('img');
+                thumbImg.className = 'glyph-thumb';
+                thumbImg.src = box.isoDataUrl || box.rgbDataUrl || '';
+                thumbImg.alt = box.character;
+                thumbImg.style.background = '#0a0e17';
+                thumbImg.style.objectFit = 'contain';
+
+                const catOption = document.querySelector(`#selectCategory option[value="${box.category}"]`);
+                const catLabel = catOption ? catOption.textContent.split(' ')[1] : box.category;
+                const polyTag = box.polygon ? ' 📐' : '';
+
+                card.innerHTML = `
+                <div class="glyph-info">
+                    <div class="glyph-char-row">
+                        <span class="glyph-char">${box.character}</span>
+                        <span class="category-pill cat-${box.category}">${catLabel}${polyTag}</span>
+                    </div>
+                    <div class="glyph-notes">${box.notes || `[x:${box.x}, y:${box.y}, ${box.w}×${box.h}px]`}</div>
+                </div>
+                <div class="glyph-actions">
+                    <button class="btn-icon" title="Eliminar Glifo" onclick="deleteBox(${idx})">🗑️</button>
+                </div>`;
+
+                card.prepend(thumbCanvas);
+                container.appendChild(card);
+            });
+        }
+
+        window.deleteBox = function(index) {
+            currentBoxes.splice(index, 1);
+            renderCanvas();
+            renderSidebarList();
+        };
+
+        // =========================================================================
+        // BANDEJA DE REVISIÓN Y CURADURÍA DE GLIFOS (ADMIN: Wladimir)
+        // =========================================================================
+        let stagingGlyphsList = [];
+
+        async function fetchStagingGlyphs() {
+            if (!supabaseClient) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('staging_glyphs')
+                    .select('*')
+                    .eq('status', 'pendiente')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error("Error fetching staging glyphs:", error);
+                    return;
+                }
+
+                stagingGlyphsList = data || [];
+                updateStagingUI();
+            } catch (err) {
+                console.error("Error in fetchStagingGlyphs:", err);
+            }
+        }
+
+        function updateStagingUI() {
+            const count = stagingGlyphsList.length;
+            const badge = document.getElementById('adminPendingCount');
+            if (badge) badge.textContent = count;
+
+            const chip = document.getElementById('chipAdminPending');
+            if (chip) chip.textContent = `Pendientes: ${count} glifo${count === 1 ? '' : 's'}`;
+
+            const grid = document.getElementById('stagingGlyphsGrid');
+            if (!grid) return;
+
+            if (count === 0) {
+                grid.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1; padding: 40px;">
+                    <div style="font-size: 32px; margin-bottom: 8px;">✨</div>
+                    <h3 style="color: #fff; margin-bottom: 4px;">Todo al día</h3>
+                    <p>No hay glifos pendientes de revisión en este momento.</p>
+                </div>`;
+                return;
+            }
+
+            grid.innerHTML = '';
+            stagingGlyphsList.forEach((glyph) => {
+                const card = document.createElement('div');
+                card.className = 'review-card';
+
+                const catOption = document.querySelector(`#selectCategory option[value="${glyph.category}"]`);
+                const catLabel = catOption ? catOption.textContent.split(' ')[1] : glyph.category;
+                const polyTag = (glyph.polygon && glyph.polygon.length >= 3) ? ' 📐' : '';
+                const dateStr = glyph.created_at ? new Date(glyph.created_at).toLocaleString('es-CL', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Reciente';
+
+                const rgbSrc = glyph.crop_url || `./crops/${glyph.crop_file}`;
+                const isoSrc = glyph.crop_iso_url || `./crops_isolated/${glyph.crop_isolated_file}`;
+
+                card.innerHTML = `
+                <div class="review-card-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="review-char-badge">${glyph.character}</div>
+                        <div>
+                            <span class="category-pill cat-${glyph.category}">${catLabel}${polyTag}</span>
+                            <div style="font-size: 11px; color: var(--accent-blue); font-weight: 600; margin-top: 2px;">
+                                👤 ${glyph.author || 'Anónimo'}
+                            </div>
+                        </div>
+                    </div>
+                    <span style="font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono';">${dateStr}</span>
+                </div>
+
+                <div class="review-previews">
+                    <div class="crop-preview-half">
+                        <span class="preview-tag">RGB</span>
+                        <div class="review-img-box">
+                            <img src="${rgbSrc}" alt="${glyph.character}" onerror="this.src='./crops/${glyph.crop_file}'" />
+                        </div>
+                    </div>
+                    <div class="crop-preview-half">
+                        <span class="preview-tag">Tinta RGBA</span>
+                        <div class="review-img-box iso-bg">
+                            <img src="${isoSrc}" alt="${glyph.character}" onerror="this.src='./crops_isolated/${glyph.crop_isolated_file}'" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-meta">
+                    <div>Dimensiones: <strong>${glyph.bbox ? `${glyph.bbox[2]}×${glyph.bbox[3]} px` : 'N/A'}</strong></div>
+                    ${glyph.notes ? `<div>Nota: <em>${glyph.notes}</em></div>` : ''}
+                    <div style="color: #64748b; font-family: 'JetBrains Mono'; font-size: 10px;">ID: ${glyph.id}</div>
+                </div>
+
+                <div class="review-actions">
+                    <button class="btn btn-danger" style="flex: 1; padding: 6px; font-size: 12px; justify-content: center; background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171;" onclick="deleteStagingGlyph('${glyph.id}', '${glyph.crop_file}', '${glyph.crop_isolated_file}')">
+                        🗑️ Descartar
+                    </button>
+                </div>`;
+
+                grid.appendChild(card);
+            });
+        }
+
+        window.deleteStagingGlyph = async function(id, cropFile, cropIsoFile) {
+            if (!confirm(`¿Descartar el glifo ${id}?`)) return;
+            if (!supabaseClient) return;
+            try {
+                const { error: dbErr } = await supabaseClient
+                    .from('staging_glyphs')
+                    .delete()
+                    .eq('id', id);
+
+                if (dbErr) {
+                    alert("Error al eliminar de base de datos: " + dbErr.message);
+                    return;
+                }
+
+                try {
+                    await supabaseClient.storage.from('staging_crops').remove([cropFile, cropIsoFile]);
+                } catch (e) {
+                    console.warn("Storage removal warning:", e);
+                }
+
+                showToast("✓ Glifo descartado de revisión");
+                await fetchStagingGlyphs();
+            } catch (err) {
+                console.error("Error deleting staging glyph:", err);
+                alert("Error al descartar glifo.");
+            }
+        };
+
+        async function handleSyncToGitHub() {
+            if (stagingGlyphsList.length === 0) {
+                alert("No hay glifos pendientes para sincronizar.");
+                return;
+            }
+
+            const btn = document.getElementById('btnSyncToGitHub');
+            btn.disabled = true;
+            btn.textContent = '⏳ Sincronizando con GitHub...';
+
+            try {
+                const res = await fetch('/api/sync_github', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ author: currentAuthor })
+                });
+
+                if (res.ok) {
+                    const result = await res.json();
+                    showToast(`🚀 ${result.synced_count || stagingGlyphsList.length} glifos sincronizados exitosamente a GitHub!`);
+                    await fetchStagingGlyphs();
+                    await fetchInitData();
+                } else {
+                    const err = await res.json();
+                    alert("Aviso de sincronización: " + (err.message || 'Función serverless en configuración'));
+                }
+            } catch (err) {
+                console.warn("Sync to GitHub notice:", err);
+                alert("Sincronización: El endpoint serverless de GitHub se activará al desplegar en Vercel.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Sincronizar Aprobados a GitHub';
+            }
+        }
+
+        function setupAdminReviewModal() {
+            const modal = document.getElementById('adminReviewModal');
+            const btnOpen = document.getElementById('btnOpenAdminReview');
+            const btnClose = document.getElementById('btnCloseAdminReviewModal');
+            const btnRefresh = document.getElementById('btnRefreshStaging');
+            const btnSync = document.getElementById('btnSyncToGitHub');
+
+            if (btnOpen) {
+                btnOpen.addEventListener('click', () => {
+                    fetchStagingGlyphs();
+                    modal.classList.add('open');
+                });
+            }
+
+            if (btnClose) {
+                btnClose.addEventListener('click', () => {
+                    modal.classList.remove('open');
+                });
+            }
+
+            if (btnRefresh) {
+                btnRefresh.addEventListener('click', () => {
+                    fetchStagingGlyphs();
+                    showToast("🔄 Lista de revisión actualizada");
+                });
+            }
+
+            if (btnSync) {
+                btnSync.addEventListener('click', handleSyncToGitHub);
+            }
+        }
+
+        // Save Glyphs to Database (Supabase + Local Fallback)
+        async function saveGlyphsToDatabase() {
+            if (!currentImageDataUrl || currentBoxes.length === 0) {
+                alert("Debes seleccionar y clasificar al menos un glifo antes de guardar.");
+                return;
+            }
+
+            const btn = document.getElementById('btnSaveGlyphs');
+            btn.disabled = true;
+            btn.textContent = '⏳ Guardando en la Nube...';
+
+            try {
+                let savedSuccess = false;
+                const savedCount = currentBoxes.length;
+
+                // 1. Guardar en Supabase (Staging Cloud)
+                if (supabaseClient) {
+                    const recordsToInsert = [];
+                    for (const box of currentBoxes) {
+                        const rgbBlob = dataURItoBlob(box.rgbDataUrl);
+                        const isoBlob = dataURItoBlob(box.isoDataUrl);
+
+                        if (rgbBlob) {
+                            await supabaseClient.storage
+                                .from('staging_crops')
+                                .upload(box.crop_file, rgbBlob, { contentType: 'image/png', upsert: true });
+                        }
+
+                        if (isoBlob) {
+                            await supabaseClient.storage
+                                .from('staging_crops')
+                                .upload(box.crop_isolated_file, isoBlob, { contentType: 'image/png', upsert: true });
+                        }
+
+                        const cropUrl = `${SUPABASE_URL}/storage/v1/object/public/staging_crops/${box.crop_file}`;
+                        const cropIsoUrl = `${SUPABASE_URL}/storage/v1/object/public/staging_crops/${box.crop_isolated_file}`;
+
+                        recordsToInsert.push({
+                            id: box.id,
+                            line_id: currentCaptureId,
+                            page: 'captura_externa',
+                            character: box.character,
+                            category: box.category,
+                            notes: box.notes || '',
+                            author: currentAuthor || 'Colaborador Anónimo',
+                            bbox: [box.x, box.y, box.w, box.h],
+                            polygon: box.polygon || [],
+                            crop_file: box.crop_file,
+                            crop_isolated_file: box.crop_isolated_file,
+                            crop_url: cropUrl,
+                            crop_iso_url: cropIsoUrl,
+                            status: 'pendiente'
+                        });
+                    }
+
+                    const { error: insertError } = await supabaseClient
+                        .from('staging_glyphs')
+                        .upsert(recordsToInsert);
+
+                    if (insertError) {
+                        console.error("Supabase insert error:", insertError);
+                    } else {
+                        savedSuccess = true;
+                    }
+                }
+
+                // 2. Fallback / Sincronización Local (si corre servidor python local)
+                try {
+                    const payload = {
+                        line_id: currentCaptureId,
+                        page: 'captura_externa',
+                        author: currentAuthor || 'Colaborador Anónimo',
+                        boxes: currentBoxes,
+                        image_data: currentImageDataUrl
+                    };
+                    const res = await fetch('/api/save_line', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) {
+                        const result = await res.json();
+                        if (result.status === 'ok') {
+                            allGlyphs = result.db.glyphs;
+                            updateGlobalStats();
+                            savedSuccess = true;
+                        }
+                    }
+                } catch (localErr) {
+                    // Servidor python local no activo, modo 100% web
+                }
+
+                if (savedSuccess) {
+                    currentBoxes = [];
+                    currentCaptureId = `cap_${Date.now()}`;
+                    renderCanvas();
+                    renderSidebarList();
+                    showToast(`✓ ${savedCount} glifo(s) enviados a revisión exitosamente`);
+
+                    if (isAdminUser(currentAuthor)) {
+                        fetchStagingGlyphs();
+                    }
+                } else {
+                    alert("Ocurrió un inconveniente al guardar. Verifica tu conexión a internet.");
+                }
+            } catch (err) {
+                console.error("Error saving glyphs:", err);
+                alert("Error de conexión al guardar los glifos.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 Guardar en Banco de Datos (Ctrl+S)';
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMessage');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        document.getElementById('btnSaveGlyphs').addEventListener('click', saveGlyphsToDatabase);
+        document.getElementById('btnZoomIn').addEventListener('click', () => {
+            zoom = Math.min(6.0, zoom * 1.25);
+            updateZoomDisplay();
+            renderCanvas();
+        });
+        document.getElementById('btnZoomOut').addEventListener('click', () => {
+            zoom = Math.max(0.15, zoom * 0.8);
+            updateZoomDisplay();
+            renderCanvas();
+        });
+        document.getElementById('btnResetZoom').addEventListener('click', resetZoom);
+
+        // Catalog & Coverage Modal
+        let selectedCatalogChar = null;
+
+        function setupCatalogModal() {
+            const modal = document.getElementById('coverageModal');
+            const btnOpen = document.getElementById('btnOpenCoverage');
+            const btnClose = document.getElementById('btnCloseCoverageModal');
+
+            btnOpen.addEventListener('click', () => {
+                updateCoverageModalData();
+                modal.classList.add('open');
+            });
+
+            btnClose.addEventListener('click', () => modal.classList.remove('open'));
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('open');
+            });
+        }
+
+        function updateCoverageModalData() {
+            const glyphsByChar = {};
+            allGlyphs.forEach(g => {
+                const c = g.character;
+                if (!glyphsByChar[c]) glyphsByChar[c] = [];
+                glyphsByChar[c].push(g);
+            });
+
+            // Minusculas Grid
+            const gridMin = document.getElementById('gridMinusculas');
+            gridMin.innerHTML = '';
+            let minCovered = 0;
+            ABC_MIN_ALL.forEach(char => {
+                const count = (glyphsByChar[char] || []).length;
+                if (count > 0 && ABC_MIN_BASE.includes(char)) minCovered++;
+                gridMin.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
+            });
+            document.getElementById('labelMinProgress').textContent = `${minCovered} de 27 base (${Math.round(minCovered/27*100)}%)`;
+            document.getElementById('chipMinStats').textContent = `Minúsculas: ${minCovered}/27 (${Math.round(minCovered/27*100)}%)`;
+
+            // Mayusculas Grid
+            const gridMay = document.getElementById('gridMayusculas');
+            gridMay.innerHTML = '';
+            let mayCovered = 0;
+            ABC_MAY_ALL.forEach(char => {
+                const count = (glyphsByChar[char] || []).length;
+                if (count > 0 && ABC_MAY_BASE.includes(char)) mayCovered++;
+                gridMay.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
+            });
+            document.getElementById('labelMayProgress').textContent = `${mayCovered} de 27 base (${Math.round(mayCovered/27*100)}%)`;
+            document.getElementById('chipMayStats').textContent = `Mayúsculas: ${mayCovered}/27 (${Math.round(mayCovered/27*100)}%)`;
+
+            // Signs & Digits Grid
+            const gridOthers = document.getElementById('gridOthers');
+            gridOthers.innerHTML = '';
+            let othersCount = 0;
+            COMMON_SIGNS.forEach(char => {
+                const count = (glyphsByChar[char] || []).length;
+                if (count > 0) othersCount++;
+                gridOthers.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char] || [])));
+            });
+            document.getElementById('labelOthersProgress').textContent = `${othersCount} con muestras`;
+
+            // Ligatures & Extras
+            const gridLig = document.getElementById('gridLigatures');
+            gridLig.innerHTML = '';
+            const existingChars = new Set([...ABC_MIN_ALL, ...ABC_MAY_ALL, ...COMMON_SIGNS]);
+            const ligChars = Object.keys(glyphsByChar).filter(c => !existingChars.has(c) || glyphsByChar[c].some(g => g.category === 'ligadura' || g.category === 'simbolo'));
+            ligChars.forEach(char => {
+                const count = glyphsByChar[char].length;
+                gridLig.appendChild(createLetterTile(char, count, () => selectCatalogChar(char, glyphsByChar[char])));
+            });
+            document.getElementById('labelLigaturesProgress').textContent = `${ligChars.length} tipos`;
+
+            document.getElementById('chipTotStats').textContent = `Total: ${allGlyphs.length} glifos (${Object.keys(glyphsByChar).length} únicos)`;
+
+            if (selectedCatalogChar) {
+                selectCatalogChar(selectedCatalogChar, glyphsByChar[selectedCatalogChar] || []);
+            }
+        }
+
+        function createLetterTile(char, count, onClick) {
+            const tile = document.createElement('div');
+            let stateClass = 'empty';
+            if (count === 1) stateClass = 'has-1';
+            else if (count > 1) stateClass = 'has-many';
+
+            tile.className = `letter-tile ${stateClass} ${selectedCatalogChar === char ? 'selected' : ''}`;
+            tile.innerHTML = `
+                <span class="tile-char">${char}</span>
+                <span class="tile-count">${count}</span>
+            `;
+            tile.addEventListener('click', () => {
+                document.querySelectorAll('.letter-tile').forEach(t => t.classList.remove('selected'));
+                tile.classList.add('selected');
+                onClick();
+            });
+            return tile;
+        }
+
+        function selectCatalogChar(char, samples) {
+            selectedCatalogChar = char;
+            document.getElementById('detailCharBig').textContent = char;
+            document.getElementById('detailCharTitle').textContent = `Carácter "${char}"`;
+            document.getElementById('detailCharSubtitle').textContent = `${samples.length} muestra${samples.length === 1 ? '' : 's'} guardada${samples.length === 1 ? '' : 's'}`;
+
+            const container = document.getElementById('galleryContainer');
+            if (samples.length === 0) {
+                container.innerHTML = `
+                <div class="empty-state">
+                    <p>No hay muestras capturadas aún para el carácter <strong>"${char}"</strong>.</p>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            samples.forEach((glyph) => {
+                const card = document.createElement('div');
+                card.className = 'sample-card';
+
+                const catOption = document.querySelector(`#selectCategory option[value="${glyph.category}"]`);
+                const catLabel = catOption ? catOption.textContent : glyph.category;
+                const bbox = glyph.bbox || [0,0,0,0];
+
+                card.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span class="category-pill cat-${glyph.category}">${catLabel}</span>
+                    <button class="btn-icon" title="Eliminar esta muestra" onclick="deleteGlyphSample('${glyph.id}')">🗑️</button>
+                </div>
+                <div class="sample-dual-view">
+                    <div class="sample-img-box">
+                        <img src="/crops/${glyph.crop_file}?t=${Date.now()}" alt="Original" />
+                        <span class="sample-img-label">Original RGB</span>
+                    </div>
+                    <div class="sample-img-box">
+                        <img src="/crops_isolated/${glyph.crop_isolated_file}?t=${Date.now()}" alt="Tinta Aislada" />
+                        <span class="sample-img-label">Tinta RGBA</span>
+                    </div>
+                </div>
+                <div class="sample-meta-row">
+                    <span>${glyph.line_id}</span>
+                    <span>${bbox[2]}×${bbox[3]} px</span>
+                </div>
+                ${glyph.notes ? `<div style="font-size: 11px; color: #94a3b8; font-style: italic;">Nota: ${glyph.notes}</div>` : ''}
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        window.deleteGlyphSample = async function(glyphId) {
+            if (!confirm(`¿Eliminar la muestra ${glyphId}?`)) return;
+            try {
+                const res = await fetch('/api/delete_glyph', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: glyphId })
+                });
+                const result = await res.json();
+                if (result.status === 'ok') {
+                    allGlyphs = result.db.glyphs;
+                    updateGlobalStats();
+                    currentBoxes = currentBoxes.filter(b => b.id !== glyphId);
+                    renderCanvas();
+                    renderSidebarList();
+                    showToast("✓ Muestra eliminada correctamente");
+                }
+            } catch (err) {
+                console.error("Error deleting glyph:", err);
+                alert("Error al eliminar glifo.");
+            }
+        };
+    </script>
+</body>
+</html>
