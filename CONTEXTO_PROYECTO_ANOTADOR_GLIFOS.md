@@ -1,15 +1,17 @@
 # 📖 Documento de Contexto y Arquitectura: Anotador Manual y Catálogo de Glifos
 **Proyecto:** Transcripción y Reconocimiento de Manuscritos de Francisco Coloane  
-**Experimento Activo:** `04.1_abecedario_glifos_manual`  
+**Experimento Activo (Producción):** `06_web_coloane` (Fuente Única de Verdad)  
+**URL de Producción:** **[https://coloaneweb.vercel.app/](https://coloaneweb.vercel.app/)**  
 **Fecha de Checkpoint:** 23 de Agosto de 2026  
-**Estado:** Activo y Operativo en `http://localhost:8000`
+**Estado:** 100% Operativo y Desplegado en Vercel con buffer Supabase y sync a GitHub
 
 > [!TIP]
-> **🚀 Comando para levantar la aplicación (desde la carpeta `TRANSCRIPCIONES COLOANE`):**
+> **🚀 Acceso Web Directo:**
+> Navegar a **[https://coloaneweb.vercel.app/](https://coloaneweb.vercel.app/)** desde cualquier navegador o dispositivo.
+> Para levantar servidor de desarrollo local:
 > ```powershell
-> python experimentos/04.1_abecedario_glifos_manual/server_anotador.py
+> python experimentos/06_web_coloane/server_anotador.py
 > ```
-> Abrir en el navegador: **[http://localhost:8000](http://localhost:8000)** *(para detener: `Ctrl + C` en la terminal)*.
 
 ---
 
@@ -17,12 +19,13 @@
 
 El objetivo central del proyecto es lograr la **transcripción y el reconocimiento óptico fidedigno de los manuscritos caligráficos del escritor chileno Francisco Coloane**, a partir de los escaneos de alta resolución (300 DPI) del libro *"Escritos y relato desde Quemchi" (1977)*.
 
-Tras evaluar y descartar los modelos genéricos de Visión-Lenguaje (VLM / HTR del Experimento 05) debido a que la caligrafía cursiva e inclinada de Coloane provocaba tasas de error inaceptables (94% – 112% CER), el proyecto adoptó una **metodología Bottom-Up** fundamentada en:
-1. Construir un **Catálogo Arquetípico de Glifos Puros** mediante una herramienta interactiva de alta precisión.
-2. Extraer de forma aislada la tinta (máscaras RGBA sin fondo de papel).
-3. Establecer una base de datos estructurada en JSON y CSV que servirá como diccionario maestro para algoritmos de correlación morfológica, segmentación dirigida y modelos de reconocimiento específicos.
+Tras evaluar y descartar los modelos genéricos de Visión-Lenguaje (VLM / HTR del Experimento 05) debido a que la caligrafía cursiva e inclinada de Coloane provocaba tasas de error inaceptables (94% – 112% CER), el proyecto adoptó una **metodología Bottom-Up** colaborativa fundamentada en:
+1. Construir un **Catálogo Arquetípico de Glifos Puros** mediante una herramienta interactiva web de alta precisión desplegada en la nube.
+2. Extraer de forma aislada la tinta (máscaras RGBA sin fondo de papel) en el cliente mediante JS nativo (0.2 ms por glifo).
+3. Acopio y curaduría continua: los colaboradores anotan en la web $\rightarrow$ almacenamiento en buffer temporal (Supabase) $\rightarrow$ revisión por el administrador (`Wladimir`) $\rightarrow$ consolidación automática en GitHub en 1 commit $\rightarrow$ sincronización local (`git pull`).
+4. Establecer una base de datos estructurada en JSON y CSV que sirve como diccionario maestro para los experimentos de vectorización SVG (`04.2_vectorizacion_glifos`) y búsqueda interactiva (`05_spotting_glifos_interactivo`).
 
-Al momento de este checkpoint, se han clasificado y verificado **105 glifos individuales** correspondientes a **49 caracteres únicos** a lo largo de las páginas 2, 3 y capturas externas.
+Al momento de este checkpoint, se han clasificado y verificado **105 glifos individuales** correspondientes a **49 caracteres únicos**.
 
 ---
 
@@ -35,7 +38,7 @@ Los documentos de informes iniciales y especificaciones preliminares desactualiz
 
 ---
 
-## 3. Arquitectura del Experimento 04.1 (`04.1_abecedario_glifos_manual`)
+## 3. Arquitectura del Experimento 06 (`experimentos/06_web_coloane`)
 
 ```
 TRANSCRIPCIONES COLOANE/
@@ -44,13 +47,20 @@ TRANSCRIPCIONES COLOANE/
 │   │   └── crops/                     # 27 renglones recortados a 300 DPI (p02 y p03)
 │   ├── 03_dataset_ground_truth/
 │   │   └── dataset_muestras_p02_p03.json  # Transcripciones Ground Truth
-│   └── 04.1_abecedario_glifos_manual/
-│       ├── index.html                 # UI Frontend SPA interactiva (Noir-Tech)
-│       ├── server_anotador.py         # Backend HTTP en Python (Puerto 8000)
-│       ├── dataset_glifos_manuales.json # Base de datos JSON de glifos
-│       ├── dataset_glifos_manuales.csv  # Base de datos tabular CSV
+│   ├── 04.2_vectorizacion_glifos/     # Pipeline SVG -> Consume 06_web_coloane
+│   ├── 05_spotting_glifos_interactivo/# Motor de Spotting -> Consume 06_web_coloane
+│   └── 06_web_coloane/                # ★ FUENTE ÚNICA OFICIAL DEL CATÁLOGO (Vercel)
+│       ├── index.html                 # UI Frontend SPA interactiva (Noir-Tech, JS Ink Isolation)
+│       ├── dataset_glifos_manuales.json # Base de datos JSON maestra de glifos
+│       ├── dataset_glifos_manuales.csv  # Base de datos tabular CSV maestra
 │       ├── crops/                     # Recortes originales de cada glifo (RGB)
-│       └── crops_isolated/            # Recortes de tinta aislada con canal alfa (RGBA)
+│       ├── crops_isolated/            # Recortes de tinta aislada con canal alfa (RGBA)
+│       ├── api/
+│       │   └── sync_github.js         # Función Serverless Vercel (Sync Supabase -> GitHub)
+│       ├── sync_from_supabase.py      # Herramienta CLI de sincronización local
+│       ├── setup_supabase.sql         # Script DDL/Storage para Supabase
+│       ├── vercel.json                # Configuración de despliegue en Vercel
+│       └── server_anotador.py         # Backend HTTP Python para desarrollo local
 ```
 
 ---
